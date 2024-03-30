@@ -1,5 +1,6 @@
 ﻿using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 using Inedo.DependencyScan;
 
@@ -130,6 +131,32 @@ public sealed class ProGetClient
         ArgumentNullException.ThrowIfNull(package);
 
         var url = GetPackageUrl($"api/packages/{Uri.EscapeDataString(package.Feed)}/delete", package);
+        using var response = await this.http.PostAsync(url, null, cancellationToken).ConfigureAwait(false);
+        await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
+    }
+
+    public async IAsyncEnumerable<VulnerabilityInfo> AuditPackagesAsync(IReadOnlyList<PackageVersionIdentifier> packages, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(packages);
+
+        using var response = await this.http.PostAsJsonAsync("api/sca/audit", packages, ProGetApiJsonContext.Default.IReadOnlyListPackageVersionIdentifier, cancellationToken).ConfigureAwait(false);
+        await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
+
+        using var stream = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+        await foreach (var v in JsonSerializer.DeserializeAsyncEnumerable(stream, ProGetApiJsonContext.Default.VulnerabilityInfo, cancellationToken).ConfigureAwait(false))
+            yield return v!;
+    }
+    public async Task AssessVulnerabilityAsync(string vulnerabilityId, string assessmentType, string? comment = null, string? policy = null, CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(vulnerabilityId);
+        ArgumentException.ThrowIfNullOrEmpty(assessmentType);
+
+        var url = $"api/sca/assess?id={Uri.EscapeDataString(vulnerabilityId)}&type={Uri.EscapeDataString(assessmentType)}";
+        if (!string.IsNullOrWhiteSpace(comment))
+            url = $"{url}&comment={Uri.EscapeDataString(comment)}";
+        if (!string.IsNullOrEmpty(policy))
+            url = $"{url}&policy={Uri.EscapeDataString(policy)}";
+
         using var response = await this.http.PostAsync(url, null, cancellationToken).ConfigureAwait(false);
         await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
     }

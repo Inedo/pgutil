@@ -55,4 +55,14 @@ internal static class Extensions
 
         return source.GetProGetClient();
     }
+    public static async Task<List<T>> ToListAsync<T>(this IAsyncEnumerable<T> source)
+    {
+        ArgumentNullException.ThrowIfNull(source);
+
+        var list = new List<T>();
+        await foreach (var item in source.ConfigureAwait(false))
+            list.Add(item);
+
+        return list;
+    }
 }

@@ -1,6 +1,6 @@
 ﻿namespace ConsoleMan;
 
-internal static class WordWrapper
+public static class WordWrapper
 {
     public static void WriteOutput(string? text, int margin = 0)
     {

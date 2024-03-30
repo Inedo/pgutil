@@ -30,6 +30,7 @@ internal sealed partial class Program : IConsoleCommandContainer
     public static void Configure(ICommandBuilder builder)
     {
         builder.WithCommand<SourcesCommand>()
-            .WithCommand<PackagesCommand>();
+            .WithCommand<PackagesCommand>()
+            .WithCommand<VulnsCommand>();
     }
 }
