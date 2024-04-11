@@ -16,9 +16,10 @@ public sealed class BomWriter : IDisposable
     /// </summary>
     /// <param name="stream">Stream into which SBOM is written.</param>
     /// <param name="closeOutput">Value indicating whether to close <paramref name="stream"/>.</param>
-    public BomWriter(Stream stream, bool closeOutput = true)
+    /// <param name="indent">Value indicating whether to write the XML indented.</param>
+    public BomWriter(Stream stream, bool closeOutput = true, bool indent = false)
     {
-        this.writer = XmlWriter.Create(new StreamWriter(stream, new UTF8Encoding(false)), new XmlWriterSettings { CloseOutput = closeOutput, WriteEndDocumentOnClose = true });
+        this.writer = XmlWriter.Create(new StreamWriter(stream, new UTF8Encoding(false)), new XmlWriterSettings { CloseOutput = closeOutput, WriteEndDocumentOnClose = true, Indent = indent });
         this.writer.WriteStartElement("bom", ns);
         this.writer.WriteAttributeString("serialNumber", "urn:uuid:" + Guid.NewGuid().ToString("n"));
         this.writer.WriteAttributeString("version", "1");
@@ -82,14 +83,14 @@ public sealed class BomWriter : IDisposable
         this.writer.Dispose();
     }
 
-    public static void WriteSbom(string fileName, IEnumerable<ScannedProject> projects, PackageConsumer consumer, string consumerType, string packageType)
+    public static void WriteSbom(string fileName, IEnumerable<ScannedProject> projects, PackageConsumer consumer, string consumerType, string packageType, bool indent = false)
     {
         using var stream = File.Create(fileName);
-        WriteSbom(stream, projects, consumer, consumerType, packageType);
+        WriteSbom(stream, projects, consumer, consumerType, packageType, indent);
     }
-    public static void WriteSbom(Stream stream, IEnumerable<ScannedProject> projects, PackageConsumer consumer, string consumerType, string packageType)
+    public static void WriteSbom(Stream stream, IEnumerable<ScannedProject> projects, PackageConsumer consumer, string consumerType, string packageType, bool indent = false)
     {
-        using var bomWriter = new BomWriter(stream, false);
+        using var bomWriter = new BomWriter(stream, false, indent);
         bomWriter.Begin(consumer.Group, consumer.Name, consumer.Version, consumerType);
 
         // Iterate through depencies. Calling Distinct() eliminates duplictes.

@@ -80,14 +80,28 @@ public sealed class ProGetClient
         using var response = await this.http.PostAsync($"api/sca/analyze-build?project={Uri.EscapeDataString(projectName)}&version={Uri.EscapeDataString(buildNumber)}", null, cancellationToken);
         await CheckResponseAsync(response, cancellationToken);
     }
-    public async Task PromoteBuildAsync(string projectName, string buildNumber, string stageName, CancellationToken cancellationToken = default)
+    public async Task<BuildAnalysisResults> PromoteBuildAsync(string projectName, string buildNumber, string stageName, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(projectName);
         ArgumentException.ThrowIfNullOrEmpty(buildNumber);
         ArgumentException.ThrowIfNullOrEmpty(stageName);
 
         using var response = await this.http.PostAsync($"api/sca/promote-build?project={Uri.EscapeDataString(projectName)}&version={Uri.EscapeDataString(buildNumber)}&stage={Uri.EscapeDataString(stageName)}", null, cancellationToken);
-        await CheckResponseAsync(response, cancellationToken);
+        await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
+
+        using var responseStream = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+        return (await JsonSerializer.DeserializeAsync(responseStream, ProGetApiJsonContext.Default.BuildAnalysisResults, cancellationToken).ConfigureAwait(false))!;
+    }
+    public async Task<BuildAnalysisResults> AuditBuildAsync(string projectName, string buildNumber, CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(projectName);
+        ArgumentException.ThrowIfNullOrEmpty(buildNumber);
+
+        using var response = await this.http.PostAsync($"api/sca/audit-build?project={Uri.EscapeDataString(projectName)}&version={Uri.EscapeDataString(buildNumber)}", null, cancellationToken);
+        await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
+
+        using var responseStream = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+        return (await JsonSerializer.DeserializeAsync(responseStream, ProGetApiJsonContext.Default.BuildAnalysisResults, cancellationToken).ConfigureAwait(false))!;
     }
 
     public async Task<PackageDownloadStream> DownloadPackageAsync(PackageIdentifier package, CancellationToken cancellationToken = default)
@@ -135,11 +149,11 @@ public sealed class ProGetClient
         await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
     }
 
-    public async IAsyncEnumerable<VulnerabilityInfo> AuditPackagesAsync(IReadOnlyList<PackageVersionIdentifier> packages, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    public async IAsyncEnumerable<VulnerabilityInfo> AuditPackagesForVulnerabilitiesAsync(IReadOnlyList<PackageVersionIdentifier> packages, [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(packages);
 
-        using var response = await this.http.PostAsJsonAsync("api/sca/audit", packages, ProGetApiJsonContext.Default.IReadOnlyListPackageVersionIdentifier, cancellationToken).ConfigureAwait(false);
+        using var response = await this.http.PostAsJsonAsync("api/sca/audit-package-vulns", packages, ProGetApiJsonContext.Default.IReadOnlyListPackageVersionIdentifier, cancellationToken).ConfigureAwait(false);
         await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
 
         using var stream = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
@@ -159,6 +173,34 @@ public sealed class ProGetClient
 
         using var response = await this.http.PostAsync(url, null, cancellationToken).ConfigureAwait(false);
         await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
+    }
+
+    public async Task RepackageAsync(RepackageInput repackageInput, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(repackageInput);
+
+        using var response = await this.http.PostAsJsonAsync("api/repackaging/repackage", repackageInput, ProGetApiJsonContext.Default.RepackageInput, cancellationToken).ConfigureAwait(false);
+        await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
+    }
+    public async Task PromotePackageAsync(PromotePackageInput promotePackageInput, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(promotePackageInput);
+
+        using var response = await this.http.PostAsJsonAsync("api/repackaging/repackage", promotePackageInput, ProGetApiJsonContext.Default.PromotePackageInput, cancellationToken).ConfigureAwait(false);
+        await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
+    }
+
+    public async Task<AuditPackageResults> AuditPackageAsync(PackageIdentifier package, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(package);
+
+        var url = GetPackageUrl($"api/packages/{Uri.EscapeDataString(package.Feed)}/audit", package);
+        using var response = await this.http.PostAsync(url, null, cancellationToken).ConfigureAwait(false);
+
+        await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
+
+        using var responseStream = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+        return (await JsonSerializer.DeserializeAsync(responseStream, ProGetApiJsonContext.Default.AuditPackageResults, cancellationToken).ConfigureAwait(false))!;
     }
 
     private static async Task CheckResponseAsync(HttpResponseMessage response, CancellationToken cancellationToken)

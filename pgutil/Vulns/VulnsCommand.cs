@@ -111,7 +111,7 @@ internal sealed class VulnsCommand : IConsoleCommandContainer
 
         private static async Task<int> AuditAsync(ProGetClient client, List<DependencyInfo> infos, CancellationToken cancellationToken)
         {
-            var vulns = await client.AuditPackagesAsync(infos.Select(p => p.Package).ToList(), cancellationToken).ToListAsync();
+            var vulns = await client.AuditPackagesForVulnerabilitiesAsync(infos.Select(p => p.Package).ToList(), cancellationToken).ToListAsync();
             // show most critical vulns first
             vulns.Sort((v1, v2) => -v1.NumericCvss.GetValueOrDefault().CompareTo(v2.NumericCvss.GetValueOrDefault()));
 
