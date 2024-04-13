@@ -32,6 +32,7 @@ internal sealed partial class Program : IConsoleCommandContainer
         builder.WithCommand<SourcesCommand>()
             .WithCommand<PackagesCommand>()
             .WithCommand<VulnsCommand>()
-            .WithCommand<BuildsCommand>();
+            .WithCommand<BuildsCommand>()
+            .WithCommand<LicensesCommand>();
     }
 }

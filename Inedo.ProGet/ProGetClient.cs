@@ -189,7 +189,6 @@ public sealed class ProGetClient
         using var response = await this.http.PostAsJsonAsync("api/repackaging/repackage", promotePackageInput, ProGetApiJsonContext.Default.PromotePackageInput, cancellationToken).ConfigureAwait(false);
         await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
     }
-
     public async Task<AuditPackageResults> AuditPackageAsync(PackageIdentifier package, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(package);
@@ -201,6 +200,41 @@ public sealed class ProGetClient
 
         using var responseStream = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
         return (await JsonSerializer.DeserializeAsync(responseStream, ProGetApiJsonContext.Default.AuditPackageResults, cancellationToken).ConfigureAwait(false))!;
+    }
+
+    public IAsyncEnumerable<LicenseInfo> ListLicensesAsync(CancellationToken cancellationToken = default)
+    {
+        return this.http.GetFromJsonAsAsyncEnumerable("api/licenses/list", ProGetApiJsonContext.Default.LicenseInfo, cancellationToken)!;
+    }
+    public async Task AddLicenseAsync(LicenseInfo license, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(license);
+
+        using var response = await this.http.PostAsJsonAsync("api/licenses/add", license, ProGetApiJsonContext.Default.LicenseInfo, cancellationToken).ConfigureAwait(false);
+        await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
+    }
+    public async Task DeleteLicenseAsync(string code, CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(code);
+
+        using var response = await this.http.PostAsync($"api/licenses/delete?code={Uri.EscapeDataString(code)}", null, cancellationToken).ConfigureAwait(false);
+        await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
+    }
+    public async Task AddLicenseFileAsync(string code, Stream licenseFile, CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(code);
+        ArgumentNullException.ThrowIfNull(licenseFile);
+
+        using var content = new StreamContent(licenseFile);
+        using var response = await this.http.PostAsync($"api/licenses/files/add?code={Uri.EscapeDataString(code)}", content, cancellationToken).ConfigureAwait(false);
+        await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
+    }
+    public async Task DeleteLicenseFileAsync(string hash, CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(hash);
+
+        using var response = await this.http.PostAsync($"api/licenses/files/delete?hash={Uri.EscapeDataString(hash)}", null, cancellationToken).ConfigureAwait(false);
+        await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
     }
 
     private static async Task CheckResponseAsync(HttpResponseMessage response, CancellationToken cancellationToken)
