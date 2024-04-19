@@ -1,4 +1,5 @@
-﻿using ConsoleMan;
+﻿using System.Reflection;
+using ConsoleMan;
 using Inedo.ProGet;
 
 namespace PgUtil;
@@ -10,6 +11,18 @@ internal sealed partial class Program : IConsoleCommandContainer
 
     public static async Task<int> Main(string[] args)
     {
+        if (args.Length == 0)
+        {
+            Console.Write(
+                $"""
+                    .--. --. ..- - .. .-.. 
+                        pgutil v{typeof(Program).Assembly.GetName().Version!.ToString(3)}
+                    .--. --. ..- - .. .-.. 
+
+                
+                """);
+        }
+
         try
         {
             return await Command.Create<Program>().ExecuteAsync(args);

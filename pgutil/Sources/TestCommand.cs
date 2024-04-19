@@ -19,27 +19,48 @@ internal partial class Program
 
             public static async Task<int> ExecuteAsync(CommandContext context, CancellationToken cancellationToken)
             {
-                var name = context.GetOption<NameOption>();
+                var sources = PgUtilConfig.Instance.Sources;
 
-                var source = PgUtilConfig.Instance.Sources.FirstOrDefault(s => s.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
-                if (source is null)
+                if (context.TryGetOption<NameOption>(out var name))
                 {
-                    CM.WriteError<NameOption>($"Source {name} not found.");
+                    sources = sources.Where(s => s.Name.Equals(name, StringComparison.OrdinalIgnoreCase)).ToArray();
+                    if (sources.Length == 0)
+                    {
+                        CM.WriteError<NameOption>($"Source {name} not found.");
+                        return -1;
+                    }
+                }
+                if (sources.Length == 0)
+                {
+                    CM.WriteError("No sources were found.");
                     return -1;
+
                 }
 
-                var client = source.GetProGetClient();
-                var info = await client.GetInstanceHealthAsync(cancellationToken);
-                CM.WriteLine(ConsoleColor.Green, $"Successfully contacted ProGet {info.ReleaseNumber}.");
-                return 0;
+                var result = 0;
+                foreach (var source in sources)
+                {
+                    var client = source.GetProGetClient();
+                    try
+                    {
+                        var info = await client.GetInstanceHealthAsync(cancellationToken);
+                        CM.WriteLine(ConsoleColor.Green, $"[{source.Name}] Successfully contacted ProGet {info.ReleaseNumber}.");
+                    }
+                    catch (Exception ex)
+                    {
+                        CM.WriteError($"[{source.Name}] Error contacted ProGet: {ex.Message}");
+                        result = -1;
+                    }
+                }
+
+                return result;
             }
 
             private sealed class NameOption : IConsoleOption
             {
-                public static bool Required => true;
+                public static bool Required => false;
                 public static string Name => "--name";
                 public static string Description => "Name of the source.";
-                public static string DefaultValue => "Default";
             }
         }
     }

@@ -26,10 +26,24 @@ internal partial class Program
                 }
                 else
                 {
-                    foreach (var s in sources)
+                    /*
+
+1. Default
+   https://proget.corp.local/ (api)
+
+2. MyPackages (unapproved-nuget)
+   https://othersource.somewhere.dev/ (devbuilds)                     
+                     */
+                    for (int i = 0; i < sources.Length; i++)
                     {
-                        CM.Write(ConsoleColor.White, s.Name);
-                        Console.Write(' ');
+                        var s = sources[i];
+
+                        CM.Write(ConsoleColor.White, $"{i+1}. {s.Name}");
+                        if (!string.IsNullOrEmpty(s.DefaultFeed))
+                            CM.Write(new TextSpan(" ("), new TextSpan(s.DefaultFeed, ConsoleColor.White), new TextSpan(" feed)"));
+
+                        Console.WriteLine();
+                        Console.Write("   ");
                         var uri = new UriBuilder(s.Url);
                         if (s.Token is not null || s.EncryptedToken is not null)
                             uri.UserName = "api";
@@ -38,8 +52,6 @@ internal partial class Program
 
                         Console.Write(uri.Uri);
 
-                        if (!string.IsNullOrEmpty(s.DefaultFeed))
-                            CM.Write(new TextSpan(" ("), new TextSpan(s.DefaultFeed, ConsoleColor.White), new TextSpan(" feed)"));
 
                         Console.WriteLine();
                     }
