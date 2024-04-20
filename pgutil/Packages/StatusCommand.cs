@@ -15,15 +15,15 @@ internal partial class Program
             public static void Configure(ICommandBuilder builder)
             {
                 WithPackageOptions(builder)
-                    .WithCommand<ListedCommand>()
+                    .WithCommand<UnlistedCommand>()
                     .WithCommand<BlockCommand>()
                     .WithCommand<DeprecatedCommand>();
             }
 
-            private sealed class ListedCommand : IConsoleCommand
+            private sealed class UnlistedCommand : IConsoleCommand
             {
-                public static string Name => "listed";
-                public static string Description => "List or unlist a package";
+                public static string Name => "unlisted";
+                public static string Description => "Sets a package as unlisted or listed";
 
                 public static void Configure(ICommandBuilder builder) => builder.WithOption<StateOption>();
 
@@ -32,7 +32,7 @@ internal partial class Program
                     var client = context.GetProGetClient();
                     var (package, fullName) = GetPackageIdentifier(context);
 
-                    var state = context.GetEnumValue<StateOption, ListedState>();
+                    var state = context.TryGetEnumValue<StateOption, ListedState>(out var val) ? val : ListedState.Unlisted;
 
                     CM.Write("Setting ", new TextSpan($"{fullName} {package.Version}", ConsoleColor.White));
                     if (!string.IsNullOrWhiteSpace(package.Qualifier))
@@ -58,6 +58,8 @@ internal partial class Program
                     public static bool Required => true;
                     public static string Name => "--state";
                     public static string Description => "Desired listed state of the package.";
+
+                    public static string DefaultValue = "unlisted";
                 }
 
                 private enum ListedState
@@ -135,7 +137,7 @@ internal partial class Program
                 public static void Configure(ICommandBuilder builder)
                 {
                     builder.WithOption<ReasonOption>()
-                        .WithOption<ClearFlag>();
+                        .WithOption<StateOption>();
                 }
 
                 public static async Task<int> ExecuteAsync(CommandContext context, CancellationToken cancellationToken)
@@ -143,7 +145,7 @@ internal partial class Program
                     var client = context.GetProGetClient();
                     var (package, fullName) = GetPackageIdentifier(context);
 
-                    bool deprecated = !context.HasFlag<ClearFlag>();
+                    bool deprecated = context.TryGetEnumValue<StateOption, DeprecatedState>(out var val) ? true : val == DeprecatedState.Deprecated;
                     string? reason = null;
                     if (deprecated)
                         _ = context.TryGetOption<ReasonOption>(out reason);
@@ -180,10 +182,18 @@ internal partial class Program
                     public static string Description => "Reason for deprecating the package";
                 }
 
-                private sealed class ClearFlag : IConsoleFlagOption
+                private sealed class StateOption : IConsoleEnumOption<DeprecatedState>
                 {
-                    public static string Name => "--clear";
-                    public static string Description => "Clears the deprecation flag on the package";
+                    public static bool Required => false;
+                    public static string Name => "--state";
+                    public static string Description => "Desired deprecation state of the package.";
+                    public static string DefaultValue => "deprecated";
+                }
+
+                private enum DeprecatedState
+                {
+                    Deprecated,
+                    Clear
                 }
             }
         }
