@@ -48,7 +48,7 @@ internal partial class Program
                     }
                     catch (Exception ex)
                     {
-                        CM.WriteError($"[{source.Name}] Error contacted ProGet: {ex.Message}");
+                        CM.WriteError($"[{source.Name}] Error contacting ProGet: {ex.Message}");
                         result = -1;
                     }
                 }

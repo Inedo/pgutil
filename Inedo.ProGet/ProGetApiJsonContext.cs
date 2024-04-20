@@ -12,6 +12,7 @@ namespace Inedo.ProGet;
 [JsonSerializable(typeof(BuildAnalysisResults))]
 [JsonSerializable(typeof(AuditPackageResults))]
 [JsonSerializable(typeof(LicenseInfo))]
+[JsonSerializable(typeof(ApiKeyInfo))]
 [JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase)]
 internal sealed partial class ProGetApiJsonContext : JsonSerializerContext
 {

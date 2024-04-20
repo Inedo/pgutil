@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using ConsoleMan;
+﻿using ConsoleMan;
 using Inedo.ProGet;
 
 namespace PgUtil;
@@ -19,13 +18,18 @@ internal sealed partial class Program : IConsoleCommandContainer
                         pgutil v{typeof(Program).Assembly.GetName().Version!.ToString(3)}
                     .--. --. ..- - .. .-.. 
 
-                
+
                 """);
         }
 
         try
         {
             return await Command.Create<Program>().ExecuteAsync(args);
+        }
+        catch (HttpRequestException ex)
+        {
+            CM.WriteError(ex.Message);
+            return -1;
         }
         catch (ProGetClientException ex)
         {
@@ -46,6 +50,7 @@ internal sealed partial class Program : IConsoleCommandContainer
             .WithCommand<PackagesCommand>()
             .WithCommand<VulnsCommand>()
             .WithCommand<BuildsCommand>()
-            .WithCommand<LicensesCommand>();
+            .WithCommand<LicensesCommand>()
+            .WithCommand<ApiKeysCommand>();
     }
 }

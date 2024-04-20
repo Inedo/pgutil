@@ -237,6 +237,26 @@ public sealed class ProGetClient
         await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
     }
 
+    public IAsyncEnumerable<ApiKeyInfo> ListApiKeysAsync(CancellationToken cancellationToken = default)
+    {
+        return this.http.GetFromJsonAsAsyncEnumerable("api/api-keys/list", ProGetApiJsonContext.Default.ApiKeyInfo, cancellationToken )!;
+    }
+    public async Task DeleteApiKeyAsync(int id, CancellationToken cancellationToken = default)
+    {
+        using var response = await this.http.PostAsync($"api/api-keys/delete?id={id}", null, cancellationToken).ConfigureAwait(false);
+        await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
+    }
+    public async Task<ApiKeyInfo> CreateApiKeyAsync(ApiKeyInfo apiKeyInfo, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(apiKeyInfo);
+
+        using var response = await this.http.PostAsJsonAsync("api/api-keys/create", apiKeyInfo, ProGetApiJsonContext.Default.ApiKeyInfo, cancellationToken).ConfigureAwait(false);
+        await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
+
+        using var stream = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+        return (await JsonSerializer.DeserializeAsync(stream, ProGetApiJsonContext.Default.ApiKeyInfo, cancellationToken).ConfigureAwait(false))!;
+    }
+
     private static async Task CheckResponseAsync(HttpResponseMessage response, CancellationToken cancellationToken)
     {
         if (response.IsSuccessStatusCode)
