@@ -16,7 +16,7 @@ internal partial class Program
             {
                 WithPackageOptions(builder)
                     .WithCommand<UnlistedCommand>()
-                    .WithCommand<BlockCommand>()
+                    .WithCommand<BlockedCommand>()
                     .WithCommand<DeprecatedCommand>();
             }
 
@@ -55,7 +55,7 @@ internal partial class Program
 
                 private sealed class StateOption : IConsoleEnumOption<ListedState>
                 {
-                    public static bool Required => true;
+                    public static bool Required => false;
                     public static string Name => "--state";
                     public static string Description => "Desired listed state of the package.";
 
@@ -69,10 +69,10 @@ internal partial class Program
                 }
             }
 
-            private sealed class BlockCommand : IConsoleCommand
+            private sealed class BlockedCommand : IConsoleCommand
             {
-                public static string Name => "block";
-                public static string Description => "Blocks or allows a package";
+                public static string Name => "blocked";
+                public static string Description => "Sets downloads as blocked or allowed for a package";
 
                 public static void Configure(ICommandBuilder builder) => builder.WithOption<StateOption>();
 
@@ -81,7 +81,7 @@ internal partial class Program
                     var client = context.GetProGetClient();
                     var (package, fullName) = GetPackageIdentifier(context);
 
-                    var state = context.GetEnumValue<StateOption, BlockState>();
+                    var state = context.TryGetEnumValue<StateOption, BlockState>(out var val) ? val : BlockState.Blocked;
 
                     CM.Write("Setting ", new TextSpan($"{fullName} {package.Version}", ConsoleColor.White));
                     if (!string.IsNullOrWhiteSpace(package.Qualifier))
@@ -116,14 +116,16 @@ internal partial class Program
 
                 private sealed class StateOption : IConsoleEnumOption<BlockState>
                 {
-                    public static bool Required => true;
+                    public static bool Required => false;
                     public static string Name => "--state";
                     public static string Description => "Desired block state of the package.";
+
+                    public static string DefaultValue = "blocked";
                 }
 
                 private enum BlockState
                 {
-                    Default,
+                    NotSet,
                     Blocked,
                     Allowed
                 }
