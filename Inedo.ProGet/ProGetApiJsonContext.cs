@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using Inedo.ProGet.AssetDirectories;
 
 namespace Inedo.ProGet;
 
@@ -13,7 +14,9 @@ namespace Inedo.ProGet;
 [JsonSerializable(typeof(AuditPackageResults))]
 [JsonSerializable(typeof(LicenseInfo))]
 [JsonSerializable(typeof(ApiKeyInfo))]
-[JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase)]
+[JsonSerializable(typeof(AssetDirectoryItem))]
+[JsonSerializable(typeof(AssetItemMetadataUpdate))]
+[JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase, Converters = [typeof(AssetUserMetadataTypeConverter)])]
 internal sealed partial class ProGetApiJsonContext : JsonSerializerContext
 {
 }

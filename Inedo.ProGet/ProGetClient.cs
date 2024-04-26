@@ -1,8 +1,10 @@
 ﻿using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Text.Json;
 using Inedo.DependencyScan;
+using Inedo.ProGet.AssetDirectories;
 
 namespace Inedo.ProGet;
 
@@ -24,6 +26,12 @@ public sealed class ProGetClient
     public Task<ProGetInstanceHealth> GetInstanceHealthAsync(CancellationToken cancellationToken = default)
     {
         return this.http.GetFromJsonAsync("health", ProGetApiJsonContext.Default.ProGetInstanceHealth, cancellationToken)!;
+    }
+
+    public AssetDirectoryClient GetAssetDirectoryClient(string assetDirectoryName)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(assetDirectoryName);
+        return new AssetDirectoryClient(this.http, assetDirectoryName);
     }
 
     public IAsyncEnumerable<ProGetFeed> ListFeedsAsync(CancellationToken cancellationToken = default)
@@ -104,7 +112,7 @@ public sealed class ProGetClient
         return (await JsonSerializer.DeserializeAsync(responseStream, ProGetApiJsonContext.Default.BuildAnalysisResults, cancellationToken).ConfigureAwait(false))!;
     }
 
-    public async Task<PackageDownloadStream> DownloadPackageAsync(PackageIdentifier package, CancellationToken cancellationToken = default)
+    public async Task<ProGetDownloadStream> DownloadPackageAsync(PackageIdentifier package, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(package);
 
@@ -113,7 +121,7 @@ public sealed class ProGetClient
         try
         {
             await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
-            return new PackageDownloadStream(response, await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false));
+            return new ProGetDownloadStream(response, await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false));
         }
         catch
         {
@@ -136,7 +144,7 @@ public sealed class ProGetClient
             if (reportProgress is null)
                 return new StreamContent(source);
             else
-                return new StreamContent(new PackageUploadStream(source, reportProgress));
+                return new StreamContent(new ProGetUploadStream(source, reportProgress));
         }
     }
 
@@ -257,7 +265,16 @@ public sealed class ProGetClient
         return (await JsonSerializer.DeserializeAsync(stream, ProGetApiJsonContext.Default.ApiKeyInfo, cancellationToken).ConfigureAwait(false))!;
     }
 
-    private static async Task CheckResponseAsync(HttpResponseMessage response, CancellationToken cancellationToken)
+    internal static void CheckResponse(HttpResponseMessage response)
+    {
+        if (response.IsSuccessStatusCode)
+            return;
+
+        using var stream = response.Content.ReadAsStream();
+        using var reader = new StreamReader(stream, Encoding.UTF8);
+        throw new ProGetClientException(response.StatusCode, reader.ReadToEnd());
+    }
+    internal static async Task CheckResponseAsync(HttpResponseMessage response, CancellationToken cancellationToken)
     {
         if (response.IsSuccessStatusCode)
             return;
@@ -265,6 +282,7 @@ public sealed class ProGetClient
         var message = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
         throw new ProGetClientException(response.StatusCode, message);
     }
+
     private static string GetPackageUrl(string baseUrl, PackageIdentifier package)
     {
         var url = $"{baseUrl}?name={Uri.EscapeDataString(package.Name)}&version={Uri.EscapeDataString(package.Version)}";

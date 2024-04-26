@@ -1,7 +1,6 @@
-﻿
-namespace Inedo.ProGet;
+﻿namespace Inedo.ProGet;
 
-internal sealed class PackageUploadStream(Stream stream, Action<long> reportProgress) : Stream
+internal sealed class ProGetUploadStream(Stream stream, Action<long> reportProgress) : Stream
 {
     private long totalRead;
 

@@ -1,11 +1,11 @@
 ﻿namespace Inedo.ProGet;
 
-public sealed class PackageDownloadStream : Stream
+public sealed class ProGetDownloadStream : Stream
 {
     private readonly HttpResponseMessage response;
     private readonly Stream contentStream;
 
-    internal PackageDownloadStream(HttpResponseMessage response, Stream stream)
+    internal ProGetDownloadStream(HttpResponseMessage response, Stream stream)
     {
         this.response = response;
         this.contentStream = stream;

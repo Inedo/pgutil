@@ -38,9 +38,8 @@ public abstract class DependencyScanner
     /// <summary>
     /// Returns a <see cref="DependencyScanner"/> for the specified path.
     /// </summary>
-    /// <param name="sourcePath">Path of projects to scan.</param>
+    /// <param name="args">Options for the dependency scanner.</param>
     /// <param name="type">Type of project to scan for.</param>
-    /// <param name="fileSystem">Abstract file system used to scan for dependencies. If not specified, the default system file I/O is used.</param>
     /// <returns><see cref="DependencyScanner"/> for the specified path.</returns>
     public static DependencyScanner GetScanner(CreateDependencyScannerArgs args, DependencyScannerType type = DependencyScannerType.Auto)
     {

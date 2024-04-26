@@ -51,6 +51,7 @@ internal sealed partial class Program : IConsoleCommandContainer
             .WithCommand<VulnsCommand>()
             .WithCommand<BuildsCommand>()
             .WithCommand<LicensesCommand>()
-            .WithCommand<ApiKeysCommand>();
+            .WithCommand<ApiKeysCommand>()
+            .WithCommand<AssetsCommand>();
     }
 }

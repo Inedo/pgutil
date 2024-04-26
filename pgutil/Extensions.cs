@@ -1,5 +1,6 @@
 ﻿using ConsoleMan;
 using Inedo.ProGet;
+using Inedo.ProGet.AssetDirectories;
 using PgUtil.Config;
 
 namespace PgUtil;
@@ -55,6 +56,20 @@ internal static class Extensions
 
         return source.GetProGetClient();
     }
+    public static AssetDirectoryClient GetAssetDirectoryClient(this CommandContext context)
+    {
+        ArgumentNullException.ThrowIfNull(context);
+
+        var pgClient = context.GetProGetClient();
+        if (!context.TryGetOption<FeedOption>(out var name))
+        {
+            CM.WriteError<FeedOption>("Asset directory must be specified as the feed option");
+            throw new PgUtilException();
+        }
+
+        return pgClient.GetAssetDirectoryClient(name);
+    }
+
     public static async Task<List<T>> ToListAsync<T>(this IAsyncEnumerable<T> source)
     {
         ArgumentNullException.ThrowIfNull(source);

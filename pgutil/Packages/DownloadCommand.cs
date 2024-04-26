@@ -50,7 +50,7 @@ internal partial class Program
 
                 if (stdout && !string.IsNullOrEmpty(fileName))
                 {
-                    CM.WriteError<OutputFileOption>($"Cannot specify both --stdout and --output-file.");
+                    CM.WriteError<OutputFileOption>("Cannot specify both --stdout and --output-file.");
                     return -1;
                 }
 
@@ -96,7 +96,7 @@ internal partial class Program
             private sealed class StdOutFlag : IConsoleFlagOption
             {
                 public static string Name => "--stdout";
-                public static string Description => "Write the package to stdout instead of a file.";
+                public static string Description => "Write the package to stdout instead of a file";
             }
         }
     }
