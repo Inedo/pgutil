@@ -53,8 +53,7 @@ public abstract class Command : ConsoleToken
 
     internal abstract Task<int> RunAsync(CommandContext context, CancellationToken cancellationToken);
 
-    internal IEnumerable<Option> GetOptionsInScope() => this.Options.Union(this.Parent?.GetOptionsInScope() ?? []);
-
+    internal IEnumerable<ScopedOption> GetOptionsInScope(int scope = 0) => this.Options.Select(o => new ScopedOption(o, this.Name, scope)).Union(this.Parent?.GetOptionsInScope(scope + 1) ?? []);
     private CommandContext? ParseArguments(string[] args)
     {
         var parsedCommands = new List<Command> { this };
@@ -78,7 +77,7 @@ public abstract class Command : ConsoleToken
         bool error = false;
         bool help = false;
 
-        var scopedOptions = command.GetOptionsInScope().ToList();
+        var scopedOptions = command.GetOptionsInScope().Select(o => o.Option).ToList();
 
         var parsedOptions = new Dictionary<Type, ParsedOption>();
         for (int i = 0; i < args.Length; i++)
@@ -98,7 +97,7 @@ public abstract class Command : ConsoleToken
                 {
                     if (!parsedOptions.TryAdd(o.Type, new ParsedOption(o, value)))
                     {
-                        CM.WriteError($"option specifed more than once: {o.Name}");
+                        CM.WriteError($"option specified more than once: {o.Name}");
                         error = true;
                     }
 
@@ -151,6 +150,7 @@ public abstract class Command : ConsoleToken
             return null;
         }
     }
+    internal sealed record ScopedOption(Option Option, string Scope, int Depth);
 }
 
 internal sealed class Command<TCommand> : Command where TCommand : IConsoleCommand

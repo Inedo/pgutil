@@ -64,6 +64,7 @@ internal static class Extensions
         if (!context.TryGetOption<FeedOption>(out var name))
         {
             CM.WriteError<FeedOption>("Asset directory must be specified as the feed option");
+            context.WriteUsage();
             throw new PgUtilException();
         }
 

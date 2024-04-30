@@ -101,17 +101,40 @@ public sealed class CommandContext
         Console.WriteLine($"  {string.Join(' ', this.Commands.Select(c => c.Name))} {(this.Command.Subcommands.Count > 0 ? "[command] " : string.Empty)}[options]");
         Console.WriteLine();
 
-        Console.WriteLine("Options:");
-        WriteTwoColumnList(
-            [.. this.Command.GetOptionsInScope().OrderByDescending(o => o.Required).ThenBy(o => o.Name).Select(o => new KeyValuePair<string, string>(formatName(o), formatDescription(o))),
-            new KeyValuePair<string, string>("  -?, --help", "Show help and usage information")]
-        );
+        var options = this.Command.GetOptionsInScope()
+                        .Select(o => (o.Scope, o.Depth, Name: formatName(o.Option), Desc: formatDescription(o.Option), o.Option.Required))
+                        .ToList();
+        var optionMargin = options.Count == 0 ? 0 : options.Select(i => i.Name.Length).Max() + 2;
+        foreach (var optionGroup in options.GroupBy(o => (o.Depth, o.Scope)))
+        {
+            if (this.Command.Subcommands.Count == 0 && optionGroup.Key.Depth == 0)
+            {
+                Console.WriteLine($"Options:");
+            }
+            else
+            {
+                Console.WriteLine();
+                Console.WriteLine($"Common Options ({optionGroup.Key.Scope}):");
+            }
+
+            writeTwoColumnList(
+                optionGroup.OrderByDescending(o => o.Required).ThenBy(o => o.Name).Select(o => new KeyValuePair<string, string>(o.Name, o.Desc)).ToList(),
+                optionMargin
+            );
+        }
+
+        if (options.Count > 0)
+            writeTwoColumnList(
+                [new KeyValuePair<string, string>("  -?, --help", "Show help and usage information")],
+                optionMargin
+            );
+
 
         if (this.Command.Subcommands.Count > 0)
         {
             Console.WriteLine();
             Console.WriteLine("Commands:");
-            WriteTwoColumnList([.. this.Command.Subcommands.Select(c => new KeyValuePair<string, string>($"  {c.Name}", c.Description))]);
+            writeTwoColumnList([.. this.Command.Subcommands.Select(c => new KeyValuePair<string, string>($"  {c.Name}", c.Description))]);
         }
 
         static string formatName(Option o)
@@ -133,19 +156,18 @@ public sealed class CommandContext
 
             return desc;
         }
-    }
-
-    private static void WriteTwoColumnList(List<KeyValuePair<string, string>> items)
-    {
-        int margin = items.Select(i => i.Key.Length).Max() + 2;
-        foreach (var item in items)
+        static void writeTwoColumnList(IEnumerable<KeyValuePair<string, string>> items, int? margin = null)
         {
-            Console.Write(item.Key);
-            for (int i = item.Key.Length; i < margin; i++)
-                Console.Write(' ');
+            margin ??= items.Select(i => i.Key.Length).Max() + 2;
+            foreach (var item in items)
+            {
+                Console.Write(item.Key);
+                for (int i = item.Key.Length; i < margin; i++)
+                    Console.Write(' ');
 
-            WordWrapper.WriteOutput(item.Value, margin);
-            Console.WriteLine();
+                WordWrapper.WriteOutput(item.Value, margin.Value);
+                Console.WriteLine();
+            }
         }
     }
 }
