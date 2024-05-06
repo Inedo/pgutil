@@ -13,11 +13,13 @@ public sealed class ProGetClient
     private readonly HttpClient http;
     public ProGetAuthenticationType AuthenticationType { get; }
     public string? UserName { get; }
+    public string Url { get; }
     public ProGetClient(string url)
     {
         ArgumentException.ThrowIfNullOrEmpty(url);
         if (!url.EndsWith('/'))
             url += "/";
+        this.Url = url;
 
         this.http = new(new HttpClientHandler { UseDefaultCredentials = true })
         {
@@ -38,9 +40,23 @@ public sealed class ProGetClient
         this.AuthenticationType = ProGetAuthenticationType.ApiKey;
     }
 
-    public Task<ProGetInstanceHealth> GetInstanceHealthAsync(CancellationToken cancellationToken = default)
+    public async Task<ProGetInstanceHealth> GetInstanceHealthAsync(CancellationToken cancellationToken = default)
     {
-        return this.http.GetFromJsonAsync("health", ProGetApiJsonContext.Default.ProGetInstanceHealth, cancellationToken)!;
+        using var response = await this.http.GetAsync("health", cancellationToken).ConfigureAwait(false);
+        using var stream = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+        
+        try
+        {
+            return (await JsonSerializer.DeserializeAsync(stream, ProGetApiJsonContext.Default.ProGetInstanceHealth, cancellationToken).ConfigureAwait(false))!;
+        }
+        catch (JsonException jex)
+        {
+            throw new ProGetApiException(response.StatusCode, "Unexpected server response");
+        }
+        catch (Exception ex)
+        {
+            throw new ProGetApiException(response.StatusCode, ex.Message);
+        }
     }
 
     public AssetDirectoryClient GetAssetDirectoryClient(string assetDirectoryName)
