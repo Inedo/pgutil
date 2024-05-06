@@ -28,10 +28,13 @@ internal partial class Program
                 {
                     var client = context.GetProGetClient();
 
-                    var apis = context.GetOption<ApisOption>().Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-                    if (apis.Length == 0)
+                    var apis = context.TryGetOption<ApisOption>(out var apiValue)
+                        ? apiValue.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                        : ApiKeyInfo.AvailableSystemApis;
+                    
+                    if (apis.Length == 0 || apis.Any(a => !ApiKeyInfo.AvailableSystemApis.Contains(a)))
                     {
-                        CM.WriteError<ApisOption>("at least one API must be specified");
+                        CM.WriteError<ApisOption>("an invalid value for API was specified");
                         return -1;
                     }
 
@@ -43,7 +46,7 @@ internal partial class Program
                         Description = context.GetOptionOrDefault<DescriptionOption>(),
                         Expiration = context.TryGetOption<ExpirationOption, DateTime>(out var d) ? d : null,
                         Logging = context.TryGetEnumValue<LoggingOption, ApiKeyBodyLogging>(out var l) ? l : null,
-                        Apis = apis
+                        SystemApis = apis
                     };
 
                     var result = await client.CreateApiKeyAsync(info, cancellationToken).ConfigureAwait(false);
@@ -53,9 +56,11 @@ internal partial class Program
 
                 private sealed class ApisOption : IConsoleOption
                 {
-                    public static bool Required => true;
+                    public static bool Required => false;
                     public static string Name => "--apis";
-                    public static string Description => "Specifies the individual APIs to give access to when creating a system API key. Value is a comma-separated list of any combination of: feeds, feed-management, native, package-promotion, repackaging, sbom, sbom-upload";
+                    public static string Description => 
+                        $"Specifies the individual APIs to give access to when creating a system API key. " +
+                        $"Value is a comma-separated list of any combination of: {{{string.Join(", ", ApiKeyInfo.AvailableSystemApis)}}}";
                 }
 
             }

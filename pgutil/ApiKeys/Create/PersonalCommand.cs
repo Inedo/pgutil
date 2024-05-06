@@ -16,7 +16,9 @@ internal partial class Program
 
                 public static void Configure(ICommandBuilder builder)
                 {
-                    builder.WithOption<NameOption>()
+                    builder
+                        .WithOption<ImpersonateUserOption>()
+                        .WithOption<NameOption>()
                         .WithOption<DescriptionOption>();
                 }
 
@@ -24,16 +26,31 @@ internal partial class Program
                 {
                     var client = context.GetProGetClient();
 
+                    var user = context.GetOptionOrDefault<ImpersonateUserOption>() ?? context.GetOptionOrDefault<UserNameOption>() ?? client.UserName;
+                    if (string.IsNullOrEmpty(user))
+                    {
+                        CM.WriteError<ImpersonateUserOption>("required when not using --username/--password to authenticate");
+                        return -1;
+                    }
+
                     var info = new ApiKeyInfo
                     {
                         Type = ApiKeyType.Personal,
                         DisplayName = context.GetOptionOrDefault<NameOption>(),
                         Description = context.GetOptionOrDefault<DescriptionOption>(),
+                        User = user
                     };
 
                     var result = await client.CreateApiKeyAsync(info, cancellationToken).ConfigureAwait(false);
                     CM.WriteLine(result.Key);
                     return 0;
+                }
+
+                private sealed class ImpersonateUserOption : IConsoleOption
+                {
+                    public static bool Required => false;
+                    public static string Name => "--user";
+                    public static string Description => "Name of the user to associate with the key; required when not using --username/--password to authenticate";
                 }
             }
         }

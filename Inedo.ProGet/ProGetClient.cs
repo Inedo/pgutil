@@ -11,16 +11,31 @@ namespace Inedo.ProGet;
 public sealed class ProGetClient
 {
     private readonly HttpClient http;
-
-    public ProGetClient(string url, ProGetAuthentication? authentication = null, HttpClient? httpClient = null)
+    public ProGetAuthenticationType AuthenticationType { get; }
+    public string? UserName { get; }
+    public ProGetClient(string url)
     {
         ArgumentException.ThrowIfNullOrEmpty(url);
         if (!url.EndsWith('/'))
             url += "/";
 
-        this.http = httpClient ?? new HttpClient(new HttpClientHandler { UseDefaultCredentials = true });
-        this.http.BaseAddress = new Uri(url);
-        authentication?.SetHeaders(this.http);
+        this.http = new(new HttpClientHandler { UseDefaultCredentials = true })
+        {
+            BaseAddress = new Uri(url)
+        };
+    }
+    public ProGetClient(string url, string username, string password) : this(url, $"{username}:{password}")
+    {
+        ArgumentException.ThrowIfNullOrEmpty(username);
+        ArgumentException.ThrowIfNullOrEmpty(password); 
+        this.AuthenticationType = ProGetAuthenticationType.UsernamePassword;
+        this.UserName = username;
+    }
+    public ProGetClient(string url, string apiKey) : this(url)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(apiKey);
+        this.http.DefaultRequestHeaders.Add("X-ApiKey", apiKey);
+        this.AuthenticationType = ProGetAuthenticationType.ApiKey;
     }
 
     public Task<ProGetInstanceHealth> GetInstanceHealthAsync(CancellationToken cancellationToken = default)
@@ -258,8 +273,11 @@ public sealed class ProGetClient
     {
         ArgumentNullException.ThrowIfNull(apiKeyInfo);
 
+        var versionRequired = apiKeyInfo.Type == ApiKeyType.Feed ? new Version(24, 0, 3) : null;
+        var editionRequired = apiKeyInfo.Type != ApiKeyType.Personal ? ProGetEdition.Basic : (ProGetEdition?)null;
+
         using var response = await this.http.PostAsJsonAsync("api/api-keys/create", apiKeyInfo, ProGetApiJsonContext.Default.ApiKeyInfo, cancellationToken).ConfigureAwait(false);
-        await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
+        await CheckResponseAsync(response, versionRequired, editionRequired, cancellationToken).ConfigureAwait(false);
 
         using var stream = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
         return (await JsonSerializer.DeserializeAsync(stream, ProGetApiJsonContext.Default.ApiKeyInfo, cancellationToken).ConfigureAwait(false))!;
@@ -272,15 +290,29 @@ public sealed class ProGetClient
 
         using var stream = response.Content.ReadAsStream();
         using var reader = new StreamReader(stream, Encoding.UTF8);
-        throw new ProGetClientException(response.StatusCode, reader.ReadToEnd());
+        throw new ProGetApiException(response.StatusCode, reader.ReadToEnd());
     }
-    internal static async Task CheckResponseAsync(HttpResponseMessage response, CancellationToken cancellationToken)
+    internal static Task CheckResponseAsync(HttpResponseMessage response, CancellationToken cancellationToken)
+        => CheckResponseAsync(response, null, null, cancellationToken);
+    private static async Task CheckResponseAsync(HttpResponseMessage response, Version? versionRequired, ProGetEdition? editionRequired, CancellationToken cancellationToken)
     {
         if (response.IsSuccessStatusCode)
             return;
 
+        if (versionRequired is not null
+            && response.Headers.TryGetValues("X-ProGet-Version", out var versionHeaders)
+            && Version.TryParse(versionHeaders.FirstOrDefault(), out var version)
+            && versionRequired > version)
+            throw new ProGetVersionRequiredException(versionRequired, version);
+
+        if (editionRequired is not null
+            && response.Headers.TryGetValues("X-ProGet-Edition", out var editionHeaders)
+            && Enum.TryParse<ProGetEdition>(editionHeaders.FirstOrDefault(), true, out var edition)
+            && edition <= editionRequired)
+            throw new ProGetEditionRequiredException(editionRequired.Value, edition);
+
         var message = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-        throw new ProGetClientException(response.StatusCode, message);
+        throw new ProGetApiException(response.StatusCode, message);
     }
 
     private static string GetPackageUrl(string baseUrl, PackageIdentifier package)
@@ -293,5 +325,17 @@ public sealed class ProGetClient
             url += $"&qualifier={Uri.EscapeDataString(package.Qualifier)}";
 
         return url;
+    }
+
+    private enum ProGetEdition { Free, Basic, Enterprise }
+
+    private sealed class ProGetVersionRequiredException(Version requiredVersion, Version actualVersion) : ProGetClientException
+    {
+        private static string FormatVersion(Version v) => $"20{v.Major}.{v.Build}";
+        public override string Message => $"ProGet {FormatVersion(requiredVersion)} is required for the specified command and options but the server reported: ProGet {FormatVersion(actualVersion)}";
+    }
+    private sealed class ProGetEditionRequiredException(ProGetEdition requiredEdition, ProGetEdition actualEdition) : ProGetClientException
+    {
+        public override string Message => $"ProGet {requiredEdition} Edition is required for the specified command and options but the server reported: {actualEdition} Edition";
     }
 }

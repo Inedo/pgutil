@@ -117,15 +117,15 @@ public sealed class CommandContext
                 Console.WriteLine($"Common Options ({optionGroup.Key.Scope}):");
             }
 
-            writeTwoColumnList(
-                optionGroup.OrderByDescending(o => o.Required).ThenBy(o => o.Name).Select(o => new KeyValuePair<string, string>(o.Name, o.Desc)).ToList(),
+            CM.WriteTwoColumnList(
+                optionGroup.OrderByDescending(o => o.Required).ThenBy(o => o.Name).Select(o => (o.Name, o.Desc)).ToList(),
                 optionMargin
             );
         }
 
         if (options.Count > 0)
-            writeTwoColumnList(
-                [new KeyValuePair<string, string>("  -?, --help", "Show help and usage information")],
+            CM.WriteTwoColumnList(
+                [("  -?, --help", "Show help and usage information")],
                 optionMargin
             );
 
@@ -134,7 +134,7 @@ public sealed class CommandContext
         {
             Console.WriteLine();
             Console.WriteLine("Commands:");
-            writeTwoColumnList([.. this.Command.Subcommands.Select(c => new KeyValuePair<string, string>($"  {c.Name}", c.Description))]);
+            CM.WriteTwoColumnList([.. this.Command.Subcommands.Select(c => ($"  {c.Name}", c.Description))]);
         }
 
         static string formatName(Option o)
@@ -155,19 +155,6 @@ public sealed class CommandContext
                 desc += $"{Environment.NewLine}Valid values: {string.Join(", ", o.ValidValues)}";
 
             return desc;
-        }
-        static void writeTwoColumnList(IEnumerable<KeyValuePair<string, string>> items, int? margin = null)
-        {
-            margin ??= items.Select(i => i.Key.Length).Max() + 2;
-            foreach (var item in items)
-            {
-                Console.Write(item.Key);
-                for (int i = item.Key.Length; i < margin; i++)
-                    Console.Write(' ');
-
-                WordWrapper.WriteOutput(item.Value, margin.Value);
-                Console.WriteLine();
-            }
         }
     }
 }

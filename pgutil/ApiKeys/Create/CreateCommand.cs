@@ -15,6 +15,7 @@ internal partial class Program
             public static void Configure(ICommandBuilder builder)
             {
                 builder.WithCommand<SystemCommand>()
+                    .WithCommand<FeedCommand>()
                     .WithCommand<PersonalCommand>();
             }
 

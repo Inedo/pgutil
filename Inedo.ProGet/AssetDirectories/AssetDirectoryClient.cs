@@ -141,7 +141,7 @@ public sealed partial class AssetDirectoryClient
         ArgumentException.ThrowIfNullOrEmpty(path);
 
         var metadata = await this.GetItemMetadataAsync(path, cancellationToken).ConfigureAwait(false)
-            ?? throw new ProGetClientException(HttpStatusCode.NotFound, "Asset not found.");
+            ?? throw new ProGetApiException(HttpStatusCode.NotFound, "Asset not found.");
 
         if (metadata.Directory)
             throw new InvalidOperationException("Cannot open remote directory as a file.");

@@ -2,9 +2,12 @@
 
 namespace Inedo.ProGet;
 
-public sealed class ProGetClientException : Exception
+public abstract class ProGetClientException : Exception
 {
-    public ProGetClientException(HttpStatusCode statusCode, string response)
+}
+public sealed class ProGetApiException : ProGetClientException
+{
+    public ProGetApiException(HttpStatusCode statusCode, string response)
     {
         this.StatusCode = statusCode;
         this.Response = response;

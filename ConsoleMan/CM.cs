@@ -46,4 +46,18 @@ public static class CM
         Write(values);
         Console.WriteLine();
     }
+    public static void WriteTwoColumnList(params (string Key, string Value)[] items) => WriteTwoColumnList(items, null);
+    public static void WriteTwoColumnList(IEnumerable<(string Key, string Value)> items, int? margin = null)
+    {
+        margin ??= items.Select(i => i.Key.Length).Max() + 2;
+        foreach (var (Key, Value) in items)
+        {
+            Console.Write(Key);
+            for (int i = Key.Length; i < margin; i++)
+                Console.Write(' ');
+
+            WordWrapper.WriteOutput(Value, margin.Value);
+            Console.WriteLine();
+        }
+    }
 }

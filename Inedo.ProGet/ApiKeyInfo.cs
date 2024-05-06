@@ -1,19 +1,27 @@
-﻿namespace Inedo.ProGet;
+﻿using System.Text.Json.Serialization;
+using System;
+
+namespace Inedo.ProGet;
 
 public sealed class ApiKeyInfo
 {
-    public int? Id { get; init; }
+    public readonly static string[] AvailableSystemApis = ["full-control", "feeds", "sbom", "sbom-upload"];
+    public readonly static string[] AvailablePackagePermissions = ["view","add","promote","delete"];
+    public int? Id { get; set; }
     public ApiKeyType? Type { get; set; }
     public string? Key { get; set; }
     public string? DisplayName { get; set; }
     public string? Description { get; set; }
-    public string[]? Apis { get; set; }
+    public string[]? SystemApis { get; set; }
+    public string[]? PackagePermissions { get; set; }
+    public string? Feed { get; set; }
+    public string? FeedGroup { get; set; }
     public DateTime? Expiration { get; set; }
     public ApiKeyBodyLogging? Logging { get; set; }
-    public ApiKeyConfigFeedTask[]? FeedPermissions { get; set; }
     public string? User { get; set; }
 }
 
+[JsonConverter(typeof(JsonStringEnumConverter<ApiKeyType>))]
 public enum ApiKeyType
 {
     System,
@@ -22,6 +30,7 @@ public enum ApiKeyType
     Other
 }
 
+[JsonConverter(typeof(JsonStringEnumConverter<ApiKeyBodyLogging>))]
 public enum ApiKeyBodyLogging
 {
     None,
@@ -29,5 +38,3 @@ public enum ApiKeyBodyLogging
     Response,
     Both
 }
-
-public sealed record class ApiKeyConfigFeedTask(string? Feed, string? FeedGroup, string Permission);

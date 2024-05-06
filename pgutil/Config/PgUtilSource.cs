@@ -11,11 +11,12 @@ internal sealed record class PgUtilSource(string Name, string Url, string? Defau
 
     public ProGetClient GetProGetClient()
     {
-        ProGetAuthentication? auth = !string.IsNullOrEmpty(this.Token) ? new ProGetApiKeyAuthentication(this.Token)
-            : !string.IsNullOrEmpty(this.Username) ? new ProGetBasicAuthentication(this.Username, this.Password ?? string.Empty)
-            : null;
-
-        return new ProGetClient(this.Url, auth);
+        if (!string.IsNullOrEmpty(this.Token))
+            return new(this.Url, this.Token);
+        else if (!string.IsNullOrEmpty(this.Username))
+            return new(this.Url, this.Username, this.Password ?? string.Empty);
+        else 
+            return new ProGetClient(this.Url);
     }
     public PgUtilSource Obfuscate()
     {

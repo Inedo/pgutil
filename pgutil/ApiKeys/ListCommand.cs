@@ -1,4 +1,5 @@
 ﻿using ConsoleMan;
+using Inedo.ProGet;
 
 namespace PgUtil;
 
@@ -19,17 +20,33 @@ internal partial class Program
             {
                 var client = context.GetProGetClient();
 
-                bool any = false;
-
+                int count = 0;
                 await foreach (var key in client.ListApiKeysAsync(cancellationToken))
                 {
-                    any = true;
-                    CM.WriteLine($"{key.Id} {key.DisplayName}");
-                    CM.WriteLine($"  {string.Join(", ", key.Apis ?? [])}");
+                    count++;
+                    CM.WriteLine(key.DisplayName ?? "(unnamed key)");
+                    
+                    var data = new List<(string, string)>
+                    {
+                        ("  Id:", key.Id.ToString()!),
+                        ("  Expiration:", key.Expiration?.ToShortDateString() ?? "None"),
+                        ("  Logging:", (key.Logging ?? ApiKeyBodyLogging.None).ToString()),
+                        ("  Type:", (key.Type ?? ApiKeyType.Other).ToString())
+                    };
+                    if (key.Type == ApiKeyType.System)
+                        data.Add(("  APIs:", string.Join(", ", key.SystemApis ?? [])));
+                    else if (key.Type == ApiKeyType.Personal)
+                        data.Add(("  User:", key.User ?? "(unknown)"));
+                    else if (key.Type == ApiKeyType.Feed)
+                    {
+                        data.Add(key.FeedGroup is not null ? ("  Feed group:", key.FeedGroup) : ("  Feed:", key.Feed ?? "(unknown)"));
+                        data.Add(("  Permissions:", string.Join(", ", key.PackagePermissions ?? [])));
+                    }
+                    CM.WriteTwoColumnList(data);
                     CM.WriteLine();
                 }
 
-                if (!any)
+                if (count == 0)
                     CM.WriteLine("No API keys are defined.");
 
                 return 0;
