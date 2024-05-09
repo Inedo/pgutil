@@ -5,7 +5,6 @@ namespace Inedo.ProGet;
 
 public sealed class ApiKeyInfo
 {
-    public readonly static string[] AvailableSystemApis = ["full-control", "feeds", "sbom", "sbom-upload"];
     public readonly static string[] AvailablePackagePermissions = ["view","add","promote","delete"];
     public int? Id { get; set; }
     public ApiKeyType? Type { get; set; }

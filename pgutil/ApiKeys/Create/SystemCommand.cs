@@ -30,9 +30,9 @@ internal partial class Program
 
                     var apis = context.TryGetOption<ApisOption>(out var apiValue)
                         ? apiValue.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-                        : ApiKeyInfo.AvailableSystemApis;
-                    
-                    if (apis.Length == 0 || apis.Any(a => !ApiKeyInfo.AvailableSystemApis.Contains(a)))
+                        : ["full-control"];
+
+                    if (apis.Length == 0 || apis.Any(a => a != "feeds" && a != "sca" && a != "sbom-upload"))
                     {
                         CM.WriteError<ApisOption>("an invalid value for API was specified");
                         return -1;
@@ -60,7 +60,7 @@ internal partial class Program
                     public static string Name => "--apis";
                     public static string Description => 
                         $"Specifies the individual APIs to give access to when creating a system API key. " +
-                        $"Value is a comma-separated list of any combination of: {{{string.Join(", ", ApiKeyInfo.AvailableSystemApis)}}}";
+                        $"Value is either full-control or a comma-separated list of any combination of: feeds, sca, sbom-upload";
                 }
 
             }
