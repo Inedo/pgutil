@@ -49,7 +49,7 @@ public sealed class ProGetClient
         {
             return (await JsonSerializer.DeserializeAsync(stream, ProGetApiJsonContext.Default.ProGetInstanceHealth, cancellationToken).ConfigureAwait(false))!;
         }
-        catch (JsonException jex)
+        catch (JsonException)
         {
             throw new ProGetApiException(response.StatusCode, "Unexpected server response");
         }
