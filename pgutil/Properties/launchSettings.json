@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "pgutil": {
-      "commandName": "Project",
-      "commandLineArgs": "apikeys list"
-    }
-  }
-}
