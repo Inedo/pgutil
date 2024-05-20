@@ -11,6 +11,7 @@ internal partial class Program
         {
             private sealed class FeedCommand : IConsoleCommand
             {
+                public readonly static string[] AvailablePackagePermissions = ["view", "add", "promote", "delete"];
                 public static string Name => "feed";
                 public static string Description => "Creates a feed API key. The key is the only thing written to stdout on success";
 
@@ -43,9 +44,9 @@ internal partial class Program
 
                     var permissions = context.TryGetOption<PackagePermissionsOption>(out var permissionsValue)
                         ? permissionsValue.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-                        : ApiKeyInfo.AvailablePackagePermissions;
+                        : FeedCommand.AvailablePackagePermissions;
                     
-                    if (permissions.Length == 0 || permissions.Any(p => !ApiKeyInfo.AvailablePackagePermissions.Contains(p)))
+                    if (permissions.Length == 0 || permissions.Any(p => !FeedCommand.AvailablePackagePermissions.Contains(p)))
                     {
                         CM.WriteError<PackagePermissionsOption>("an invalid value was specified");
                         context.WriteUsage();
@@ -76,7 +77,7 @@ internal partial class Program
                     public static string Name => "--permissions";
                     public static string Description => 
                         $"Specifies the package permissions to give access to when creating a feed API key. " +
-                        $"Value is a comma-separated list of any combination of: {{{string.Join(", ", ApiKeyInfo.AvailablePackagePermissions)}}}";
+                        $"Value is a comma-separated list of any combination of: {{{string.Join(", ", FeedCommand.AvailablePackagePermissions)}}}";
                 }
                 private sealed class FeedNameOption : IConsoleOption
                 {
