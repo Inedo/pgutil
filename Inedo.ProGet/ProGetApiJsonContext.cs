@@ -5,7 +5,7 @@ namespace Inedo.ProGet;
 
 [JsonSerializable(typeof(ProGetFeed))]
 [JsonSerializable(typeof(PackageStatus))]
-[JsonSerializable(typeof(ProGetInstanceHealth))]
+[JsonSerializable(typeof(ProGetHealthInfo))]
 [JsonSerializable(typeof(VulnerabilityInfo))]
 [JsonSerializable(typeof(IReadOnlyList<PackageVersionIdentifier>))]
 [JsonSerializable(typeof(RepackageInput))]

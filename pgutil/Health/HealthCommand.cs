@@ -17,10 +17,15 @@ internal partial class Program
 
         public static async Task<int> ExecuteAsync(CommandContext context, CancellationToken cancellationToken)
         {
+            static bool OK(params string?[] ss) => ss.All(s => (s ?? "OK") == "OK");
+
+
             var client = context.GetProGetClient();
             Console.Write($"Checking {client.Url}...");
             var health = await client.GetInstanceHealthAsync(cancellationToken);
-            if (health.AllOK)
+
+            var allOk = OK(health.DatabaseStatus, health.LicenseStatus, health.ServiceStatus, health.ReplicationStatus?.ServerStatus, health.ReplicationStatus?.ClientStatus);
+            if (allOk)
                 Console.WriteLine("all OK");
             else
                 CM.WriteError("not OK");
@@ -42,7 +47,7 @@ internal partial class Program
                     Replication (Client): {formatStatus(health.ReplicationStatus.ClientStatus, health.ReplicationStatus.ClientError)}
                     """);
             }
-            return health.AllOK ? 0 : -1;
+            return allOk ? 0 : -1;
 
             static string? formatStatus(string? status, string? desc) => string.IsNullOrWhiteSpace(desc) ? status : $"{status} ({desc})";
         }

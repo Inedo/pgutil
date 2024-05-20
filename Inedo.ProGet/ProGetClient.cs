@@ -40,18 +40,18 @@ public sealed class ProGetClient
         this.AuthenticationType = ProGetAuthenticationType.ApiKey;
     }
 
-    public async Task<ProGetInstanceHealth> GetInstanceHealthAsync(CancellationToken cancellationToken = default)
+    public async Task<ProGetHealthInfo> GetInstanceHealthAsync(CancellationToken cancellationToken = default)
     {
         using var response = await this.http.GetAsync("health", cancellationToken).ConfigureAwait(false);
         using var stream = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
         
         try
         {
-            return (await JsonSerializer.DeserializeAsync(stream, ProGetApiJsonContext.Default.ProGetInstanceHealth, cancellationToken).ConfigureAwait(false))!;
+            return (await JsonSerializer.DeserializeAsync(stream, ProGetApiJsonContext.Default.ProGetHealthInfo, cancellationToken).ConfigureAwait(false))!;
         }
-        catch (JsonException)
+        catch (JsonException jex)
         {
-            throw new ProGetApiException(response.StatusCode, "Unexpected server response");
+            throw new ProGetApiException(response.StatusCode, $"Unexpected server response ({jex.Message})");
         }
         catch (Exception ex)
         {
