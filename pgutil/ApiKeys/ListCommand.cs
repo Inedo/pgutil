@@ -30,8 +30,8 @@ internal partial class Program
                     {
                         ("  Id:", key.Id.ToString()!),
                         ("  Expiration:", key.Expiration?.ToShortDateString() ?? "None"),
-                        ("  Logging:", (key.Logging ?? ApiKeyBodyLogging.None).ToString()),
-                        ("  Type:", (key.Type ?? ApiKeyType.Other).ToString())
+                        ("  Logging:", key.Logging.ToString()),
+                        ("  Type:", (key.Type).ToString())
                     };
                     if (key.Type == ApiKeyType.System)
                         data.Add(("  APIs:", string.Join(", ", key.SystemApis ?? [])));
