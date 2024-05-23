@@ -29,7 +29,7 @@
 
 namespace Inedo.ProGet.AssetDirectories;
 
-// JSON Object used by the  HTTP endpoints
+// JSON Object used by the List Asset Folders HTTP endpoint
 public sealed class AssetDirectoryItem
 {
     // The name of the Asset item (File or Folder)
