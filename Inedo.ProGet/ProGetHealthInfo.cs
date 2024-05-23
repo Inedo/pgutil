@@ -30,62 +30,54 @@
 namespace Inedo.ProGet;
 
 // JSON Object used by the ProGet Health HTTP endpoint
+// * Status property values will be either "OK" or "Error"
+// * StatusDetails properties will return an error message if Status is "Error", else will be null
 public sealed class ProGetHealthInfo
 {
-    // The name of the Inedo application
-    // * For this API it will be ProGet as default
-    public required string ApplicationName { get; init; }
-
     // The health state of the database.
-    // * Value is either "OK" or "Error"
     public required string DatabaseStatus { get; init; }
 
-    // A specific error message if DatabaseStatus is "Error"
-    // * The default value is "null"
     public string? DatabaseStatusDetails { get; init; }
 
     // The health state of the product license.
-    // * Value is either "OK" or "Error"
     public required string LicenseStatus { get; init; }
 
-    // A specific error message if LicenseStatus is "Error"
-    // * The default value is "null"
     public string? LicenseStatusDetail { get; init; }
 
-    // The current version number of the instance
     public required string VersionNumber { get; init; }
 
-    // The current release number of the instance
     public required string ReleaseNumber { get; init; }
 
     // The health state of the service.
-    // * Value is either "OK" or "Error"
     public required string ServiceStatus { get; init; }
 
-    // A specific error message if ServiceStatus is "Error"
-    // * The default value is "null"
     public string? ServiceStatusDetail { get; init; }
 
-    // A ReplicationStatusInfo Object
     public ReplicationStatusInfo? ReplicationStatus { get; init; }
+    
+    
 
-    // A JSON Object used by the ProGet Health HTTP endpoint
     // A subset of the ProGetHealthInfo Object
+    // * Status property values will be either "OK" or "Error" if replication servers exist, else will be null
+    // * Error properties will return an error message if Status is "Error", else will be null
     public sealed class ReplicationStatusInfo
     {
         // The health state of a replication server 
-        // * Value is either "OK" or "Error" if there are existing replication servers.
-        // * Value is "null" if there are no replication servers.
         public string? ServerStatus { get; init; }
-        // A specific error message if ServerStatus is "Error"
-        // * The default value is "null"
+
         public string? ServerError { get; init; }
+
         // The health state of a replication client 
-        // * Value is either "OK" or "Error" if there are existing replication clients.
-        // * Value is "null" if there are no replication clients.
         public string? ClientStatus { get; init; }
-        // A specific error message if ClientStatus is "Error"
-        // * The default value is "null"
+
         public string? ClientError { get; init; }
     }
 }
+
+// ProGetHealthInfo may return additional properties from an HTTP request:
+// * applicationName - Will always be "ProGet"
+// * extensionsInstalled - Describes extensions installed in the instance and their versions (e.g. "Azure": "2.0.1")
+
+// ReplicationStatusInfo may return additional properties from an HTTP request:
+// * incoming - Duplicates and provides information about any existing Replications
+// * outgoing - Duplicates and provides information about any existing Replications
