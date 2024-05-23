@@ -1,42 +1,30 @@
 # pgutil
 
-We're still working on finishing up the documentation for ProGet 2024 and this article is on our TODO list. It's a pretty rough outline/draft, but we figured it'd be better than nothing. You can also visit our formal documentation at https://docs.inedo.com/docs/proget-pgutil
+This repository contains the source code for both `pgutil` and `Inedo.ProGet`, as well
+as the [published pgutil releases](https://github.com/Inedo/pgutil/releases).
 
-`pgutil` is an open-source, cross-platform command line tool that's easy to download and install.
+[![Build status](https://buildmaster.inedo.com/api/ci-badges/image?API_Key=badges&$ApplicationId=132)](https://buildmaster.inedo.com/api/ci-badges/link?API_Key=badges&$ApplicationId=132)
 
-## Commands & Usage
+## About `pgutil`
 
-:::(Info) (TODO)
-- easiest way to discover available commands are just to run `pgutil` to see a list of "command sets"
-  -  typing in `pgutil packages` will show you all the commands under that set
-  - to see all options available for a command, run `pgutil packages download --help`
-- api documentation is organized around these command sets
-- we anticipate adding commands and arguments
-  - unlikely to remove them, unless it's in a major version with plenty of notice
-  - this is why best to look in your version of pgutil for latest
-:::
+pgutil` is an open-source, cross-platform command line tool that provides a variety of commands to 
+upload/download packages, manage feeds, audit package compliance, assess vulnerabilities, etc.
 
-```
-$> pgutil
+To learn how to installation, configure, and use ProGet, see the [Getting Started with pgutil](https://docs.inedo.com/docs/proget-pgutil).
 
-    .--. --. ..- - .. .-..
-        pgutil v1.0.0
-    .--. --. ..- - .. .-..
+## About `Inedo.ProGet`
 
-Description:
-  Perform operations against a ProGet server.
+`Inedo.ProGet` is a [NuGet Package](https://www.nuget.org/packages/Inedo.ProGet) that is basically the .NET-library version of pgutil. 
+It's built from the pgutil GitHub code/repository and is mostly a HTTP Client that wraps the HTTP Endpoints.
 
-Usage:
-  pgutil [command] [options]
+To learn how to use the library, see [Getting Started with Inedo.NuGet](https://docs.inedo.com/docs/proget-reference-api#net-library-nuget-package).
 
-Options:
-  -?, --help  Show help and usage information
+## Pull Requests & Issues
 
-Commands:
-  sources   Manages the list of sources located in the configuration file located at
-            C:\Users\sdennis\AppData\Roaming\pgutil\pgutil.config
-  packages  Work with packages on a ProGet server
-  vulns     Audit packages and assess vulnerabilities
-  builds    Manage SCA builds and SBOM documents
-  licenses  Manage license definitions and audit package licenses
-```
+We're very open to your feedback and ideas for improving `pgutil` and `Inedo.ProGet`!
+
+[Post to the Inedo Forums](https://forums.inedo.com/) if you have any issues, feedback, or comments.
+
+You can also Submit a Pull Request if you see an opportunity to improve the CLI or library. We don't have
+any formal pull request guidelines, but please post to the forums if you plan on doing something major so 
+we can discuss it first.
