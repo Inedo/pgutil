@@ -61,5 +61,4 @@ public sealed class AssetDirectoryItem
 }
 
 // AssetDirectoryItem may return additional properties from an HTTP request:
-// * applicationName - Will always be "ProGet"
-// * extensionsInstalled - Describes extensions installed in the instance and their versions (e.g. "Azure": "2.0.1")
+// * sha1 - contains the SHA1 hash of the item.
