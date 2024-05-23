@@ -34,14 +34,32 @@ public sealed class AssetDirectoryItem
 {
     // The name of the Asset item (File or Folder)
     public required string Name { get; init; }
+
     // The full path of the parent directory of the item
     // * Omitted if the item is contained in the root folder of the asset directory
     public string? Parent { get; init; }
+
+    // The number of bytes in size of the item.
     public long? Size { get; init; }
+
+    // Either the Content-Type of the the item, or "dir" if the item represents a folder.
     public required string Type { get; init; }
+
+    // The full URL of the item.
     public string? Content { get; init; }
+
+    // The UTC date of the original creation time of the item
     public DateTime Created { get; init; }
+
+    // The UTC date of the last time of the item was updated
     public DateTime Modified { get; init; }
+
     public AssetUserMetadata[]? UserMetadata { get; init; }
+
+    // Returns "true" if the item is a folder
     public bool Directory => this.Type == "dir";
 }
+
+// AssetDirectoryItem may return additional properties from an HTTP request:
+// * applicationName - Will always be "ProGet"
+// * extensionsInstalled - Describes extensions installed in the instance and their versions (e.g. "Azure": "2.0.1")
