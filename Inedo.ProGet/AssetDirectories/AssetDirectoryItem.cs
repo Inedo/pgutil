@@ -56,7 +56,7 @@ public sealed class AssetDirectoryItem
 
     public AssetUserMetadata[]? UserMetadata { get; init; }
 
-    // Returns "true" if the item is a folder
+    // this property is *not* in the JSON Object; it's used as a helper property Inedo.ProGet library
     public bool Directory => this.Type == "dir";
 }
 
