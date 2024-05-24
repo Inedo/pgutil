@@ -6,5 +6,12 @@
     <IsAotCompatible>true</IsAotCompatible>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>CS1591</NoWarn>
+    <RepositoryUrl>https://github.com/Inedo/pgutil</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <Description>A HTTP Client that wraps ProGet's HTTP Endpoints. 
+
+This is essentially the .NET-library version of pgutil, and is built from the pgutil GitHub code/repository. 
+
+To learn how to use the library, see [Getting Started with Inedo.NuGet](https://docs.inedo.com/docs/proget-reference-api#net-library-nuget-package).</Description>
   </PropertyGroup>
 </Project>
