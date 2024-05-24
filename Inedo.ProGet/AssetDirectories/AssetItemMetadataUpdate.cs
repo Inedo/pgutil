@@ -41,9 +41,9 @@ internal sealed class AssetItemMetadataUpdate
     // * "replace" (create/update properties and delete missing values)
     public string? UserMetadataUpdateMode { get; init; }
 
+    // updated key/value pairs of user-defined metadata for the item.
     public IReadOnlyDictionary<string, AssetUserMetadata>? UserMetadata { get; init; }
 }
 
-// AssetItemMetadataUpdate may return additional properties from an HTTP request:
-// * userMetadata - lists updated key/value pairs of user-defined metadata for the item.
+// HTTP Endpoint may additional properties in the JSON object:
 // * cacheHeader - Contains two properties, type and value.
