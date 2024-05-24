@@ -55,9 +55,7 @@ public sealed class ProGetHealthInfo
 
     public ReplicationStatusInfo? ReplicationStatus { get; init; }
     
-    
-
-    // A subset of the ProGetHealthInfo Object
+    // JSON Object used by ReplicationStatus property
     // * Status property values will be either "OK" or "Error" if replication servers exist, else will be null
     // * Error properties will return an error message if Status is "Error", else will be null
     public sealed class ReplicationStatusInfo
@@ -74,10 +72,9 @@ public sealed class ProGetHealthInfo
     }
 }
 
-// ProGetHealthInfo may return additional properties from an HTTP request:
+// ProGet Health HTTP endpoint may return additional properties on the JSON object
 // * applicationName - Will always be "ProGet"
 // * extensionsInstalled - Describes extensions installed in the instance and their versions (e.g. "Azure": "2.0.1")
-
-// ReplicationStatusInfo may return additional properties from an HTTP request:
-// * incoming - Duplicates and provides information about any existing Replications
-// * outgoing - Duplicates and provides information about any existing Replications
+// * replicationStatus object may have additional properties:
+//   * incoming - Duplicates and provides information about any existing Replications
+//   * outgoing - Duplicates and provides information about any existing Replications
