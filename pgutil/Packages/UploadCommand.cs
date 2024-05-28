@@ -26,6 +26,10 @@ internal partial class Program
 
                 using var source = getSource();
 
+                var fileName = context.GetOptionOrDefault<InputFileOption>();
+                if (!string.IsNullOrEmpty(fileName))
+                    fileName = Path.GetFileName(fileName);
+
                 if (!Console.IsOutputRedirected && source.CanSeek)
                 {
                     long length = source.Length;
@@ -37,7 +41,7 @@ internal partial class Program
                         w.WriteSize(length);
                     });
 
-                    await client.UploadPackageAsync(source, feed, progress.SetCurrentValue, cancellationToken);
+                    await client.UploadPackageAsync(source, feed, fileName, context.GetOptionOrDefault<DistributionOption>(), progress.SetCurrentValue, cancellationToken);
                     progress.Completed();
                 }
                 else
@@ -94,6 +98,13 @@ internal partial class Program
             {
                 public static string Name => "--stdin";
                 public static string Description => "Read the package from stdin instead of a file.";
+            }
+
+            private sealed class DistributionOption : IConsoleOption
+            {
+                public static bool Required => false;
+                public static string Name => "--distribution";
+                public static string Description => "Distribution of the package. Only applies to Debian packages (default is main)";
             }
         }
     }

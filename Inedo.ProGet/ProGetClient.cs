@@ -160,12 +160,17 @@ public sealed class ProGetClient
             throw;
         }
     }
-    public async Task UploadPackageAsync(Stream source, string feed, Action<long>? reportProgress = null, CancellationToken cancellationToken = default)
+    public async Task UploadPackageAsync(Stream source, string feed, string? fileName = null, string? distribution = null, Action<long>? reportProgress = null, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(source);
         ArgumentException.ThrowIfNullOrEmpty(feed);
 
         var url = $"api/packages/{Uri.EscapeDataString(feed)}/upload";
+        if (!string.IsNullOrEmpty(fileName))
+            url = $"{url}/{fileName}";
+        if (!string.IsNullOrEmpty(distribution))
+            url = $"{url}?distribution={Uri.EscapeDataString(distribution)}";
+
         using var content = getContent();
         using var response = await this.http.PutAsync(url, content, cancellationToken).ConfigureAwait(false);
         await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);

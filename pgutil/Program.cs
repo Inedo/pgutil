@@ -15,7 +15,7 @@ internal sealed partial class Program : IConsoleCommandContainer
             Console.Write(
                 $"""
                     .--. --. ..- - .. .-.. 
-                        pgutil v{typeof(Program).Assembly.GetName().Version!.ToString(3)}
+                        pgutil v{typeof(Program).Assembly.GetName().Version:3}
                     .--. --. ..- - .. .-.. 
 
 
@@ -25,6 +25,11 @@ internal sealed partial class Program : IConsoleCommandContainer
         try
         {
             return await Command.Create<Program>().ExecuteAsync(args);
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            CM.WriteError(ex.Message);
+            return -1;
         }
         catch (HttpRequestException ex)
         {
