@@ -33,13 +33,15 @@ public abstract class Option : ConsoleToken
     }
 }
 
-internal sealed class Option<TOption> : Option where TOption : IConsoleOption
+internal sealed class Option<TOption>(OptionOverrides? o = null) : Option where TOption : IConsoleOption
 {
-    public override bool Required => TOption.Required;
+    private readonly OptionOverrides? o = o;
+
+    public override bool Required => o?.Required ?? TOption.Required;
     public override string Name => TOption.Name;
-    public override string Description => TOption.Description;
+    public override string Description => o?.Description ?? TOption.Description;
     public override Type Type => typeof(TOption);
-    public override string[]? ValidValues => TOption.ValidValues;
-    public override string? DefaultValue => TOption.DefaultValue;
+    public override string[]? ValidValues => o?.ValidValues ?? TOption.ValidValues;
+    public override string? DefaultValue => o?.DefaultValue ?? TOption.DefaultValue;
     public override bool HasValue => TOption.HasValue;
 }

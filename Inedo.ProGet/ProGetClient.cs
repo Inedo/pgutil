@@ -143,6 +143,50 @@ public sealed class ProGetClient
         return (await JsonSerializer.DeserializeAsync(responseStream, ProGetApiJsonContext.Default.BuildAnalysisResults, cancellationToken).ConfigureAwait(false))!;
     }
 
+    public async IAsyncEnumerable<PackageVersionInfo> ListLatestPackagesAsync(string feed, string? name = null, string? group = null, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(feed);
+
+        var url = $"api/packages/{Uri.EscapeDataString(feed)}/latest";
+
+        var filter = new List<string>(2);
+        if (!string.IsNullOrEmpty(group))
+            filter.Add($"group={Uri.EscapeDataString(group)}");
+        if (!string.IsNullOrEmpty(name))
+            filter.Add($"name={Uri.EscapeDataString(name)}");
+
+        if (filter.Count > 0)
+            url += $"?{string.Join('&', filter)}";
+
+        var response = await this.http.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+        await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
+        using var stream = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+        await foreach (var p in JsonSerializer.DeserializeAsyncEnumerable(stream, ProGetApiJsonContext.Default.PackageVersionInfo, cancellationToken).ConfigureAwait(false))
+            yield return p!;
+    }
+    public async IAsyncEnumerable<PackageVersionInfo> ListPackagesAsync(string feed, string? name = null, string? group = null, string? version = null, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(feed);
+
+        var url = $"api/packages/{Uri.EscapeDataString(feed)}/versions";
+
+        var filter = new List<string>(2);
+        if (!string.IsNullOrEmpty(group))
+            filter.Add($"group={Uri.EscapeDataString(group)}");
+        if (!string.IsNullOrEmpty(name))
+            filter.Add($"name={Uri.EscapeDataString(name)}");
+        if (!string.IsNullOrEmpty(version))
+            filter.Add($"version={Uri.EscapeDataString(version)}");
+
+        if (filter.Count > 0)
+            url += $"?{string.Join('&', filter)}";
+
+        var response = await this.http.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+        await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
+        using var stream = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+        await foreach (var p in JsonSerializer.DeserializeAsyncEnumerable(stream, ProGetApiJsonContext.Default.PackageVersionInfo, cancellationToken).ConfigureAwait(false))
+            yield return p!;
+    }
     public async Task<ProGetDownloadStream> DownloadPackageAsync(PackageIdentifier package, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(package);
@@ -183,7 +227,6 @@ public sealed class ProGetClient
                 return new StreamContent(new ProGetUploadStream(source, reportProgress));
         }
     }
-
     public async Task DeletePackageAsync(PackageIdentifier package, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(package);

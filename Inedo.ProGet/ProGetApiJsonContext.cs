@@ -16,7 +16,8 @@ namespace Inedo.ProGet;
 [JsonSerializable(typeof(ApiKeyInfo))]
 [JsonSerializable(typeof(AssetDirectoryItem))]
 [JsonSerializable(typeof(AssetItemMetadataUpdate))]
-[JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase, Converters = [typeof(AssetUserMetadataTypeConverter)])]
+[JsonSerializable(typeof(PackageVersionInfo))]
+[JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase, Converters = [typeof(AssetUserMetadataTypeConverter)], UseStringEnumConverter = true)]
 internal sealed partial class ProGetApiJsonContext : JsonSerializerContext
 {
 }

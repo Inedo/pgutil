@@ -12,9 +12,9 @@ internal sealed class CommandBuilder<TContainerCommand> : ICommandBuilder where 
         this.commands.Add(builder.Build());
         return this;
     }
-    public ICommandBuilder WithOption<TOption>() where TOption : IConsoleOption
+    public ICommandBuilder WithOption<TOption>(OptionOverrides? overrides = null) where TOption : IConsoleOption
     {
-        this.options.Add(new Option<TOption>());
+        this.options.Add(new Option<TOption>(overrides));
         return this;
     }
     public Command<TContainerCommand> Build()
