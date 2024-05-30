@@ -13,7 +13,8 @@ internal partial class Program
 
             public static void Configure(ICommandBuilder builder)
             {
-                builder.WithOption<PackageNameOption>(false);
+                builder.WithOption<PackageNameOption>(false)
+                    .WithOption<StableOnlyFlag>();
             }
 
             public static async Task<int> ExecuteAsync(CommandContext context, CancellationToken cancellationToken)
