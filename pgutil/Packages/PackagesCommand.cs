@@ -11,30 +11,6 @@ internal partial class Program
         public static string Name => "packages";
         public static string Description => "Work with packages on a ProGet server";
 
-        private sealed class LatestCommand : IConsoleCommand
-        {
-            public static string Name => "latest";
-            public static string Description => "Display latest versions of packages in a feed";
-
-            public static void Configure(ICommandBuilder builder)
-            {
-                builder.WithOption<PackageNameOption>(false);
-            }
-
-            public static async Task<int> ExecuteAsync(CommandContext context, CancellationToken cancellationToken)
-            {
-                var client = context.GetProGetClient();
-                var feed = context.GetFeedName();
-
-                _ = TryGetPackageName(context, out _, out var name, out var group);
-
-                await foreach (var p in client.ListLatestPackagesAsync(feed, name, group, cancellationToken))
-                    Console.WriteLine($"{p.Name} {p.Version}");
-
-                return 0;
-            }
-        }
-
         public static void Configure(ICommandBuilder builder)
         {
             builder.WithOption<SourceOption>()
@@ -50,7 +26,8 @@ internal partial class Program
                 .WithCommand<RepackageCommand>()
                 .WithCommand<PromoteCommand>()
                 .WithCommand<AuditCommand>()
-                .WithCommand<LatestCommand>();
+                .WithCommand<LatestCommand>()
+                .WithCommand<VersionsCommand>();
         }
 
         private sealed class PackageNameOption : IConsoleOption

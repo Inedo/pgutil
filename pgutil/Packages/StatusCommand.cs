@@ -171,7 +171,7 @@ internal partial class Program
 
                     CM.WriteLine("...");
 
-                    await client.SetPackageStatusAsync(package, new PackageStatus(Deprecated: deprecated, DeprecatedReason: reason), cancellationToken);
+                    await client.SetPackageStatusAsync(package, new PackageStatus(Deprecated: deprecated, DeprecationReason: reason), cancellationToken);
 
                     Console.WriteLine("Package status changed.");
                     return 0;

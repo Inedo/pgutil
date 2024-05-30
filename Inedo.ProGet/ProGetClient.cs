@@ -143,7 +143,7 @@ public sealed class ProGetClient
         return (await JsonSerializer.DeserializeAsync(responseStream, ProGetApiJsonContext.Default.BuildAnalysisResults, cancellationToken).ConfigureAwait(false))!;
     }
 
-    public async IAsyncEnumerable<PackageVersionInfo> ListLatestPackagesAsync(string feed, string? name = null, string? group = null, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    public async IAsyncEnumerable<PackageVersionInfo> ListLatestPackagesAsync(string feed, string? name = null, string? group = null, bool stableOnly = false, [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(feed);
 
@@ -154,6 +154,8 @@ public sealed class ProGetClient
             filter.Add($"group={Uri.EscapeDataString(group)}");
         if (!string.IsNullOrEmpty(name))
             filter.Add($"name={Uri.EscapeDataString(name)}");
+        if (stableOnly)
+            filter.Add("stableOnly=true");
 
         if (filter.Count > 0)
             url += $"?{string.Join('&', filter)}";
