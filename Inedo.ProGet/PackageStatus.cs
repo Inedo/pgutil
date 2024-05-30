@@ -36,6 +36,7 @@ public sealed record class PackageStatus
     // Indicates whether package is visible to searches (default "true")
     public bool? Listed { get; init; }
     // Download override flag for package (default "null")
+    
     public bool? Allow { get; init; }
 
     //Indicates whether package is visible to searches (default "false")
