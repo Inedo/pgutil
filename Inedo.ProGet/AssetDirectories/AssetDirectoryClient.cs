@@ -240,6 +240,54 @@ public sealed partial class AssetDirectoryClient
         }
     }
 
+    public async Task ImportArchiveAsync(Stream archive, ArchiveFormat format, string? path, bool overwrite = false, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(archive);
+
+        var escapedPath = string.Join(
+            '/',
+            (path ?? string.Empty)
+                .Split(['/', '\\'], StringSplitOptions.RemoveEmptyEntries)
+                .Select(Uri.EscapeDataString)
+        );
+
+        var f = format switch
+        {
+            ArchiveFormat.Zip => "zip",
+            ArchiveFormat.TarGzip => "tgz",
+            _ => throw new ArgumentOutOfRangeException(nameof(format))
+        };
+
+        var url = this.BuildUrl($"import/{path}?format={f}&overwrite={(overwrite ? "true" : "false")}");
+        using var content = new StreamContent(archive);
+        using var response = await this.httpClient.PostAsync(url, content, cancellationToken).ConfigureAwait(false);
+        await ProGetClient.CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
+    }
+    public async Task ExportFolderAsync(Stream output, ArchiveFormat format, string? path, bool recursive = false, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(output);
+
+        var escapedPath = string.Join(
+            '/',
+            (path ?? string.Empty)
+                .Split(['/', '\\'], StringSplitOptions.RemoveEmptyEntries)
+                .Select(Uri.EscapeDataString)
+        );
+
+        var f = format switch
+        {
+            ArchiveFormat.Zip => "zip",
+            ArchiveFormat.TarGzip => "tgz",
+            _ => throw new ArgumentOutOfRangeException(nameof(format))
+        };
+
+        var url = this.BuildUrl($"export/{path}?format={f}&recursive={(recursive ? "true" : "false")}");
+        using var response = await this.httpClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+        await ProGetClient.CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
+        using var responseStream = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+        await responseStream.CopyToAsync(output, cancellationToken).ConfigureAwait(false);
+    }
+
     private static string EscapePath(string? path)
     {
         if (string.IsNullOrEmpty(path))
