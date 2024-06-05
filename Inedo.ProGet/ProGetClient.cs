@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization.Metadata;
 using Inedo.DependencyScan;
 using Inedo.ProGet.AssetDirectories;
 
@@ -347,6 +348,24 @@ public sealed class ProGetClient
 
         using var stream = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
         return (await JsonSerializer.DeserializeAsync(stream, ProGetApiJsonContext.Default.ApiKeyInfo, cancellationToken).ConfigureAwait(false))!;
+    }
+
+    public async IAsyncEnumerable<SettingsInfo> ListSettingsAsync(bool showAll = false, [EnumeratorCancellation]CancellationToken cancellationToken = default)
+    {
+        using var response = await this.http.GetAsync($"api/settings/list?showAll={showAll}", cancellationToken).ConfigureAwait(false);
+        await CheckResponseAsync(response, new Version(24, 0, 7), null, cancellationToken).ConfigureAwait(false);
+
+        using var content = await response.Content.ReadAsStreamAsync(cancellationToken);
+        await foreach (var value in JsonSerializer.DeserializeAsyncEnumerable(content, ProGetApiJsonContext.Default.SettingsInfo, cancellationToken))
+        {
+            if (value is not null)
+                yield return value;
+        }        
+    }
+    public async Task SetSettingAsync(string name, string? value, CancellationToken cancellationToken = default)
+    {
+        using var response = await this.http.PostAsync($"api/settings/set?name={name}&value={value}", null, cancellationToken).ConfigureAwait(false);
+        await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
     }
 
     internal static void CheckResponse(HttpResponseMessage response)
