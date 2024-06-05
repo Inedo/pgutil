@@ -247,7 +247,7 @@ public sealed partial class AssetDirectoryClient
         var escapedPath = string.Join(
             '/',
             (path ?? string.Empty)
-                .Split(['/', '\\'], StringSplitOptions.RemoveEmptyEntries)
+                .Split(DirSeparators, StringSplitOptions.RemoveEmptyEntries)
                 .Select(Uri.EscapeDataString)
         );
 
@@ -270,7 +270,7 @@ public sealed partial class AssetDirectoryClient
         var escapedPath = string.Join(
             '/',
             (path ?? string.Empty)
-                .Split(['/', '\\'], StringSplitOptions.RemoveEmptyEntries)
+                .Split(DirSeparators, StringSplitOptions.RemoveEmptyEntries)
                 .Select(Uri.EscapeDataString)
         );
 
