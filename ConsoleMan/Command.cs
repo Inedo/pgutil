@@ -162,6 +162,7 @@ internal sealed class Command<TCommand> : Command where TCommand : IConsoleComma
     public override string Name => TCommand.Name;
     public override string Description => TCommand.Description;
     public override Type Type => typeof(TCommand);
+    public override bool Undisclosed => TCommand.Undisclosed;
 
     internal override Task<int> RunAsync(CommandContext context, CancellationToken cancellationToken) => TCommand.ExecuteAsync(context, cancellationToken);
 }

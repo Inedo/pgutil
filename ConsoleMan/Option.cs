@@ -41,6 +41,7 @@ internal sealed class Option<TOption>(OptionOverrides? o = null) : Option where 
     public override string Name => TOption.Name;
     public override string Description => o?.Description ?? TOption.Description;
     public override Type Type => typeof(TOption);
+    public override bool Undisclosed => o?.Undisclosed ?? TOption.Undisclosed;
     public override string[]? ValidValues => o?.ValidValues ?? TOption.ValidValues;
     public override string? DefaultValue => o?.DefaultValue ?? TOption.DefaultValue;
     public override bool HasValue => TOption.HasValue;

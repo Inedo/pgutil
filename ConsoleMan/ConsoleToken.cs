@@ -9,6 +9,7 @@ public abstract class ConsoleToken : IEquatable<ConsoleToken>
     public abstract string Name { get; }
     public abstract string Description { get; }
     public abstract Type Type { get; }
+    public abstract bool Undisclosed { get; }
 
     public bool Equals(ConsoleToken? other)
     {

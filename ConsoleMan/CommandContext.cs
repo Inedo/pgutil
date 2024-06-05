@@ -91,6 +91,12 @@ public sealed class CommandContext
 
     public void WriteUsage()
     {
+        var subCommands = this.Command.Subcommands.Where(c => !c.Undisclosed).ToList();
+        var options = this.Command.GetOptionsInScope()
+                        .Where(o => !o.Option.Undisclosed)
+                        .Select(o => (o.Scope, o.Depth, Name: formatName(o.Option), Desc: formatDescription(o.Option), o.Option.Required))
+                        .ToList();
+
         Console.WriteLine("Description:");
         Console.Write("  ");
         WordWrapper.WriteOutput(this.Command.Description, 2);
@@ -98,16 +104,13 @@ public sealed class CommandContext
 
         Console.WriteLine();
         Console.WriteLine("Usage:");
-        Console.WriteLine($"  {string.Join(' ', this.Commands.Select(c => c.Name))} {(this.Command.Subcommands.Count > 0 ? "[command] " : string.Empty)}[options]");
+        Console.WriteLine($"  {string.Join(' ', this.Commands.Select(c => c.Name))} {(subCommands.Count > 0 ? "[command] " : string.Empty)}[options]");
         Console.WriteLine();
 
-        var options = this.Command.GetOptionsInScope()
-                        .Select(o => (o.Scope, o.Depth, Name: formatName(o.Option), Desc: formatDescription(o.Option), o.Option.Required))
-                        .ToList();
         var optionMargin = options.Count == 0 ? 0 : options.Select(i => i.Name.Length).Max() + 2;
         foreach (var optionGroup in options.GroupBy(o => (o.Depth, o.Scope)))
         {
-            if (this.Command.Subcommands.Count == 0 && optionGroup.Key.Depth == 0)
+            if (subCommands.Count == 0 && optionGroup.Key.Depth == 0)
             {
                 Console.WriteLine($"Options:");
             }
@@ -130,11 +133,11 @@ public sealed class CommandContext
             );
 
 
-        if (this.Command.Subcommands.Count > 0)
+        if (subCommands.Count > 0)
         {
             Console.WriteLine();
             Console.WriteLine("Commands:");
-            CM.WriteTwoColumnList([.. this.Command.Subcommands.Select(c => ($"  {c.Name}", c.Description))]);
+            CM.WriteTwoColumnList([.. subCommands.Select(c => ($"  {c.Name}", c.Description))]);
         }
 
         static string formatName(Option o)
