@@ -74,14 +74,14 @@ internal partial class Program
                 {
                     public static bool Required => true;
                     public static string Name => "--file";
-                    public static string Description => "Archive file (.zip or .tar.gz) to import";
+                    public static string Description => "Archive file (.zip or .tar.gz) to export to";
                 }
 
                 private sealed class PathOption : IConsoleOption
                 {
                     public static bool Required => false;
                     public static string Name => "--path";
-                    public static string Description => "Path of folder to import to";
+                    public static string Description => "Path of folder to export";
                 }
 
                 private sealed class OverwriteFlag : IConsoleFlagOption
