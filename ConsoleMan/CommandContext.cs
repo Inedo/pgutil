@@ -107,35 +107,34 @@ public sealed class CommandContext
         Console.WriteLine($"  {string.Join(' ', this.Commands.Select(c => c.Name))} {(subCommands.Count > 0 ? "[command] " : string.Empty)}[options]");
         Console.WriteLine();
 
-        var optionMargin = options.Count == 0 ? 0 : options.Select(i => i.Name.Length).Max() + 2;
-        foreach (var optionGroup in options.GroupBy(o => (o.Depth, o.Scope)))
+        if (subCommands.Count == 0)
         {
-            if (subCommands.Count == 0 && optionGroup.Key.Depth == 0)
+            var optionMargin = options.Count == 0 ? 0 : options.Select(i => i.Name.Length).Max() + 2;
+            foreach (var optionGroup in options.GroupBy(o => (o.Depth, o.Scope)))
             {
-                Console.WriteLine($"Options:");
+                if (subCommands.Count == 0 && optionGroup.Key.Depth == 0)
+                {
+                    Console.WriteLine($"Options:");
+                }
+                else
+                {
+                    Console.WriteLine();
+                    Console.WriteLine($"Common Options ({optionGroup.Key.Scope}):");
+                }
+
+                CM.WriteTwoColumnList(
+                    optionGroup.OrderByDescending(o => o.Required).ThenBy(o => o.Name).Select(o => (o.Name, o.Desc)).ToList(),
+                    optionMargin
+                );
             }
-            else
-            {
-                Console.WriteLine();
-                Console.WriteLine($"Common Options ({optionGroup.Key.Scope}):");
-            }
-
-            CM.WriteTwoColumnList(
-                optionGroup.OrderByDescending(o => o.Required).ThenBy(o => o.Name).Select(o => (o.Name, o.Desc)).ToList(),
-                optionMargin
-            );
-        }
-
-        if (options.Count > 0)
-            CM.WriteTwoColumnList(
-                [("  -?, --help", "Show help and usage information")],
-                optionMargin
-            );
-
-
-        if (subCommands.Count > 0)
+            if (options.Count > 0)
+                CM.WriteTwoColumnList(
+                    [("  -?, --help", "Show help and usage information")],
+                    optionMargin
+                );
+        }               
+        else
         {
-            Console.WriteLine();
             Console.WriteLine("Commands:");
             CM.WriteTwoColumnList([.. subCommands.Select(c => ($"  {c.Name}", c.Description))]);
         }
