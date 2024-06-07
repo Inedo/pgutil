@@ -40,8 +40,8 @@ internal partial class Program
                     else
                         Console.WriteLine("auto");
 
-                    Console.WriteLine($"Created: {info.Created}");
-                    Console.WriteLine($"Modified: {info.Modified}");
+                    Console.WriteLine($"Created: {info.Created.ToLocalTime()}");
+                    Console.WriteLine($"Modified: {info.Modified.ToLocalTime()}");
                     Console.Write("Caching: ");
                     switch (info.CacheHeader?.Type)
                     {
@@ -81,7 +81,7 @@ internal partial class Program
                     if (info.UserMetadata is not null && info.UserMetadata.Count > 0)
                     {
                         foreach (var item in info.UserMetadata)
-                            Console.WriteLine($"{item.Key}: {item.Value}");
+                            Console.WriteLine($"{item.Key}: {item.Value.Value}");
                     }
                     else
                     {

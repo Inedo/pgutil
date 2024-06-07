@@ -78,7 +78,7 @@ internal partial class Program
                 private sealed class CacheCommand : IConsoleCommand
                 {
                     public static string Name => "cache";
-                    public static string Description => throw new NotImplementedException();
+                    public static string Description => "Update cache headers for an asset";
 
                     public static void Configure(ICommandBuilder builder)
                     {
@@ -91,7 +91,7 @@ internal partial class Program
                         var client = context.GetAssetDirectoryClient();
                         var path = context.GetOption<PathOption>();
                         var type = context.GetOption<TypeOption>();
-                        var value = context.GetOption<ValueOption>();
+                        var value = context.GetOptionOrDefault<ValueOption>();
 
                         Console.WriteLine($"Setting {path} caching to {type} {value}...");
                         await client.UpdateItemMetadataAsync(
