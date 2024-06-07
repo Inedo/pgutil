@@ -12,7 +12,7 @@ internal partial class Program
             private sealed class SetCommand : IConsoleCommandContainer
             {
                 public static string Name => "set";
-                public static string Description => "Update metadata for an asset";
+                public static string Description => "Set metadata for an asset";
 
                 public static void Configure(ICommandBuilder builder)
                 {
@@ -23,7 +23,7 @@ internal partial class Program
                 private sealed class CustomCommand : IConsoleCommand
                 {
                     public static string Name => "custom";
-                    public static string Description => "Updates a custom metadata field";
+                    public static string Description => "Sets a custom metadata field";
 
                     public static void Configure(ICommandBuilder builder)
                     {
@@ -50,7 +50,7 @@ internal partial class Program
                             cancellationToken: cancellationToken
                         );
 
-                        Console.WriteLine("Metadata updated.");
+                        Console.WriteLine("Metadata set.");
                         return 0;
                     }
 
@@ -78,7 +78,7 @@ internal partial class Program
                 private sealed class CacheCommand : IConsoleCommand
                 {
                     public static string Name => "cache";
-                    public static string Description => throw new NotImplementedException();
+                    public static string Description => "Sets the cache header";
 
                     public static void Configure(ICommandBuilder builder)
                     {
@@ -100,7 +100,7 @@ internal partial class Program
                             cancellationToken: cancellationToken
                         );
 
-                        Console.WriteLine("Metadata updated.");
+                        Console.WriteLine("Metadata set.");
                         return 0;
                     }
 
