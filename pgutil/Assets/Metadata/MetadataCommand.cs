@@ -15,8 +15,7 @@ internal partial class Program
             {
                 builder.WithOption<PathOption>()
                     .WithCommand<GetCommand>()
-                    .WithCommand<SetCommand>()
-                    .WithCommand<DeleteCommand>();
+                    .WithCommand<SetCommand>();
             }
 
             private sealed class PathOption : IConsoleOption
