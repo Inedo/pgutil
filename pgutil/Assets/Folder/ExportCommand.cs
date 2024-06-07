@@ -48,26 +48,41 @@ internal partial class Program
 
                     CM.WriteLine("Exporting ", new TextSpan(path ?? "/", ConsoleColor.White), " to ", new TextSpan(fileName, ConsoleColor.White), "...");
 
-                    using var target = File.Open(
-                        fileName,
-                        new FileStreamOptions
+                    try
+                    {
+                        using var target = File.Open(
+                            fileName,
+                            new FileStreamOptions
+                            {
+                                Access = FileAccess.Write,
+                                Mode = FileMode.Create,
+                                Options = FileOptions.SequentialScan | FileOptions.Asynchronous
+                            }
+                        );
+
+                        await client.ExportFolderAsync(
+                            target,
+                            format.GetValueOrDefault(),
+                            path,
+                            context.HasFlag<RecursiveFlag>(),
+                            cancellationToken
+                        );
+
+                        CM.WriteLine("Folder exported!");
+                        return 0;
+                    }
+                    catch
+                    {
+                        try
                         {
-                            Access = FileAccess.Write,
-                            Mode = FileMode.Create,
-                            Options = FileOptions.SequentialScan | FileOptions.Asynchronous
+                            File.Delete(fileName);
                         }
-                    );
+                        catch
+                        {
+                        }
 
-                    await client.ExportFolderAsync(
-                        target,
-                        format.GetValueOrDefault(),
-                        path,
-                        context.HasFlag<RecursiveFlag>(),
-                        cancellationToken
-                    );
-
-                    CM.WriteLine("Folder exported!");
-                    return 0;
+                        throw;
+                    }
                 }
 
                 private sealed class FileOption : IConsoleOption
