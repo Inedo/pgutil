@@ -44,7 +44,7 @@ internal sealed class AssetItemMetadataUpdate
     // updated key/value pairs of user-defined metadata for the item.
     public IReadOnlyDictionary<string, AssetUserMetadata>? UserMetadata { get; init; }
 
-    public AssetCacheHeader? CacheHeader { get; init; }
+    public AssetDirectoryItemCacheHeader? CacheHeader { get; init; }
 }
 
 // HTTP Endpoint may additional properties in the JSON object:

@@ -74,9 +74,10 @@ public sealed partial class AssetDirectoryClient
     /// <param name="contentType">New Content-Type of the asset if specified. When null, it will not be updated.</param>
     /// <param name="userMetadata">New user-defined metadata entries for the asset if specified. When null, it will not be updated.</param>
     /// <param name="userMetadataUpdateMode">Specifies how the <paramref name="userMetadata"/> parameter is interpreted.</param>
+    /// <param name="cacheHeader">Cache header.</param>
     /// <param name="cancellationToken">Token used to cancel asynchronous operation.</param>
     /// <exception cref="ArgumentException"><paramref name="path"/> is null or empty.</exception>
-    public async Task UpdateItemMetadataAsync(string path, string? contentType = null, IReadOnlyDictionary<string, AssetUserMetadata>? userMetadata = null, UserMetadataUpdateMode userMetadataUpdateMode = UserMetadataUpdateMode.CreateOrUpdate, CancellationToken cancellationToken = default)
+    public async Task UpdateItemMetadataAsync(string path, string? contentType = null, IReadOnlyDictionary<string, AssetUserMetadata>? userMetadata = null, UserMetadataUpdateMode userMetadataUpdateMode = UserMetadataUpdateMode.CreateOrUpdate, AssetDirectoryItemCacheHeader? cacheHeader = null, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(path);
 
@@ -87,7 +88,8 @@ public sealed partial class AssetDirectoryClient
         {
             Type = contentType,
             UserMetadataUpdateMode = userMetadataUpdateMode == UserMetadataUpdateMode.ReplaceAll ? "replace" : "update",
-            UserMetadata = userMetadata
+            UserMetadata = userMetadata,
+            CacheHeader = cacheHeader
         };
 
         using var response = await this.httpClient.PostAsJsonAsync(BuildUrl($"metadata/{EscapePath(path)}"), updateData, ProGetApiJsonContext.Default.AssetItemMetadataUpdate, cancellationToken).ConfigureAwait(false);

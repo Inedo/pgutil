@@ -56,11 +56,25 @@ public sealed class AssetDirectoryItem
     // The UTC date of the last time of the item was updated
     public DateTime Modified { get; init; }
 
+    // The MD5 hash of the item in hexadecimal format
+    [JsonPropertyName("md5")]
+    public string? MD5 { get; init; }
+
     // The SHA1 hash of the item in hexadecimal format
     [JsonPropertyName("sha1")]
     public string? SHA1 { get; init; }
 
-    public AssetUserMetadata[]? UserMetadata { get; init; }
+    // The SHA256 hash of the item in hexadecimal format
+    [JsonPropertyName("sha256")]
+    public string? SHA256 { get; init; }
+
+    // The SHA512 hash of the item in hexadecimal format
+    [JsonPropertyName("sha512")]
+    public string? SHA512 { get; init; }
+
+    public Dictionary<string, AssetUserMetadata>? UserMetadata { get; init; }
+
+    public AssetDirectoryItemCacheHeader? CacheHeader { get; init; }
 
     // this property is *not* in the JSON Object; it's used as a helper property Inedo.ProGet library
     public bool Directory => this.Type == "dir";

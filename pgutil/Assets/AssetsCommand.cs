@@ -20,7 +20,8 @@ internal partial class Program
                 .WithCommand<DownloadCommand>()
                 .WithCommand<UploadCommand>()
                 .WithCommand<DeleteCommand>()
-                .WithCommand<FolderCommand>();
+                .WithCommand<FolderCommand>()
+                .WithCommand<MetadataCommand>();
         }
     }
 }
