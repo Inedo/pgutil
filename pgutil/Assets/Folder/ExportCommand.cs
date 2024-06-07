@@ -74,7 +74,7 @@ internal partial class Program
                 {
                     public static bool Required => true;
                     public static string Name => "--file";
-                    public static string Description => "Archive file (.zip or .tar.gz) to export to";
+                    public static string Description => "Path of output archive file (.zip or .tar.gz)";
                 }
 
                 private sealed class PathOption : IConsoleOption
