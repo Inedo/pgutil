@@ -4,6 +4,7 @@ using Inedo.ProGet.AssetDirectories;
 namespace Inedo.ProGet;
 
 [JsonSerializable(typeof(ProGetFeed))]
+[JsonSerializable(typeof(ProGetConnector))]
 [JsonSerializable(typeof(PackageStatus))]
 [JsonSerializable(typeof(ProGetHealthInfo))]
 [JsonSerializable(typeof(VulnerabilityInfo))]
