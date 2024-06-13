@@ -13,18 +13,25 @@ internal sealed partial class Program
 
             public static void Configure(ICommandBuilder builder)
             {
-                builder.WithOption<FeedOption>();
+                builder.WithOption<NameOption>();
             }
 
             public static async Task<int> ExecuteAsync(CommandContext context, CancellationToken cancellationToken)
             {
                 var client = context.GetProGetClient();
-                var feedName = context.GetOption<FeedOption>();
+                var feedName = context.GetOption<NameOption>();
 
                 CM.WriteLine("Deleting ", new TextSpan(feedName, ConsoleColor.White), "...");
                 await client.DeleteFeedAsync(feedName, cancellationToken);
                 Console.WriteLine("Feed deleted.");
                 return 0;
+            }
+
+            private sealed class NameOption : IConsoleOption
+            {
+                public static bool Required => true;
+                public static string Name => "--name";
+                public static string Description => "Name of the feed to delete";
             }
         }
     }
