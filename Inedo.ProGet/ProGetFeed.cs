@@ -21,7 +21,7 @@ public sealed class ProGetFeed
     public string? EndpointUrl { get; set; }
     public string[]? Connectors { get; set; }
     public string[]? VulnerabilitySources { get; set; }
-    public object[]? RetentionRules { get; set; }
+    public RetentionRule[]? RetentionRules { get; set; }
     public Dictionary<string, string>? PackageFilters { get; set; }
     public Dictionary<string, string>? PackageAccessRules { get; set; }
     public Dictionary<string, string>? VariableDictionary { get; set; }
