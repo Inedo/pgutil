@@ -8,7 +8,7 @@ internal sealed partial class Program
     {
         private sealed class DeleteCommand : IConsoleCommand
         {
-            public static string Name => "Delete";
+            public static string Name => "delete";
             public static string Description => "Deletes a connector";
 
             public static void Configure(ICommandBuilder builder)
