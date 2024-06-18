@@ -10,7 +10,11 @@ internal sealed partial class VulnsCommand : IConsoleCommandContainer
 
     public static void Configure(ICommandBuilder builder)
     {
-        builder.WithCommand<AuditCommand>()
+        builder.WithOption<SourceOption>()
+            .WithOption<ApiKeyOption>()
+            .WithOption<UserNameOption>()
+            .WithOption<PasswordOption>()
+            .WithCommand<AuditCommand>()
             .WithCommand<AssessCommand>();
     }
 
