@@ -83,6 +83,26 @@ public sealed class ProGetClient
         using var response = await this.http.DeleteAsync($"api/management/feeds/delete/{Uri.EscapeDataString(feedName)}", cancellationToken).ConfigureAwait(false);
         await CheckResponseAsync(response, cancellationToken);
     }
+
+    public async Task CreateConnectorAsync(ProGetConnector connectorInfo, CancellationToken cancellationToken = default)
+    {
+        using var response = await this.http.PostAsJsonAsync("api/management/connectors/create", connectorInfo, ProGetApiJsonContext.Default.ProGetConnector, cancellationToken).ConfigureAwait(false);
+        await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
+    }
+    public async IAsyncEnumerable<ProGetConnector> ListConnectorsAsync([EnumeratorCancellation] CancellationToken cancellationToken = default)
+    {
+        using var response = await this.http.GetAsync("api/management/connectors/list", HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+        await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
+        using var stream = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+        await foreach (var connector in JsonSerializer.DeserializeAsyncEnumerable(stream, ProGetApiJsonContext.Default.ProGetConnector, cancellationToken).ConfigureAwait(false))
+            yield return connector!;
+    }
+    public async Task DeleteConnectorAsync(string connectorName, CancellationToken cancellationToken = default)
+    {
+        using var response = await this.http.PostAsync($"api/management/connectors/delete/{Uri.EscapeDataString(connectorName)}", null, cancellationToken).ConfigureAwait(false);
+        await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
+    }
+
     public async Task SetPackageStatusAsync(PackageIdentifier package, PackageStatus status, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(package);

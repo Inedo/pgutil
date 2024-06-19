@@ -8,7 +8,7 @@ internal partial class Program
     {
         private sealed class LatestCommand : IConsoleCommand
         {
-            public static string Name => "latest";
+            public static string Name => "list";
             public static string Description => "Display latest versions of packages in a feed";
 
             public static void Configure(ICommandBuilder builder)

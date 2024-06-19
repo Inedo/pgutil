@@ -59,6 +59,8 @@ internal sealed partial class Program : IConsoleCommandContainer
             .WithCommand<LicensesCommand>()
             .WithCommand<ApiKeysCommand>()
             .WithCommand<AssetsCommand>()
-            .WithCommand<SettingsCommand>();
+            .WithCommand<SettingsCommand>()
+            .WithCommand<FeedsCommand>()
+            .WithCommand<ConnectorsCommand>();
     }
 }

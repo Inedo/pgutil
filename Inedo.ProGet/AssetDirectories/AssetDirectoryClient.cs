@@ -81,7 +81,7 @@ public sealed partial class AssetDirectoryClient
     {
         ArgumentException.ThrowIfNullOrEmpty(path);
 
-        if (contentType is null && userMetadata is null)
+        if (contentType is null && userMetadata is null && cacheHeader is null)
             return;
 
         var updateData = new AssetItemMetadataUpdate

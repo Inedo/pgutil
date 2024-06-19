@@ -96,7 +96,7 @@ internal partial class Program
             {
                 public static bool Required => false;
                 public static string Name => "--partsize";
-                public static string Description => "Chunk size (in mb) for multipart uploads";
+                public static string Description => "Part size (in mb) for multipart uploads";
                 public static string DefaultValue => "5";
             }
 
