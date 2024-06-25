@@ -47,13 +47,14 @@ internal sealed partial class VulnsCommand : IConsoleCommandContainer
             if (vuln.NumericCvss.HasValue)
                 CM.Write(new TextSpan($"{vuln.NumericCvss.GetValueOrDefault():F1} ({vuln.Severity})", getSeverityColor(vuln.NumericCvss.GetValueOrDefault())), " - ");
 
+            var affectedPackages = vuln.AffectedPackages ?? [];
             WordWrapper.WriteOutput(vuln.Summary, vuln.Id.Length + 2);
             Console.WriteLine();
             CM.Write(" * Packages: ");
-            WordWrapper.WriteOutput(string.Join(", ", vuln.AffectedPackages.Select(i => infos[i].ToPackageString())), 13);
+            WordWrapper.WriteOutput(string.Join(", ", affectedPackages.Select(i => infos[i].ToPackageString())), 13);
             Console.WriteLine();
             CM.Write(" * Projects: ");
-            WordWrapper.WriteOutput(string.Join(", ", vuln.AffectedPackages.SelectMany(i => infos[i].Projects).Distinct()), 13);
+            WordWrapper.WriteOutput(string.Join(", ", affectedPackages.SelectMany(i => infos[i].Projects).Distinct()), 13);
             Console.WriteLine();
             Console.WriteLine();
         }

@@ -47,7 +47,7 @@ internal partial class Program
 
                     CM.WriteLine("...");
 
-                    await client.SetPackageStatusAsync(package, new PackageStatus(state == ListedState.Listed), cancellationToken);
+                    await client.SetPackageStatusAsync(package, new PackageStatus { Listed = state == ListedState.Listed }, cancellationToken);
 
                     Console.WriteLine("Package status changed.");
                     return 0;
@@ -100,14 +100,16 @@ internal partial class Program
 
                     await client.SetPackageStatusAsync(
                         package,
-                        new PackageStatus(
-                            Allow: state switch
+                        new PackageStatus
+                        {
+                            Allow = state switch
                             {
                                 BlockState.Blocked => false,
                                 BlockState.Allowed => true,
                                 _ => null
                             }
-                        ), cancellationToken
+                        },
+                        cancellationToken
                     );
 
                     Console.WriteLine("Package status changed.");
@@ -171,7 +173,7 @@ internal partial class Program
 
                     CM.WriteLine("...");
 
-                    await client.SetPackageStatusAsync(package, new PackageStatus(Deprecated: deprecated, DeprecationReason: reason), cancellationToken);
+                    await client.SetPackageStatusAsync(package, new PackageStatus { Deprecated = deprecated, DeprecationReason = reason }, cancellationToken);
 
                     Console.WriteLine("Package status changed.");
                     return 0;

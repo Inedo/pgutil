@@ -31,7 +31,7 @@
 namespace Inedo.ProGet;
 
 // JSON Object used by the Set Package Status HTTP endpoint
-public sealed record class PackageStatus
+public sealed class PackageStatus
 {
     // Indicates whether package is visible to searches (default "true")
     public bool? Listed { get; init; }
