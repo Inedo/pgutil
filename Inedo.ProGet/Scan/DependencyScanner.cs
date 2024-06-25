@@ -51,7 +51,7 @@ public abstract class DependencyScanner
         {
             type = GetImplicitType(args.SourcePath);
             if (type == DependencyScannerType.Auto)
-                throw new ArgumentException("Could not automatically determine project type.");
+                throw new DependencyScannerException("Could not automatically determine project type.");
         }
 
         return type switch

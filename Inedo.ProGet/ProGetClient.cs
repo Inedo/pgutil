@@ -296,7 +296,7 @@ public sealed class ProGetClient
     {
         ArgumentNullException.ThrowIfNull(promotePackageInput);
 
-        using var response = await this.http.PostAsJsonAsync("api/repackaging/repackage", promotePackageInput, ProGetApiJsonContext.Default.PromotePackageInput, cancellationToken).ConfigureAwait(false);
+        using var response = await this.http.PostAsJsonAsync("api/promotions/promote", promotePackageInput, ProGetApiJsonContext.Default.PromotePackageInput, cancellationToken).ConfigureAwait(false);
         await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
     }
     public async Task<AuditPackageResults> AuditPackageAsync(PackageIdentifier package, CancellationToken cancellationToken = default)

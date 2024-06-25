@@ -14,7 +14,8 @@ internal partial class Program
             public static void Configure(ICommandBuilder builder)
             {
                 builder.WithOption<InputFileOption>()
-                    .WithOption<StdInFlag>();
+                    .WithOption<StdInFlag>()
+                    .WithOption<DistributionOption>();
             }
 
             public static async Task<int> ExecuteAsync(CommandContext context, CancellationToken cancellationToken)

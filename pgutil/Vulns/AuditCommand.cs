@@ -23,6 +23,12 @@ internal sealed partial class VulnsCommand
 
             var input = context.GetOption<ProjectOption>();
 
+            if (!File.Exists(input) && !Directory.Exists(input))
+            {
+                CM.WriteError<ProjectOption>($"Project not found at {Path.GetFullPath(input)}");
+                return -1;
+            }
+
             var scannerType = DependencyScannerType.Auto;
             if (context.TryGetOption<PackageTypeOption>(out var type))
             {
