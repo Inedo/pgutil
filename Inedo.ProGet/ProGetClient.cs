@@ -164,6 +164,16 @@ public sealed class ProGetClient
         return (await JsonSerializer.DeserializeAsync(responseStream, ProGetApiJsonContext.Default.BuildAnalysisResults, cancellationToken).ConfigureAwait(false))!;
     }
 
+    public async Task<BasicFeedInfo> GetBasicFeedInfoAsync(string feed, CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(feed);
+
+        var url = $"api/packages/{Uri.EscapeDataString(feed)}";
+        using var response = await this.http.GetAsync(url, cancellationToken).ConfigureAwait(false);
+        await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
+        using var stream = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+        return JsonSerializer.Deserialize(stream, ProGetApiJsonContext.Default.BasicFeedInfo)!;
+    }
     public async IAsyncEnumerable<PackageVersionInfo> ListLatestPackagesAsync(string feed, string? name = null, string? group = null, bool stableOnly = false, [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(feed);

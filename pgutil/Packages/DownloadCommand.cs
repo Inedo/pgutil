@@ -21,7 +21,11 @@ internal partial class Program
             public static async Task<int> ExecuteAsync(CommandContext context, CancellationToken cancellationToken)
             {
                 var client = context.GetProGetClient();
+
+                var feedInfo = await client.GetBasicFeedInfoAsync(context.GetFeedName(), cancellationToken);
                 var (package, fullName) = GetPackageIdentifier(context);
+
+                QualifierOptions.EnsureQualifiersForPackageType(feedInfo.PackageType, package.Qualifier);
 
                 bool stdout = context.HasFlag<StdOutFlag>();
 

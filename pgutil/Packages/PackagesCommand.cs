@@ -49,6 +49,7 @@ internal partial class Program
             public static bool Required => false;
             public static string Name => "--qualifier";
             public static string Description => "Qualifier used by multifile packages like Debian and RubyGems";
+            public static bool Undisclosed => true;
         }
 
         private sealed class NoConnectorsFlag : IConsoleFlagOption
@@ -59,7 +60,8 @@ internal partial class Program
 
         private static ICommandBuilder WithPackageOptions(ICommandBuilder builder)
         {
-            return builder.WithOption<PackageNameOption>()
+            return QualifierOptions.WithOptions(builder)
+                .WithOption<PackageNameOption>()
                 .WithOption<PackageVersionOption>()
                 .WithOption<PackageQualifierOption>();
         }
@@ -93,7 +95,7 @@ internal partial class Program
             }
 
             var version = context.GetOption<PackageVersionOption>();
-            var qualifier = context.GetOptionOrDefault<PackageQualifierOption>();
+            var qualifier = QualifierOptions.GetQualifier(context);
 
             var feed = context.GetFeedName();
 
