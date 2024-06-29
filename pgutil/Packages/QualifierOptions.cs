@@ -45,7 +45,7 @@ internal partial class Program
 
                 return string.Join('&', values.Select(p => $"{p.Key}={Uri.EscapeDataString(p.Value)}"));
 
-                static int compareKeys(KeyValuePair<string, string> a, KeyValuePair<string, string> b) => a.Key.CompareTo(b);
+                static int compareKeys(KeyValuePair<string, string> a, KeyValuePair<string, string> b) => a.Key.CompareTo(b.Key);
 
                 void add<TOption>() where TOption : IQualifierOption
                 {
