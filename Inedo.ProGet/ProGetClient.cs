@@ -3,7 +3,6 @@ using System.Net.Http.Json;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization.Metadata;
 using Inedo.DependencyScan;
 using Inedo.ProGet.AssetDirectories;
 
@@ -70,6 +69,26 @@ public sealed class ProGetClient
     {
         return this.http.GetFromJsonAsAsyncEnumerable("api/management/feeds/list", ProGetApiJsonContext.Default.ProGetFeed, cancellationToken)!;
     }
+    public async Task<ProGetFeed> GetFeedAsync(string feedName, CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(feedName);
+
+        using var response = await this.http.GetAsync($"api/management/feeds/get/{feedName}", cancellationToken).ConfigureAwait(false);
+        await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
+        using var stream = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+        return (await JsonSerializer.DeserializeAsync(stream, ProGetApiJsonContext.Default.ProGetFeed, cancellationToken).ConfigureAwait(false))!;
+    }
+    public async Task<ProGetFeed> UpdateFeedAsync(string feedName, ProGetFeed feed, CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(feedName);
+        ArgumentNullException.ThrowIfNull(feed);
+
+        using var response = await this.http.PostAsJsonAsync($"api/management/feeds/update/{feedName}", feed, ProGetApiJsonContext.Default.ProGetFeed, cancellationToken).ConfigureAwait(false);
+        await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
+        using var stream = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+        return (await JsonSerializer.DeserializeAsync(stream, ProGetApiJsonContext.Default.ProGetFeed, cancellationToken).ConfigureAwait(false))!;
+    }
+
     public async Task<ProGetFeed> CreateFeedAsync(string feedName, string feedType, CancellationToken cancellationToken = default)
     {
         var input = new ProGetFeed { Name = feedName, FeedType = feedType };

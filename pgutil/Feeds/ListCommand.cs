@@ -23,7 +23,7 @@ internal sealed partial class Program
                 await foreach (var feed in client.ListFeedsAsync(cancellationToken))
                 {
                     if (includeInactive || feed.Active == true)
-                        Console.WriteLine(feed.Name);
+                        Console.WriteLine($"{feed.Name} ({feed.FeedType})");
                 }
 
                 return 0;
