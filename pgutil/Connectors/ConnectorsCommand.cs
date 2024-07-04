@@ -17,7 +17,9 @@ internal sealed partial class Program
                 .WithOption<PasswordOption>()
                 .WithCommand<CreateCommand>()
                 .WithCommand<DeleteCommand>()
-                .WithCommand<ListCommand>();
+                .WithCommand<ListCommand>()
+                .WithCommand<PropertiesCommand>()
+                .WithCommand<FiltersCommand>();
         }
     }
 }

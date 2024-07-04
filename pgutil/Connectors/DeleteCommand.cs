@@ -13,13 +13,13 @@ internal sealed partial class Program
 
             public static void Configure(ICommandBuilder builder)
             {
-                builder.WithOption<NameOption>();
+                builder.WithOption<ConnectorOption>();
             }
 
             public static async Task<int> ExecuteAsync(CommandContext context, CancellationToken cancellationToken)
             {
                 var client = context.GetProGetClient();
-                var name = context.GetOption<NameOption>();
+                var name = context.GetOption<ConnectorOption>();
 
                 CM.WriteLine("Deleting ", new TextSpan(name, ConsoleColor.White), "...");
                 await client.DeleteConnectorAsync(name, cancellationToken);
@@ -27,10 +27,10 @@ internal sealed partial class Program
                 return 0;
             }
 
-            private sealed class NameOption : IConsoleOption
+            private sealed class ConnectorOption : IConsoleOption
             {
                 public static bool Required => true;
-                public static string Name => "--name";
+                public static string Name => "--connector";
                 public static string Description => "Name of the connector to delete";
             }
         }

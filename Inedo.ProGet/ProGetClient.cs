@@ -116,6 +116,20 @@ public sealed class ProGetClient
         await foreach (var connector in JsonSerializer.DeserializeAsyncEnumerable(stream, ProGetApiJsonContext.Default.ProGetConnector, cancellationToken).ConfigureAwait(false))
             yield return connector!;
     }
+    public async Task<ProGetConnector> GetConnectorAsync(string connectorName, CancellationToken cancellationToken = default)
+    {
+        using var response = await this.http.GetAsync($"api/management/connectors/get/{connectorName}", cancellationToken).ConfigureAwait(false);
+        await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
+        using var stream = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+        return (await JsonSerializer.DeserializeAsync(stream, ProGetApiJsonContext.Default.ProGetConnector, cancellationToken).ConfigureAwait(false))!;
+    }
+    public async Task<ProGetConnector> UpdateConnectorAsync(string connectorName, ProGetConnector connector, CancellationToken cancellationToken = default)
+    {
+        using var response = await this.http.PostAsJsonAsync($"api/management/connectors/update/{connectorName}", connector, ProGetApiJsonContext.Default.ProGetConnector, cancellationToken).ConfigureAwait(false);
+        await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
+        using var stream = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+        return (await JsonSerializer.DeserializeAsync(stream, ProGetApiJsonContext.Default.ProGetConnector, cancellationToken).ConfigureAwait(false))!;
+    }
     public async Task DeleteConnectorAsync(string connectorName, CancellationToken cancellationToken = default)
     {
         using var response = await this.http.PostAsync($"api/management/connectors/delete/{Uri.EscapeDataString(connectorName)}", null, cancellationToken).ConfigureAwait(false);
