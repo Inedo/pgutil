@@ -14,7 +14,10 @@ internal partial class Program
             builder.WithCommand<SbomCommand>()
                 .WithCommand<ScanCommand>()
                 .WithCommand<PromoteCommand>()
-                .WithCommand<AuditCommand>();
+                .WithCommand<AuditCommand>()
+                .WithCommand<ProjectsCommand>()
+                .WithCommand<IssuesCommand>()
+                .WithCommand<CommentsCommand>();
         }
 
         private sealed class InputOption : IConsoleOption

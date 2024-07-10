@@ -413,21 +413,108 @@ public sealed class ProGetClient
         return (await JsonSerializer.DeserializeAsync(stream, ProGetApiJsonContext.Default.ApiKeyInfo, cancellationToken).ConfigureAwait(false))!;
     }
 
-    public async IAsyncEnumerable<SettingsInfo> ListSettingsAsync(bool showAll = false, [EnumeratorCancellation]CancellationToken cancellationToken = default)
+    public async IAsyncEnumerable<SettingsInfo> ListSettingsAsync(bool showAll = false, [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
         using var response = await this.http.GetAsync($"api/settings/list?showAll={showAll}", cancellationToken).ConfigureAwait(false);
         await CheckResponseAsync(response, new Version(24, 0, 7), null, cancellationToken).ConfigureAwait(false);
 
-        using var content = await response.Content.ReadAsStreamAsync(cancellationToken);
-        await foreach (var value in JsonSerializer.DeserializeAsyncEnumerable(content, ProGetApiJsonContext.Default.SettingsInfo, cancellationToken))
+        using var content = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+        await foreach (var value in JsonSerializer.DeserializeAsyncEnumerable(content, ProGetApiJsonContext.Default.SettingsInfo, cancellationToken).ConfigureAwait(false))
         {
             if (value is not null)
                 yield return value;
-        }        
+        }
     }
     public async Task SetSettingAsync(string name, string? value, CancellationToken cancellationToken = default)
     {
-        using var response = await this.http.PostAsync($"api/settings/set?name={name}&value={value}", null, cancellationToken).ConfigureAwait(false);
+        using var response = await this.http.PostAsync($"api/settings/set?name={Uri.EscapeDataString(name)}&value={Uri.EscapeDataString(value ?? string.Empty)}", null, cancellationToken).ConfigureAwait(false);
+        await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
+    }
+
+    public async IAsyncEnumerable<ProjectInfo> ListProjectsAsync([EnumeratorCancellation] CancellationToken cancellationToken = default)
+    {
+        using var response = await this.http.GetAsync("api/sca/projects", cancellationToken).ConfigureAwait(false);
+        await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
+
+        using var content = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+        await foreach (var value in JsonSerializer.DeserializeAsyncEnumerable(content, ProGetApiJsonContext.Default.ProjectInfo, cancellationToken).ConfigureAwait(false))
+            yield return value!;
+    }
+    public async Task<ProjectInfo> GetProjectAsync(string name, CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(name);
+
+        using var response = await this.http.GetAsync($"api/sca/projects/{name}", cancellationToken).ConfigureAwait(false);
+        await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
+
+        using var content = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+        return (await JsonSerializer.DeserializeAsync(content, ProGetApiJsonContext.Default.ProjectInfo, cancellationToken).ConfigureAwait(false))!;
+    }
+    public async Task<ProjectInfo> CreateOrUpdateProjectAsync(ProjectInfo project, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(project);
+
+        using var response = await this.http.PostAsJsonAsync("api/sca/projects", project, ProGetApiJsonContext.Default.ProjectInfo, cancellationToken).ConfigureAwait(false);
+        await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
+
+        using var content = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+        return (await JsonSerializer.DeserializeAsync(content, ProGetApiJsonContext.Default.ProjectInfo, cancellationToken).ConfigureAwait(false))!;
+    }
+
+    public async IAsyncEnumerable<BuildIssue> ListIssuesAsync(string project, string build, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(project);
+        ArgumentException.ThrowIfNullOrEmpty(build);
+
+        using var response = await this.http.GetAsync($"api/sca/issues?project={Uri.EscapeDataString(project)}&version={Uri.EscapeDataString(build)}", cancellationToken).ConfigureAwait(false);
+        await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
+
+        using var content = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+        await foreach (var value in JsonSerializer.DeserializeAsyncEnumerable(content, ProGetApiJsonContext.Default.BuildIssue, cancellationToken).ConfigureAwait(false))
+            yield return value!;
+    }
+    public async Task DeleteIssueAsync(string project, string build, int number, CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(project);
+        ArgumentException.ThrowIfNullOrEmpty(build);
+
+        using var response = await this.http.DeleteAsync($"api/sca/issues?project={Uri.EscapeDataString(project)}&version={Uri.EscapeDataString(build)}&number={number}", cancellationToken).ConfigureAwait(false);
+        await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
+    }
+    public async Task ResolveIssueAsync(string project, string build, int number, CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(project);
+        ArgumentException.ThrowIfNullOrEmpty(build);
+
+        using var response = await this.http.PostAsync($"api/sca/issues?project={Uri.EscapeDataString(project)}&version={Uri.EscapeDataString(build)}&number={number}&resolve=true", null, cancellationToken).ConfigureAwait(false);
+        await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
+    }
+
+    public async IAsyncEnumerable<BuildComment> ListCommentsAsync(string project, string build, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(project);
+        ArgumentException.ThrowIfNullOrEmpty(build);
+
+        using var response = await this.http.GetAsync($"api/sca/comments?project={Uri.EscapeDataString(project)}&version={Uri.EscapeDataString(build)}", cancellationToken).ConfigureAwait(false);
+        await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
+
+        using var content = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+        await foreach (var value in JsonSerializer.DeserializeAsyncEnumerable(content, ProGetApiJsonContext.Default.BuildComment, cancellationToken).ConfigureAwait(false))
+            yield return value!;
+    }
+    public async Task DeleteCommentAsync(string project, string build, int number, CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(project);
+        ArgumentException.ThrowIfNullOrEmpty(build);
+
+        using var response = await this.http.DeleteAsync($"api/sca/comments?project={Uri.EscapeDataString(project)}&version={Uri.EscapeDataString(build)}&number={number}", cancellationToken).ConfigureAwait(false);
+        await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
+    }
+    public async Task CreateCommentAsync(BuildCommentCreateInfo comment, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(comment);
+
+        using var response = await this.http.PostAsJsonAsync("api/sca/comments", comment, ProGetApiJsonContext.Default.BuildCommentCreateInfo, cancellationToken).ConfigureAwait(false);
         await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
     }
 
