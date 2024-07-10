@@ -444,7 +444,7 @@ public sealed class ProGetClient
     {
         ArgumentException.ThrowIfNullOrEmpty(name);
 
-        using var response = await this.http.GetAsync($"api/sca/projects/{name}", cancellationToken).ConfigureAwait(false);
+        using var response = await this.http.GetAsync($"api/sca/projects?name={Uri.EscapeDataString(name)}", cancellationToken).ConfigureAwait(false);
         await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
 
         using var content = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);

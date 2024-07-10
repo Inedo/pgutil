@@ -20,14 +20,8 @@ internal partial class Program
                 public static async Task<int> ExecuteAsync(CommandContext context, CancellationToken cancellationToken)
                 {
                     var client = context.GetProGetClient();
-                    await foreach (var p in client.ListIssuesAsync(context.GetOption<ProjectOption>(), context.GetOption<BuildOption>(), cancellationToken))
-                    {
-                        Console.Write($"#{p.Number} - {p.Detail}");
-                        if (p.Resolved)
-                            CM.WriteLine(ConsoleColor.Green, " [resolved]");
-                        else
-                            Console.WriteLine();
-                    }
+                    await foreach (var p in client.ListCommentsAsync(context.GetOption<ProjectOption>(), context.GetOption<BuildOption>(), cancellationToken))
+                        Console.WriteLine($"#{p.Number} - {p.Comment}");
 
                     return 0;
                 }

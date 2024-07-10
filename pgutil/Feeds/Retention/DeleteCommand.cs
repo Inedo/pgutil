@@ -15,6 +15,7 @@ internal sealed partial class Program
 
                 public static void Configure(ICommandBuilder builder)
                 {
+                    builder.WithOption<RuleOption>();
                 }
 
                 public static async Task<int> ExecuteAsync(CommandContext context, CancellationToken cancellationToken)

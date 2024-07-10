@@ -27,7 +27,7 @@ internal partial class Program
 
                     var info = new ProjectInfo
                     {
-                        Name = context.GetOption<ProjectNameOption>(),
+                        Name = context.GetOption<ProjectOption>(),
                         Type = context.GetOptionOrDefault<ProjectTypeOption>(),
                         Url = context.GetOptionOrDefault<ProjectUrlOption>()
                     };

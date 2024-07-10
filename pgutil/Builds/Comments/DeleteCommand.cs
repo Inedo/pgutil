@@ -21,8 +21,8 @@ internal partial class Program
                 public static async Task<int> ExecuteAsync(CommandContext context, CancellationToken cancellationToken)
                 {
                     var client = context.GetProGetClient();
-                    await client.DeleteIssueAsync(context.GetOption<ProjectOption>(), context.GetOption<BuildOption>(), context.GetOption<NumberOption, int>(), cancellationToken);
-                    Console.WriteLine("Issue deleted.");
+                    await client.DeleteCommentAsync(context.GetOption<ProjectOption>(), context.GetOption<BuildOption>(), context.GetOption<NumberOption, int>(), cancellationToken);
+                    Console.WriteLine("Comment deleted.");
 
                     return 0;
                 }

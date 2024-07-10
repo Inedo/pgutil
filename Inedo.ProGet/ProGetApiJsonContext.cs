@@ -24,7 +24,7 @@ namespace Inedo.ProGet;
 [JsonSerializable(typeof(BuildIssue))]
 [JsonSerializable(typeof(BuildComment))]
 [JsonSerializable(typeof(BuildCommentCreateInfo))]
-[JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase, Converters = [typeof(AssetUserMetadataTypeConverter)], UseStringEnumConverter = true)]
+[JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase, Converters = [typeof(AssetUserMetadataTypeConverter)], UseStringEnumConverter = true, DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull)]
 internal sealed partial class ProGetApiJsonContext : JsonSerializerContext
 {
 }
