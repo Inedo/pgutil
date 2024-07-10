@@ -109,7 +109,7 @@ internal sealed partial class Program
                 private sealed class KeepConsumedWithinDays : IRetentionOption
                 {
                     public static string Name => "--keepConsumedWithinDays";
-                    public static string Description => "Package must not have been used within this many days to qualifier for deletion";
+                    public static string Description => "Package must not have been used within this many days to qualify for deletion";
 
                     public static void Assign(RetentionRule rule, string value) => rule.KeepConsumedWithinDays = int.Parse(value);
                 }
@@ -142,7 +142,7 @@ internal sealed partial class Program
                 private sealed class KeepUsedWithinDays : IRetentionOption
                 {
                     public static string Name => "--keepUsedWithinDays";
-                    public static string Description => "Package must not have been used within this many days to qualifier for deletion";
+                    public static string Description => "Package must not have been used within this many days to qualify for deletion";
 
                     public static void Assign(RetentionRule rule, string value) => rule.KeepUsedWithinDays = int.Parse(value);
                 }
@@ -150,7 +150,7 @@ internal sealed partial class Program
                 private sealed class KeepVersionsCount : IRetentionOption
                 {
                     public static string Name => "--keepVersionsCount";
-                    public static string Description => "Always keep this many of the latest versions of the package";
+                    public static string Description => "Always keep this number of the most recent package versions";
 
                     public static void Assign(RetentionRule rule, string value) => rule.KeepVersionsCount = int.Parse(value);
                 }
