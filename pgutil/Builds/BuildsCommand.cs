@@ -11,13 +11,30 @@ internal partial class Program
 
         public static void Configure(ICommandBuilder builder)
         {
-            builder.WithCommand<SbomCommand>()
+            builder.WithCommand<ListCommand>()
+                .WithCommand<InfoCommand>()
+                .WithCommand<CreateCommand>()
+                .WithCommand<AuditCommand>()
+                .WithCommand<SbomCommand>()
                 .WithCommand<ScanCommand>()
                 .WithCommand<PromoteCommand>()
-                .WithCommand<AuditCommand>()
                 .WithCommand<ProjectsCommand>()
                 .WithCommand<IssuesCommand>()
                 .WithCommand<CommentsCommand>();
+        }
+
+        private sealed class ProjectOption : IConsoleOption
+        {
+            public static bool Required => true;
+            public static string Name => "--project";
+            public static string Description => "Name of the project";
+        }
+
+        private sealed class BuildOption : IConsoleOption
+        {
+            public static bool Required => true;
+            public static string Name => "--build";
+            public static string Description => "Build number";
         }
 
         private sealed class InputOption : IConsoleOption

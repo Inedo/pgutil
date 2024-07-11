@@ -63,20 +63,6 @@ internal partial class Program
                     return -1;
                 }
             }
-
-            private sealed class ProjectOption : IConsoleOption
-            {
-                public static bool Required => true;
-                public static string Name => "--project";
-                public static string Description => "Project containing the build to audit";
-            }
-
-            private sealed class BuildOption : IConsoleOption
-            {
-                public static bool Required => true;
-                public static string Name => "--build";
-                public static string Description => "Build number to audit";
-            }
         }
     }
 }

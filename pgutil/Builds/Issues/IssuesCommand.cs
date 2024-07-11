@@ -24,13 +24,6 @@ internal partial class Program
                     .WithCommand<ResolveCommand>();
             }
 
-            private sealed class ProjectOption : IConsoleOption
-            {
-                public static bool Required => true;
-                public static string Name => "--project";
-                public static string Description => "Name of the project";
-            }
-
             private sealed class BuildOption : IConsoleOption
             {
                 public static bool Required => true;
