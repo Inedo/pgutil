@@ -42,7 +42,7 @@ public sealed class RetentionRule
     // * This value is ignored for Docker feeds
     public int? KeepVersionsCount { get; set; }
 
-    // When set to "n", the retention rule always keeps package versions if they have been downloaded within the past "n" days
+    // When set to "n", the retention rule always keeps package versions if they have been downloaded/requested within the past "n" days
     public int? KeepUsedWithinDays { get; set; }
 
     // Array of package names/identifiers that are deleted if they match all other filters (W)
@@ -74,9 +74,12 @@ public sealed class RetentionRule
     // When set to "n", the retention rule always keeps versions that have been downloaded more than "n" times
     public int? TriggerDownloadCount { get; set; }
 
+    // When set to "n", the retention rule always keeps package versions used in builds within the past "n" days
     public int? KeepConsumedWithinDays { get; set; }
 
+    // When "true", will keep packages that are actively consumed
     public bool KeepIfActivelyConsumed { get; set; }
 
+    // When set to "n", deletes packages whose usage data has been removed at least "n" days ago."
     public int? KeepPackageUsageRemovedDays { get; set; }
 }
