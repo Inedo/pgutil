@@ -32,7 +32,7 @@ internal sealed partial class Program
 
                     _ = await client.UpdateFeedAsync(context.GetFeedName(), feed, cancellationToken);
 
-                    Console.WriteLine($"Rule #{feed.RetentionRules.Length + 1} created.");
+                    Console.WriteLine($"Rule #{feed.RetentionRules.Length} created.");
                     return 0;
                 }
             }
