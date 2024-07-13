@@ -186,7 +186,7 @@ public sealed class ProGetClient
         ArgumentException.ThrowIfNullOrEmpty(projectName);
         ArgumentException.ThrowIfNullOrEmpty(buildNumber);
 
-        using var response = await this.http.PostAsync($"api/sca/audit-build?project={Uri.EscapeDataString(projectName)}&version={Uri.EscapeDataString(buildNumber)}", null, cancellationToken);
+        using var response = await this.http.PostAsync($"api/sca/audit-build?project={Uri.EscapeDataString(projectName)}&build={Uri.EscapeDataString(buildNumber)}", null, cancellationToken);
         await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
 
         using var responseStream = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);

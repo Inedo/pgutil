@@ -18,7 +18,6 @@ internal partial class Program
                     .WithOption<UserNameOption>()
                     .WithOption<PasswordOption>()
                     .WithCommand<ListCommand>()
-                    .WithCommand<InfoCommand>()
                     .WithCommand<CreateCommand>();
             }
         }

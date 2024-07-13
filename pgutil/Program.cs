@@ -1,4 +1,5 @@
-﻿using ConsoleMan;
+﻿using System.Text.Json;
+using ConsoleMan;
 using Inedo.ProGet;
 
 namespace PgUtil;
@@ -26,25 +27,9 @@ internal sealed partial class Program : IConsoleCommandContainer
         {
             return await Command.Create<Program>().ExecuteAsync(args);
         }
-        catch (UnauthorizedAccessException ex)
+        catch (Exception ex) when (ex is UnauthorizedAccessException or HttpRequestException or ProGetClientException or JsonException)
         {
             CM.WriteError(ex.Message);
-            return -1;
-        }
-        catch (HttpRequestException ex)
-        {
-            CM.WriteError(ex.Message);
-            return -1;
-        }
-        catch (ProGetClientException ex)
-        {
-            CM.WriteError(ex.Message);
-            return -1;
-        }
-        catch (PgUtilException ex)
-        {
-            if (ex.HasMessage)
-                CM.WriteError(ex.Message);
             return -1;
         }
     }

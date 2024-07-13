@@ -13,7 +13,11 @@ internal partial class Program
 
             public static void Configure(ICommandBuilder builder)
             {
-                builder.WithOption<ProjectOption>();
+                builder.WithOption<SourceOption>()
+                    .WithOption<ApiKeyOption>()
+                    .WithOption<UserNameOption>()
+                    .WithOption<PasswordOption>()
+                    .WithOption<ProjectOption>();
             }
 
             public static async Task<int> ExecuteAsync(CommandContext context, CancellationToken cancellationToken)

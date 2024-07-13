@@ -48,14 +48,14 @@ public sealed class CommandContext
     public string GetOption<TOption>() where TOption : IConsoleOption
     {
         if (!this.TryGetOption<TOption>(out var value))
-            throw new Exception();
+            throw new ConsoleManException($"missing required argument: {TOption.Name}");
 
         return value;
     }
     public TValue GetOption<TOption, TValue>() where TOption : IConsoleOption where TValue : IParsable<TValue>
     {
         if (!this.TryGetOption<TOption, TValue>(out var value))
-            throw new Exception();
+            throw new ConsoleManException($"missing required argument: {TOption.Name}");
 
         return value;
     }
@@ -78,7 +78,7 @@ public sealed class CommandContext
         where TEnum : struct, Enum
     {
         if (!this.TryGetEnumValue<TOption, TEnum>(out var value))
-            throw new Exception();
+            throw new ConsoleManException($"missing required argument: {TOption.Name}");
 
         return value;
     }

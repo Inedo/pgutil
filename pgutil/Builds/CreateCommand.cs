@@ -13,7 +13,11 @@ internal partial class Program
 
             public static void Configure(ICommandBuilder builder)
             {
-                builder.WithOption<ProjectOption>()
+                builder.WithOption<SourceOption>()
+                    .WithOption<ApiKeyOption>()
+                    .WithOption<UserNameOption>()
+                    .WithOption<PasswordOption>()
+                    .WithOption<ProjectOption>()
                     .WithOption<BuildOption>()
                     .WithOption<InactiveFlag>()
                     .WithOption<StageOption>();
@@ -28,7 +32,7 @@ internal partial class Program
                         Project = context.GetOption<ProjectOption>(),
                         Version = context.GetOption<BuildOption>(),
                         Active = context.HasFlag<InactiveFlag>() ? false : null,
-                        Stage = context.GetOption<StageOption>()
+                        Stage = context.GetOptionOrDefault<StageOption>()
                     },
                     cancellationToken
                 );

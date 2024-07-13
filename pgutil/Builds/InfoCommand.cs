@@ -13,7 +13,11 @@ internal partial class Program
 
             public static void Configure(ICommandBuilder builder)
             {
-                builder.WithOption<ProjectOption>()
+                builder.WithOption<SourceOption>()
+                    .WithOption<ApiKeyOption>()
+                    .WithOption<UserNameOption>()
+                    .WithOption<PasswordOption>()
+                    .WithOption<ProjectOption>()
                     .WithOption<BuildOption>();
             }
 
@@ -22,7 +26,7 @@ internal partial class Program
                 var client = context.GetProGetClient();
                 var build = await client.GetBuildAsync(context.GetOption<ProjectOption>(), context.GetOption<BuildOption>(), cancellationToken);
 
-                CM.WriteLine(build.Active ? ConsoleColor.Gray : ConsoleColor.DarkGray, build.Version);
+                CM.WriteLine(build.Active ? ConsoleColor.Gray : ConsoleColor.DarkGray, $"Build {build.Version}");
 
                 if (build.Packages?.Length > 0)
                 {

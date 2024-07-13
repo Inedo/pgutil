@@ -33,6 +33,13 @@ public abstract class Command : ConsoleToken
         {
             return await context.Command.RunAsync(context, cts.Token);
         }
+        catch (ConsoleManException ex)
+        {
+            if (ex.HasMessage)
+                CM.WriteError(ex.Message);
+
+            return -1;
+        }
         catch (OperationCanceledException)
         {
             Console.WriteLine();

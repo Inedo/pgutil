@@ -1,6 +1,7 @@
-﻿namespace PgUtil;
+﻿using ConsoleMan;
 
-internal sealed class PgUtilException(string? message = null) : Exception(message)
+namespace PgUtil;
+
+internal sealed class PgUtilException(string? message = null) : ConsoleManException(message)
 {
-    public bool HasMessage { get; } = message is not null;
 }

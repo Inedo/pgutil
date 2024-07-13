@@ -17,7 +17,6 @@ internal partial class Program
                     .WithOption<ApiKeyOption>()
                     .WithOption<UserNameOption>()
                     .WithOption<PasswordOption>()
-                    .WithOption<InputOption>()
                     .WithOption<ProjectOption>()
                     .WithOption<BuildOption>();
             }
