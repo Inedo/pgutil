@@ -109,7 +109,7 @@ internal sealed partial class Program
                 private sealed class KeepConsumedWithinDays : IRetentionOption
                 {
                     public static string Name => "--keepConsumedWithinDays";
-                    public static string Description => "Package must not have been used within this many days to qualify for deletion";
+                    public static string Description => "Package used in builds must not have been used within this many days to qualify for deletion";
 
                     public static void Assign(RetentionRule rule, string value) => rule.KeepConsumedWithinDays = int.Parse(value);
                 }
@@ -117,7 +117,7 @@ internal sealed partial class Program
                 private sealed class KeepIfActivelyConsumed : IRetentionOption
                 {
                     public static string Name => "--keepIfActivelyConsumed";
-                    public static string Description => "Keep if actively consumed";
+                    public static string Description => "Keeps packages that are actively consumed";
                     public static string[] ValidValues => ["true", "false"];
 
                     public static void Assign(RetentionRule rule, string value) => rule.KeepIfActivelyConsumed = bool.Parse(value);
@@ -134,7 +134,7 @@ internal sealed partial class Program
                 private sealed class KeepPackageUsageRemovedDays : IRetentionOption
                 {
                     public static string Name => "--keepPackageUsageRemovedDays";
-                    public static string Description => "Keep package usage removed days";
+                    public static string Description => "Keep packages with usage data removed only after this many days";
 
                     public static void Assign(RetentionRule rule, string value) => rule.KeepPackageUsageRemovedDays = int.Parse(value);
                 }
@@ -142,7 +142,7 @@ internal sealed partial class Program
                 private sealed class KeepUsedWithinDays : IRetentionOption
                 {
                     public static string Name => "--keepUsedWithinDays";
-                    public static string Description => "Package must not have been used within this many days to qualify for deletion";
+                    public static string Description => "Requested/downloaded packages must not have been used within this many days to qualify for deletion";
 
                     public static void Assign(RetentionRule rule, string value) => rule.KeepUsedWithinDays = int.Parse(value);
                 }
