@@ -6,15 +6,18 @@ public sealed class CommandContext
 {
     private readonly Dictionary<Type, ParsedOption> options;
     private readonly List<Command> commands;
+    private readonly List<string> additionalOptions;
 
-    internal CommandContext(Dictionary<Type, ParsedOption> options, List<Command> commands)
+    internal CommandContext(Dictionary<Type, ParsedOption> options, List<Command> commands, List<string> additionalOptions)
     {
         this.options = options;
         this.commands = commands;
+        this.additionalOptions = additionalOptions;
     }
 
     public Command Command => this.commands[^1];
     public IReadOnlyList<Command> Commands => this.commands;
+    public IReadOnlyList<string> AdditionalOptions => this.additionalOptions;
 
     public bool TryGetOption<TOption>([MaybeNullWhen(false)] out string value) where TOption : IConsoleOption
     {

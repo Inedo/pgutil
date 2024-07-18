@@ -19,7 +19,8 @@ internal sealed partial class Program
                 .WithCommand<DeleteCommand>()
                 .WithCommand<ListCommand>()
                 .WithCommand<PropertiesCommand>()
-                .WithCommand<RetentionCommand>();
+                .WithCommand<RetentionCommand>()
+                .WithCommand<StorageCommand>();
         }
     }
 }

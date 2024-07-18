@@ -39,6 +39,7 @@ public static class CM
         }
     }
 
+    public static void WriteLine() => Console.WriteLine();
     public static void WriteLine(params TextSpan[] values)
     {
         ArgumentNullException.ThrowIfNull(values);

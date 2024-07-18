@@ -484,6 +484,22 @@ public sealed class ProGetClient
         return this.PostAsync("api/sca/comments", comment, ProGetApiJsonContext.Default.BuildCommentCreateInfo, cancellationToken);
     }
 
+    public IAsyncEnumerable<FeedStorageType> ListFeedStorageTypesAsync(CancellationToken cancellationToken = default)
+    {
+        return this.ListItemsAsync("api/storage", ProGetApiJsonContext.Default.FeedStorageType, cancellationToken);
+    }
+    public Task<FeedStorageConfiguration> GetFeedStorageConfigurationAsync(string feedName, CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(feedName);
+        return this.GetItemAsync($"api/storage?feed={Uri.EscapeDataString(feedName)}", ProGetApiJsonContext.Default.FeedStorageConfiguration, cancellationToken);
+    }
+    public Task SetFeedStorageConfigurationAsync(string feedName, FeedStorageConfiguration configuration, CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(feedName);
+        ArgumentNullException.ThrowIfNull(configuration);
+        return this.PostAsync($"api/storage?feed={Uri.EscapeDataString(feedName)}", configuration, ProGetApiJsonContext.Default.FeedStorageConfiguration, cancellationToken);
+    }
+
     internal static void CheckResponse(HttpResponseMessage response)
     {
         if (response.IsSuccessStatusCode)

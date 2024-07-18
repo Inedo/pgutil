@@ -8,6 +8,8 @@ public abstract class Command : ConsoleToken
         this.Options = options;
     }
 
+    public abstract bool AllowAdditionalOptions { get; }
+
     internal Command? Parent { get; set; }
     internal List<Command> Subcommands { get; }
     internal List<Option> Options { get; }
@@ -87,6 +89,7 @@ public abstract class Command : ConsoleToken
         var scopedOptions = command.GetOptionsInScope().Select(o => o.Option).ToList();
 
         var parsedOptions = new Dictionary<Type, ParsedOption>();
+        var additionalOptions = new List<string>();
         for (int i = 0; i < args.Length; i++)
         {
             if (commandIndexes.Contains(i))
@@ -112,8 +115,16 @@ public abstract class Command : ConsoleToken
                 }
             }
 
-            CM.WriteError($"unexpected argument: {args[i]}");
-            error = true;
+            if (command.AllowAdditionalOptions)
+            {
+                additionalOptions.Add(args[i]);
+            }
+            else
+            {
+                CM.WriteError($"unexpected argument: {args[i]}");
+                error = true;
+            }
+
         next:;
         }
 
@@ -145,7 +156,7 @@ public abstract class Command : ConsoleToken
             }
         }
 
-        var context = new CommandContext(parsedOptions, parsedCommands);
+        var context = new CommandContext(parsedOptions, parsedCommands, additionalOptions);
         if (!error && !help)
         {
             return context;
@@ -170,6 +181,7 @@ internal sealed class Command<TCommand> : Command where TCommand : IConsoleComma
     public override string Description => TCommand.Description;
     public override Type Type => typeof(TCommand);
     public override bool Undisclosed => TCommand.Undisclosed;
+    public override bool AllowAdditionalOptions => TCommand.AllowAdditionalOptions;
 
     internal override Task<int> RunAsync(CommandContext context, CancellationToken cancellationToken) => TCommand.ExecuteAsync(context, cancellationToken);
 }
