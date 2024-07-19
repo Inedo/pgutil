@@ -64,7 +64,7 @@ internal sealed partial class Program
 
                     int p<TOption>() where TOption : IRetentionOption
                     {
-                        if (!context.TryGetOption<TOption>(out var value))
+                        if (!context.TryGetOption<TOption>(true, out var value))
                             return 0;
 
                         TOption.Assign(rule, value);
@@ -72,13 +72,16 @@ internal sealed partial class Program
                     }
                 }
 
+                private static bool boolParse(string value) => bool.TryParse(value, out var @bool) && @bool;
+                private static int? intParse(string value) => int.TryParse(value, out var @int) ? @int : null;
+
                 private sealed class DeleteCached : IRetentionOption
                 {
                     public static string Name => "--deleteCached";
                     public static string Description => "Consider only cached packages or all packages";
                     public static string[] ValidValues => ["true", "false"];
 
-                    public static void Assign(RetentionRule rule, string value) => rule.DeleteCached = bool.Parse(value);
+                    public static void Assign(RetentionRule rule, string value) => rule.DeleteCached = boolParse(value);
                 }
 
                 private sealed class DeletePackageIds : IRetentionOption
@@ -86,7 +89,7 @@ internal sealed partial class Program
                     public static string Name => "--deletePackageIds";
                     public static string Description => "Comma separated list of packages subject for deletion";
 
-                    public static void Assign(RetentionRule rule, string value) => rule.DeletePackageIds = value.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                    public static void Assign(RetentionRule rule, string value) => rule.DeletePackageIds = string.IsNullOrEmpty(value) ? null : value.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
                 }
 
                 private sealed class DeletePrereleaseVersions : IRetentionOption
@@ -95,7 +98,7 @@ internal sealed partial class Program
                     public static string Description => "Consider only prerelease versions or all versions";
                     public static string[] ValidValues => ["true", "false"];
 
-                    public static void Assign(RetentionRule rule, string value) => rule.DeletePrereleaseVersions = bool.Parse(value);
+                    public static void Assign(RetentionRule rule, string value) => rule.DeletePrereleaseVersions = boolParse(value);
                 }
 
                 private sealed class DeleteVersions : IRetentionOption
@@ -103,7 +106,7 @@ internal sealed partial class Program
                     public static string Name => "--deleteVersions";
                     public static string Description => "Comma separated list of versions subject for deletion";
 
-                    public static void Assign(RetentionRule rule, string value) => rule.DeleteVersions = value.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                    public static void Assign(RetentionRule rule, string value) => rule.DeleteVersions = string.IsNullOrEmpty(value) ? null : value.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
                 }
 
                 private sealed class KeepConsumedWithinDays : IRetentionOption
@@ -111,7 +114,7 @@ internal sealed partial class Program
                     public static string Name => "--keepConsumedWithinDays";
                     public static string Description => "Package used in builds must not have been used within this many days to qualify for deletion";
 
-                    public static void Assign(RetentionRule rule, string value) => rule.KeepConsumedWithinDays = int.Parse(value);
+                    public static void Assign(RetentionRule rule, string value) => rule.KeepConsumedWithinDays = intParse(value);
                 }
 
                 private sealed class KeepIfActivelyConsumed : IRetentionOption
@@ -120,7 +123,7 @@ internal sealed partial class Program
                     public static string Description => "Keeps packages that are actively consumed";
                     public static string[] ValidValues => ["true", "false"];
 
-                    public static void Assign(RetentionRule rule, string value) => rule.KeepIfActivelyConsumed = bool.Parse(value);
+                    public static void Assign(RetentionRule rule, string value) => rule.KeepIfActivelyConsumed = boolParse(value);
                 }
 
                 private sealed class KeepPackageIds : IRetentionOption
@@ -128,7 +131,7 @@ internal sealed partial class Program
                     public static string Name => "--keepPackageIds";
                     public static string Description => "Comma separated list of packages exempt from deletion";
 
-                    public static void Assign(RetentionRule rule, string value) => rule.KeepPackageIds = value.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                    public static void Assign(RetentionRule rule, string value) => rule.KeepPackageIds = string.IsNullOrEmpty(value) ? null : value.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
                 }
 
                 private sealed class KeepPackageUsageRemovedDays : IRetentionOption
@@ -136,7 +139,7 @@ internal sealed partial class Program
                     public static string Name => "--keepPackageUsageRemovedDays";
                     public static string Description => "Keep packages with usage data removed only after this many days";
 
-                    public static void Assign(RetentionRule rule, string value) => rule.KeepPackageUsageRemovedDays = int.Parse(value);
+                    public static void Assign(RetentionRule rule, string value) => rule.KeepPackageUsageRemovedDays = intParse(value);
                 }
 
                 private sealed class KeepUsedWithinDays : IRetentionOption
@@ -144,7 +147,7 @@ internal sealed partial class Program
                     public static string Name => "--keepUsedWithinDays";
                     public static string Description => "Requested/downloaded packages must not have been used within this many days to qualify for deletion";
 
-                    public static void Assign(RetentionRule rule, string value) => rule.KeepUsedWithinDays = int.Parse(value);
+                    public static void Assign(RetentionRule rule, string value) => rule.KeepUsedWithinDays = intParse(value);
                 }
 
                 private sealed class KeepVersionsCount : IRetentionOption
@@ -152,7 +155,7 @@ internal sealed partial class Program
                     public static string Name => "--keepVersionsCount";
                     public static string Description => "Always keep this number of the most recent package versions";
 
-                    public static void Assign(RetentionRule rule, string value) => rule.KeepVersionsCount = int.Parse(value);
+                    public static void Assign(RetentionRule rule, string value) => rule.KeepVersionsCount = intParse(value);
                 }
 
                 private sealed class KeepVersions : IRetentionOption
@@ -160,7 +163,7 @@ internal sealed partial class Program
                     public static string Name => "--keepVersions";
                     public static string Description => "Comma separated list of versions exempt from deletion";
 
-                    public static void Assign(RetentionRule rule, string value) => rule.KeepVersions = value.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                    public static void Assign(RetentionRule rule, string value) => rule.KeepVersions = string.IsNullOrEmpty(value) ? null : value.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
                 }
 
                 private sealed class SizeExclusive : IRetentionOption
@@ -169,7 +172,7 @@ internal sealed partial class Program
                     public static string Description => "Specifies if the sizeTrigger value is an exclusive boundary";
                     public static string[] ValidValues => ["true", "false"];
 
-                    public static void Assign(RetentionRule rule, string value) => rule.SizeExclusive = bool.Parse(value);
+                    public static void Assign(RetentionRule rule, string value) => rule.SizeExclusive = boolParse(value);
                 }
 
                 private sealed class SizeTrigger : IRetentionOption
@@ -177,7 +180,7 @@ internal sealed partial class Program
                     public static string Name => "--sizeTrigger";
                     public static string Description => "Minimum size (in kb) of feed required to trigger retention run";
 
-                    public static void Assign(RetentionRule rule, string value) => rule.SizeTriggerKb = long.Parse(value);
+                    public static void Assign(RetentionRule rule, string value) => rule.SizeTriggerKb = long.TryParse(value, out var @long) ? @long : null;
                 }
 
                 private sealed class TriggerDownloadCount : IRetentionOption
@@ -185,7 +188,7 @@ internal sealed partial class Program
                     public static string Name => "--triggerDownloadCount";
                     public static string Description => "Trigger download count";
 
-                    public static void Assign(RetentionRule rule, string value) => rule.TriggerDownloadCount = int.Parse(value);
+                    public static void Assign(RetentionRule rule, string value) => rule.TriggerDownloadCount = intParse(value);
                 }
 
                 private interface IRetentionOption : IConsoleOption

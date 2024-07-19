@@ -20,9 +20,14 @@ public sealed class CommandContext
     public IReadOnlyList<string> AdditionalOptions => this.additionalOptions;
 
     public bool TryGetOption<TOption>([MaybeNullWhen(false)] out string value) where TOption : IConsoleOption
+        => TryGetOption<TOption>(false, out value);
+
+    public bool TryGetOption<TOption>(bool allowEmptyValue, [MaybeNullWhen(false)] out string value) where TOption : IConsoleOption
     {
         value = null;
-        if (!this.options.TryGetValue(typeof(TOption), out var o) || string.IsNullOrEmpty(o.Value))
+        if (!this.options.TryGetValue(typeof(TOption), out var o) || o.Value is null)
+            return false;
+        if (!allowEmptyValue && o.Value == string.Empty)
             return false;
 
         value = o.Value;
