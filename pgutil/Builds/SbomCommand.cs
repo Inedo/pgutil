@@ -18,7 +18,8 @@ internal partial class Program
                     .WithOption<OutputOption>()
                     .WithOption<ProjectNameOption>()
                     .WithOption<VersionOption>()
-                    .WithOption<ProjectTypeOption>();
+                    .WithOption<ProjectTypeOption>()
+                    .WithOption<IncludeProjectReferencesFlag>();
             }
 
             public static async Task<int> ExecuteAsync(CommandContext context, CancellationToken cancellationToken)
@@ -27,7 +28,7 @@ internal partial class Program
 
                 CM.WriteLine("Scanning for dependencies in ", new TextSpan(input, ConsoleColor.White), "...");
 
-                var scanner = DependencyScanner.GetScanner(new CreateDependencyScannerArgs(input, SourceFileSystem.Default));
+                var scanner = DependencyScanner.GetScanner(new CreateDependencyScannerArgs(input, SourceFileSystem.Default, IncludeProjectReferences: context.HasFlag<IncludeProjectReferencesFlag>()));
                 var projects = await scanner.ResolveDependenciesAsync(cancellationToken);
                 if (projects.Count == 0)
                 {

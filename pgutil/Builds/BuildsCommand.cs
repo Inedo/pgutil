@@ -65,5 +65,11 @@ internal partial class Program
             public static string Description => "Type of the consuming project (default=library)";
             public static string DefaultValue => "library";
         }
+
+        private sealed class IncludeProjectReferencesFlag : IConsoleFlagOption
+        {
+            public static string Name => "--include-project-references";
+            public static string Description => "Include dependencies from referenced projects in the generated SBOM document";
+        }
     }
 }
