@@ -45,5 +45,5 @@ public sealed class BuildPackage
 
     public required BuildPackageComplianceInfo Compliance { get; init; }
 
-    public required BuildPackageVulnerability Vulnerabilities { get; init; }
+    public BuildPackageVulnerability[]? Vulnerabilities { get; init; }
 }
