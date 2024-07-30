@@ -19,8 +19,7 @@ public sealed class CommandContext
     public IReadOnlyList<Command> Commands => this.commands;
     public IReadOnlyList<string> AdditionalOptions => this.additionalOptions;
 
-    public bool TryGetOption<TOption>([MaybeNullWhen(false)] out string value) where TOption : IConsoleOption
-        => TryGetOption<TOption>(false, out value);
+    public bool TryGetOption<TOption>([MaybeNullWhen(false)] out string value) where TOption : IConsoleOption => TryGetOption<TOption>(false, out value);
 
     public bool TryGetOption<TOption>(bool allowEmptyValue, [MaybeNullWhen(false)] out string value) where TOption : IConsoleOption
     {
@@ -145,6 +144,14 @@ public sealed class CommandContext
         {
             Console.WriteLine("Commands:");
             CM.WriteTwoColumnList([.. subCommands.Select(c => ($"  {c.Name}", c.Description))]);
+        }
+
+        if (!string.IsNullOrWhiteSpace(this.Command.Examples))
+        {
+            Console.WriteLine();
+            Console.WriteLine("Examples:");
+            WordWrapper.WriteOutput(this.Command.Examples);
+            Console.WriteLine();
         }
 
         static string formatName(Option o)

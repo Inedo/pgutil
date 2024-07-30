@@ -13,6 +13,13 @@ internal partial class Program
             {
                 public static string Name => "set";
                 public static string Description => "Set metadata for an asset";
+                public static string Examples => """
+                     > pgutil assets metadata set --path=data-files/data.bin --feed=public-assets –key=owner --value=jsmith 
+
+                     > pgutil assets metadata set --path=data-files/data.bin --feed=private-assets --type=TTL --value=60 
+
+                    For more information see: https://docs.inedo.com/docs/proget/reference-api/proget-api-assets/metadata-endpoints/proget-api-assets-metadata-set
+                    """;
 
                 public static void Configure(ICommandBuilder builder)
                 {

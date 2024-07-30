@@ -10,6 +10,15 @@ internal partial class Program
         {
             public static string Name => "download";
             public static string Description => "Download a package file from ProGet";
+            public static string Examples => """
+                 > pgutil packages download --feed=public-nuget --package=Newtonsoft.Json --version=13.0.3 --output-file=c:\myPackages\NuGetPackages\Newtonsoft.Json.13.0.3.nupkg 
+                
+                 > pgutil packages download --feed=approved-npm --package=@babel/runtime --version= 7.25.0 --output-file=C:\npm-packages\package.tgz 
+                
+                 > pgutil packages download --feed=myDebianFeed --package= debhelper --version= 13.15.3 --component=main --distro=stable --arch=all --output-file=C:\debian-packages\debhelper_13.15.3_all.deb 
+
+                For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-api-packages/proget-api-packages-download 
+                """;
 
             public static void Configure(ICommandBuilder builder)
             {

@@ -9,6 +9,7 @@ public abstract class Command : ConsoleToken
     }
 
     public abstract bool AllowAdditionalOptions { get; }
+    public abstract string? Examples { get; }
 
     internal Command? Parent { get; set; }
     internal List<Command> Subcommands { get; }
@@ -182,6 +183,7 @@ internal sealed class Command<TCommand> : Command where TCommand : IConsoleComma
     public override Type Type => typeof(TCommand);
     public override bool Undisclosed => TCommand.Undisclosed;
     public override bool AllowAdditionalOptions => TCommand.AllowAdditionalOptions;
+    public override string? Examples => TCommand.Examples;
 
     internal override Task<int> RunAsync(CommandContext context, CancellationToken cancellationToken) => TCommand.ExecuteAsync(context, cancellationToken);
 }
