@@ -7,9 +7,9 @@ internal partial class Program
 {
     private sealed partial class LicensesCommand
     {
-        private sealed class AddCommand : IConsoleCommand
+        private sealed class CreateCommand : IConsoleCommand
         {
-            public static string Name => "add";
+            public static string Name => "create";
             public static string Description => "Adds a license definition to ProGet";
 
             public static void Configure(ICommandBuilder builder)

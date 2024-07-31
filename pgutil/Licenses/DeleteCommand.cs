@@ -6,9 +6,9 @@ internal partial class Program
 {
     private sealed partial class LicensesCommand
     {
-        private sealed class RemoveCommand : IConsoleCommand
+        private sealed class DeleteCommand : IConsoleCommand
         {
-            public static string Name => "remove";
+            public static string Name => "delete";
             public static string Description => "Deletes a license defintion from ProGet";
 
             public static void Configure(ICommandBuilder builder)

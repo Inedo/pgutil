@@ -16,8 +16,8 @@ internal partial class Program
                 .WithOption<UserNameOption>()
                 .WithOption<PasswordOption>()
                 .WithCommand<ListCommand>()
-                .WithCommand<AddCommand>()
-                .WithCommand<RemoveCommand>()
+                .WithCommand<CreateCommand>()
+                .WithCommand<DeleteCommand>()
                 .WithCommand<AddFileCommand>()
                 .WithCommand<RemoveFileCommand>();
         }
