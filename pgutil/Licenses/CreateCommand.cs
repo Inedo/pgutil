@@ -36,13 +36,6 @@ internal partial class Program
                 return 0;
             }
 
-            private sealed class CodeOption : IConsoleOption
-            {
-                public static bool Required => true;
-                public static string Name => "--code";
-                public static string Description => "Unique ID for the license";
-            }
-
             private sealed class TitleOption : IConsoleOption
             {
                 public static bool Required => true;

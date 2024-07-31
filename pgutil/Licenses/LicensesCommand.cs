@@ -16,10 +16,18 @@ internal partial class Program
                 .WithOption<UserNameOption>()
                 .WithOption<PasswordOption>()
                 .WithCommand<ListCommand>()
+                .WithCommand<InfoCommand>()
                 .WithCommand<CreateCommand>()
                 .WithCommand<DeleteCommand>()
-                .WithCommand<AddFileCommand>()
-                .WithCommand<RemoveFileCommand>();
+                .WithCommand<DetectionCommand>()
+                .WithCommand<FilesCommand>();
+        }
+
+        private sealed class CodeOption : IConsoleOption
+        {
+            public static bool Required => true;
+            public static string Name => "--code";
+            public static string Description => "Unique ID of the license";
         }
     }
 }

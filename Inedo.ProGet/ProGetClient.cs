@@ -344,6 +344,11 @@ public sealed class ProGetClient
         ArgumentNullException.ThrowIfNull(license);
         return this.PostAsync("api/licenses/add", license, ProGetApiJsonContext.Default.LicenseInfo, cancellationToken);
     }
+    public Task UpdateLicenseAsync(LicenseInfo license, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(license);
+        return this.PostAsync("api/licenses/update", license, ProGetApiJsonContext.Default.LicenseInfo, cancellationToken);
+    }
     public async Task DeleteLicenseAsync(string code, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(code);
@@ -366,6 +371,22 @@ public sealed class ProGetClient
 
         using var response = await this.http.PostAsync($"api/licenses/files/delete?hash={Uri.EscapeDataString(hash)}", null, cancellationToken).ConfigureAwait(false);
         await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
+    }
+    public async Task<string> GetLicenseFileAsync(string code, CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(code);
+
+        using var response = await this.http.GetAsync($"api/licenses/files/download?code={Uri.EscapeDataString(code)}", cancellationToken).ConfigureAwait(false);
+        await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
+        return await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+    }
+    public async Task<string> GetLicenseFileFromHashAsync(string hash, CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(hash);
+
+        using var response = await this.http.GetAsync($"api/licenses/files/download?hash={Uri.EscapeDataString(hash)}", cancellationToken).ConfigureAwait(false);
+        await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
+        return await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
     }
 
     public IAsyncEnumerable<ApiKeyInfo> ListApiKeysAsync(CancellationToken cancellationToken = default)

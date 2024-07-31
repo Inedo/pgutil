@@ -81,4 +81,26 @@ internal static class Extensions
 
         return list;
     }
+    public static async Task<T?> FirstOrDefaultAsync<T>(this IAsyncEnumerable<T> source)
+    {
+        ArgumentNullException.ThrowIfNull(source);
+
+        await foreach (var item in source.ConfigureAwait(false))
+            return item;
+
+        return default;
+    }
+    public static async Task<T?> FirstOrDefaultAsync<T>(this IAsyncEnumerable<T> source, Func<T, bool> predicate)
+    {
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(predicate);
+
+        await foreach (var item in source.ConfigureAwait(false))
+        {
+            if (predicate(item))
+                return item;
+        }
+
+        return default;
+    }
 }

@@ -25,13 +25,6 @@ internal partial class Program
                 Console.WriteLine("License deleted.");
                 return 0;
             }
-
-            private sealed class CodeOption : IConsoleOption
-            {
-                public static bool Required => true;
-                public static string Name => "--code";
-                public static string Description => "Unique ID of the license";
-            }
         }
     }
 }
