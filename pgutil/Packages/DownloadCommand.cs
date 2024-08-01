@@ -15,7 +15,7 @@ internal partial class Program
                 
                  > pgutil packages download --feed=approved-npm --package=@babel/runtime --version=7.25.0 --output-file=C:\npm-packages\package.tgz 
                 
-                 > pgutil packages download --feed=myDebianFeed --package= debhelper --version=13.15.3 --component=main --distro=stable --arch=all --output-file=C:\debian-packages\debhelper_13.15.3_all.deb 
+                 > pgutil packages download --feed=public-debian --package= debhelper --version=13.15.3 --component=main --distro=stable --arch=all --output-file=C:\debian-packages\debhelper_13.15.3_all.deb 
 
                 For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-api-packages/proget-api-packages-download 
                 """;
