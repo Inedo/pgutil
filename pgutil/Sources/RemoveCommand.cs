@@ -11,6 +11,13 @@ internal partial class Program
         {
             public static string Name => "remove";
             public static string Description => "Removes a source from the configuration file";
+            public static string Examples => """
+                  $> pgutil sources remove --name=Default
+
+                  $> pgutil sources remove --name=main
+
+                For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-pgutil#working-with-sources
+                """;
 
             public static void Configure(ICommandBuilder builder) => builder.WithOption<NameOption>();
 

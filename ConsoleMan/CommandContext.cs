@@ -150,7 +150,7 @@ public sealed class CommandContext
         {
             Console.WriteLine();
             Console.WriteLine("Examples:");
-            WordWrapper.WriteOutput(this.Command.Examples);
+            Console.WriteLine(this.Command.Examples);
             Console.WriteLine();
         }
 

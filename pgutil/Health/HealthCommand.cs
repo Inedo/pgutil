@@ -7,8 +7,12 @@ internal partial class Program
     internal sealed class HealthCommand : IConsoleCommand
     {
         public static string Name => "health";
-
         public static string Description => "Displays health and status information";
+        public static string Examples => """
+              $> pgutil health --source=http://progets.corp.local/
+
+            For more information, see: https://docs.inedo.com/docs/proget/reference-api/health
+            """;
 
         public static void Configure(ICommandBuilder builder)
         {
@@ -17,9 +21,6 @@ internal partial class Program
 
         public static async Task<int> ExecuteAsync(CommandContext context, CancellationToken cancellationToken)
         {
-            static bool OK(params string?[] ss) => ss.All(s => (s ?? "OK") == "OK");
-
-
             var client = context.GetProGetClient();
             Console.Write($"Checking {client.Url}...");
             var health = await client.GetInstanceHealthAsync(cancellationToken);
@@ -37,7 +38,9 @@ internal partial class Program
                 Database: {formatStatus(health.DatabaseStatus, health.DatabaseStatusDetails)}
                 License:  {formatStatus(health.LicenseStatus, health.LicenseStatusDetail)}
                 Service:  {formatStatus(health.ServiceStatus, health.ServiceStatusDetail)}
-                """);
+                """
+            );
+
             if (health.ReplicationStatus is not null && (health.ReplicationStatus.ClientStatus ?? health.ReplicationStatus.ServerStatus) is not null)
             {
                 Console.WriteLine(
@@ -47,9 +50,12 @@ internal partial class Program
                     Replication (Client): {formatStatus(health.ReplicationStatus.ClientStatus, health.ReplicationStatus.ClientError)}
                     """);
             }
+
             return allOk ? 0 : -1;
 
             static string? formatStatus(string? status, string? desc) => string.IsNullOrWhiteSpace(desc) ? status : $"{status} ({desc})";
+
+            static bool OK(params string?[] ss) => ss.All(s => (s ?? "OK") == "OK");
         }
     }
 }
