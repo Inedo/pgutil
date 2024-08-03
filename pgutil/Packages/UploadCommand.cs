@@ -10,6 +10,15 @@ internal partial class Program
         {
             public static string Name => "upload";
             public static string Description => "Upload a package file to ProGet.";
+            public static string Examples => """
+                  $> pgutil packages upload --feed=approved-nuget --input-file=C:\development\nuget_packages\Newtonsoft.Json.13.0.3.nupkg
+
+                  $> pgutil packages upload --feed=public-npm --input-file=C:\packages\npm_packages\package.tgz
+
+                  $> pgutil packages upload --feed=approved-debian --input-file=C:\projects\project-packages\debhelper_13.15.3_all.deb --distribution=main
+
+                For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-api-packages/proget-api-packages-upload
+                """;
 
             public static void Configure(ICommandBuilder builder)
             {
