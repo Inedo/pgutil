@@ -349,11 +349,9 @@ public sealed class ProGetClient
         ArgumentNullException.ThrowIfNull(license);
         return this.PostAsync("api/licenses/update", license, ProGetApiJsonContext.Default.LicenseInfo, cancellationToken);
     }
-    public async Task DeleteLicenseAsync(string code, CancellationToken cancellationToken = default)
+    public async Task DeleteLicenseAsync(int id, CancellationToken cancellationToken = default)
     {
-        ArgumentException.ThrowIfNullOrEmpty(code);
-
-        using var response = await this.http.PostAsync($"api/licenses/delete?code={Uri.EscapeDataString(code)}", null, cancellationToken).ConfigureAwait(false);
+        using var response = await this.http.PostAsync($"api/licenses/delete?id={id}", null, cancellationToken).ConfigureAwait(false);
         await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
     }
     public async Task AddLicenseFileAsync(string code, Stream licenseFile, CancellationToken cancellationToken = default)
