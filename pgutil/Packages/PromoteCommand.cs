@@ -11,6 +11,15 @@ internal partial class Program
         {
             public static string Name => "promote";
             public static string Description => "Promotes a package from one feed to another";
+            public static string Examples => """
+                  $> pgutil packages promote --feed=nuget-unapproved --to-feed=nuget-approved --package=myNugetPackage --version=1.2.3
+
+                  $> pgutil packages promote --feed=unapproved-npm --to-feed=approved-npm --package=@babel/runtime --version=7.21.0
+
+                  $> pgutil packages promote --feed=private-pypi --to-feed=public-pypi --package=Django --version=5.0.6 --filename=Django-5.0.6.tar.gz
+
+                For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-api-packages/proget-api-packages-promote
+                """;
 
             public static void Configure(ICommandBuilder builder)
             {

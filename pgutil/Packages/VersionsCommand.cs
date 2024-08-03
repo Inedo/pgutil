@@ -10,6 +10,15 @@ internal partial class Program
         {
             public static string Name => "versions";
             public static string Description => "Display all versions of packages in a feed";
+            public static string Examples => """
+                  $> pgutil packages versions --package=Newtonsoft.Json --feed=approved-nuget
+
+                  $> pgutil packages versions --package=@babel/runtime --feed=public-npm --stable=true
+
+                  $> pgutil packages versions --package=django --feed=private-pypi
+
+                For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-api-packages/proget-api-packages-list-versions
+                """;
 
             public static void Configure(ICommandBuilder builder)
             {

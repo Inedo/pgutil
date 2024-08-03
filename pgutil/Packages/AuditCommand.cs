@@ -10,6 +10,13 @@ internal partial class Program
         {
             public static string Name => "audit";
             public static string Description => "Analyze a package for compliance issues";
+            public static string Examples => """
+                  $> pgutil packages audit --feed=approved-nuget --package=Newtonsoft.Json --version=12.0.3
+
+                  $> pgutil packages audit --feed=public-npm --package=@babel/runtime --version=7.25.0
+
+                  $> pgutil packages audit --feed=private-pypi --package=Django --version=5.0.6 --filename=Django-5.0.6.tar.gz
+                """;
 
             public static void Configure(ICommandBuilder builder)
             {
