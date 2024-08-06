@@ -12,9 +12,7 @@ internal partial class Program
             public static string Description => "Display latest versions of packages in a feed";
             public static string Examples => """
                   $> pgutil packages list --feed=public-nuget
-
                   $> pgutil packages list --package=@babel/runtime --feed=approved-npm
-
                   $> pgutil packages list --package=Django --version=5.0.6 --feed=private-pypi --stable=true
 
                 For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-api-packages/proget-api-packages-list

@@ -12,9 +12,7 @@ internal partial class Program
             public static string Description => "Deletes a package from ProGet";
             public static string Examples => """
                   $> pgutil packages delete --feed=approved-npm --package=@babel/runtime --version=7.25.0
-
                   $> pgutil packages delete --feed=public-pypi --package=Django --version=5.0.6 --filename=Django-5.0.6.tar.gz
-
                   $> pgutil packages delete --feed=private-debian --package=debhelper --version=13.15.3 --component=main --distro=stable --arch=all
 
                 For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-api-packages/proget-api-packages-delete

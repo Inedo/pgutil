@@ -13,7 +13,6 @@ internal partial class Program
             public static string Description => "Adds a source to the configuration file";
             public static string Examples => """
                   $> pgutil sources add --name=Default --url=https://proget.corp.local/ --api-key=abc12345
-
                   $> pgutil sources add --name=main --url=https://inedo.corp.test/ --api-key=xyz7890abc
 
                 For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-pgutil#working-with-sources
