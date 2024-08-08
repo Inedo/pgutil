@@ -1,4 +1,5 @@
-﻿using ConsoleMan;
+﻿using System.Text.RegularExpressions;
+using ConsoleMan;
 using Inedo.ProGet;
 
 namespace PgUtil;
@@ -9,7 +10,7 @@ internal partial class Program
     {
         private sealed partial class DetectionCommand
         {
-            private sealed class AddCommand : IConsoleCommand
+            private sealed partial class AddCommand : IConsoleCommand
             {
                 public static string Name => "add";
                 public static string Description => "Adds a detection type to a license";
@@ -44,7 +45,7 @@ internal partial class Program
                             break;
 
                         case "url":
-                            urls = withValue(license.Urls, value);
+                            urls = withValue(license.Urls, readUrl(value));
                             break;
 
                         case "packagename":
@@ -80,6 +81,15 @@ internal partial class Program
 
                     return 0;
 
+                    static string readUrl(string url)
+                    {
+                        var m = UrlRegex().Match(url);
+                        if (m.Success)
+                            return m.Groups[1].Value;
+                        else
+                            return url;
+                    }
+
                     static List<string>? withValue(IReadOnlyList<string>? list, string value)
                     {
                         if (list is null || list.Count == 0)
@@ -88,6 +98,9 @@ internal partial class Program
                         return [.. list.Union([value], StringComparer.OrdinalIgnoreCase)];
                     }
                 }
+
+                [GeneratedRegex("^https?://(?<1>.+)$", RegexOptions.ExplicitCapture)]
+                private static partial Regex UrlRegex();
             }
         }
     }
