@@ -10,6 +10,13 @@ internal sealed partial class VulnsCommand
     {
         public static string Name => "audit";
         public static string Description => "List vulnerabilities associated with a project file";
+        public static string Examples => """
+              >$ pgutil vulns audit --project=c:\application-files\application.csproj
+
+              >$ pgutil vulns audit --project=c:\projects\abc-nuget-project.csproj --type=nuget
+
+            For more information, see: https://docs.inedo.com/docs/proget/reference-api/vulnerabilities/proget-api-vulnerabilties-audit
+            """;
 
         public static void Configure(ICommandBuilder builder)
         {

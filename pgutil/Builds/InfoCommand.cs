@@ -10,6 +10,11 @@ internal partial class Program
         {
             public static string Name => "info";
             public static string Description => "Show information about a build";
+            public static string Examples => """
+                  >$ pgutil builds info --build=4.5.0 --project=newApplication
+
+                For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-api-sca/builds/proget-api-sca-builds-get
+                """;
 
             public static void Configure(ICommandBuilder builder)
             {

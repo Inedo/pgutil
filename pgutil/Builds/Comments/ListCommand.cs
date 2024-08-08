@@ -12,6 +12,11 @@ internal partial class Program
             {
                 public static string Name => "list";
                 public static string Description => "List comments";
+                public static string Examples => """
+                      >$ pgutil builds comments list --project=testProject --build=2.2.4
+
+                    For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-api-sca/issues/proget-api-sca-comments-list
+                    """;
 
                 public static void Configure(ICommandBuilder builder)
                 {

@@ -10,6 +10,11 @@ internal partial class Program
         {
             public static string Name => "audit";
             public static string Description => "Analyzes a build and reports issues";
+            public static string Examples => """
+                  >$ pgutil builds audit --build=1.2.0 --project=testApplication
+
+                For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-api-sca/builds/proget-api-sca-builds-analyze
+                """;
 
             public static void Configure(ICommandBuilder builder)
             {

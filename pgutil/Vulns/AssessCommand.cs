@@ -8,6 +8,15 @@ internal sealed partial class VulnsCommand
     {
         public static string Name => "assess";
         public static string Description => "Assess a vulneability by specifying its ID";
+        public static string Examples => """
+              >$ pgutil vulns assess --id=PGV-1234567 --type=ignore
+
+              >$ pgutil vulns assess --id=PGV-7654321 --type=caution --policy=feedPolicy
+
+              >$ pgutil vulns assess --id=PGV-0987654 --type=blocked --comment="Package non-compliant" --policy=myPolicy
+
+            For more information, see: https://docs.inedo.com/docs/proget/reference-api/vulnerabilities/proget-api-vulnerabilties-assess
+            """;
 
         public static void Configure(ICommandBuilder builder)
         {

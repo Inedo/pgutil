@@ -13,6 +13,11 @@ internal partial class Program
             {
                 public static string Name => "create";
                 public static string Description => "Create a comment";
+                public static string Examples => """
+                      >$ pgutil builds comments create --project=newApplication --build=1.0.1 --comment="Checked for errors on 01/01"
+
+                    For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-api-sca/comments/proget-api-sca-comments-create
+                    """;
 
                 public static void Configure(ICommandBuilder builder)
                 {

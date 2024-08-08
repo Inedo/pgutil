@@ -12,6 +12,11 @@ internal partial class Program
             {
                 public static string Name => "resolve";
                 public static string Description => "Resolves an open issue";
+                public static string Examples => """
+                      >$ pgutil builds issues resolve --project=newApplication --build=1.0.1 --number=2
+
+                    For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-api-sca/issues/proget-api-sca-issues-resolve
+                    """;
 
                 public static void Configure(ICommandBuilder builder)
                 {
