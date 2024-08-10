@@ -14,6 +14,15 @@ internal partial class Program
             {
                 public static string Name => "add";
                 public static string Description => "Adds a detection type to a license";
+                public static string Examples => """
+                      $> pgutil licenses detection add --code=ABC-1.0 --type=purl --value=pkg:nuget/myNugetPackage@1.2.3
+
+                      $> pgutil licenses detection add --code=XYZ-2.0 --type=spdx --value=MIT
+
+                      $> pgutil licenses detection add --code=NewLicense --type=url --value=https://proget.corp.local
+
+                    For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-api-licenses/proget-api-licenses-update
+                    """;
 
                 public static void Configure(ICommandBuilder builder)
                 {

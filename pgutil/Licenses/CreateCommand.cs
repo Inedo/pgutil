@@ -11,6 +11,11 @@ internal partial class Program
         {
             public static string Name => "create";
             public static string Description => "Adds a license definition to ProGet";
+            public static string Examples => """
+                  $> pgutil licenses info --code=ABC-1.0 --title="ABC License v1.0"
+
+                For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-api-licenses/proget-api-licenses-create
+                """;
 
             public static void Configure(ICommandBuilder builder)
             {

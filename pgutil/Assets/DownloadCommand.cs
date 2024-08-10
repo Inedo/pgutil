@@ -10,6 +10,11 @@ internal partial class Program
         {
             public static string Name => "download";
             public static string Description => "Downloads an item to a file";
+            public static string Examples => """
+                  $> pgutil assets download --feed=development-assets --path=test-files/info.txt --output=C:\Inedo\test-files
+
+                For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-api-assets/file-endpoints/proget-api-assets-files-download
+                """;
 
             public static void Configure(ICommandBuilder builder)
             {

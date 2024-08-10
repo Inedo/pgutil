@@ -13,6 +13,11 @@ internal partial class Program
             {
                 public static string Name => "export";
                 public static string Description => "Export the contents of an asset directory folder to an archive file";
+                public static string Examples => """
+                      $> pgutil assets folder export --file=C:\Inedo\production-packages.zip --feed=production-assets --path=production-files
+
+                    For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-api-assets/folder-endpoints/proget-api-assets-folders-export
+                    """;
 
                 public static void Configure(ICommandBuilder builder)
                 {

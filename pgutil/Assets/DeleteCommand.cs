@@ -10,6 +10,17 @@ internal partial class Program
         {
             public static string Name => "delete";
             public static string Description => "Deletes a file or subdirectory in an asset directory";
+            public static string Examples => """
+                  $> pgutil assets delete --feed=development-assets --path=test-files/test-package.tgz
+
+                  $> pgutil assets delete --feed=production-assets --path=temp-folder
+
+                  $> pgutil assets delete --feed=test-assets --path=test-files --force
+
+                For more information, see:
+                  * https://docs.inedo.com/docs/proget/reference-api/proget-api-assets/file-endpoints/proget-api-assets-files-delete
+                  * https://docs.inedo.com/docs/proget/reference-api/proget-api-assets/folder-endpoints/proget-api-assets-folders-delete
+                """;
 
             public static void Configure(ICommandBuilder builder)
             {

@@ -13,6 +13,15 @@ internal partial class Program
             {
                 public static string Name => "remove";
                 public static string Description => "Removes a detection type from a license";
+                public static string Examples => """
+                  $> pgutil licenses detection remove --code=ABC-1.0 --type=purl --value=pkg:nuget/myNugetPackage@1.2.3
+
+                  $> pgutil licenses detection remove --code=XYZ-2.0 --type=spdx --value=MIT
+
+                  $> pgutil licenses detection remove --code=NewLicense --type=url --value=https://proget.corp.local
+
+                For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-api-licenses/proget-api-licenses-update
+                """;
 
                 public static void Configure(ICommandBuilder builder)
                 {

@@ -12,6 +12,11 @@ internal partial class Program
             {
                 public static string Name => "show";
                 public static string Description => "Displays the content of a license file";
+                public static string Examples => """
+                      $> pgutil licenses files show --code=MIT --hash=0630520a7440edc1e05c3f318eba0df31920d5b4ff0848ed10d7922b34eed796
+
+                    For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-api-licenses/proget-api-licenses-get
+                    """;
 
                 public static void Configure(ICommandBuilder builder)
                 {

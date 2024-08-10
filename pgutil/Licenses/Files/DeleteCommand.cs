@@ -12,6 +12,11 @@ internal partial class Program
             {
                 public static string Name => "delete";
                 public static string Description => "Removes a license file from ProGet";
+                public static string Examples => """
+                      $> pgutil licenses files delete --hash=00462de3d7b6f3e5551a69ae84344bc69d23c02e1353be3e8445d16f025e523b
+
+                    For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-api-licenses/proget-api-licenses-update
+                    """;
 
                 public static void Configure(ICommandBuilder builder)
                 {

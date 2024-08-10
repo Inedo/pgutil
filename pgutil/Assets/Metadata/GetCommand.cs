@@ -12,6 +12,11 @@ internal partial class Program
             {
                 public static string Name => "get";
                 public static string Description => "Display metadata for an asset";
+                public static string Examples => """
+                      $> pgutil assets metadata get --path=data-files/data.bin --feed=development-assets
+
+                    For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-api-assets/metadata-endpoints/proget-api-assets-metadata-get
+                    """;
 
                 public static void Configure(ICommandBuilder builder)
                 {
