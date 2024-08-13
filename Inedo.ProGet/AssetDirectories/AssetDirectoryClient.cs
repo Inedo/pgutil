@@ -237,7 +237,7 @@ public sealed partial class AssetDirectoryClient
         async Task uploadPart(int index, int size)
         {
             using var streamContent = new PartStreamContent(new PartStream(srcStream, size));
-            using var response = await this.httpClient.PostAsync($"{baseUrl}&multipart=upload&index={index}&offset={index * partSize}&totalSize={totalLength}&partSize={size}&totalParts={totalParts}", streamContent, cancellationToken).ConfigureAwait(false);
+            using var response = await this.httpClient.PostAsync($"{baseUrl}&multipart=upload&index={index}&offset={index * (long)partSize}&totalSize={totalLength}&partSize={size}&totalParts={totalParts}", streamContent, cancellationToken).ConfigureAwait(false);
             await ProGetClient.CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
         }
     }
