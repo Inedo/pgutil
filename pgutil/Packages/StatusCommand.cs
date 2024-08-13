@@ -13,9 +13,7 @@ internal partial class Program
             public static string Description => "Change the status of a package on ProGet";
             public static string Examples => """
                   $> pgutil packages status unlisted  --feed=public-nuget --package=Newtonsoft.Json --version=13.0.3 --state=listed
-
                   $> pgutil packages status deprecated --feed=approved-npm --package=@babel/runtime --version=7.21.0 --state=deprecated --reason=Updated
-
                   $> pgutil packages status blocked --feed=private-pypi --package=Django --version=5.0.6 --filename=Django-5.0.6.tar.gz --state=allowed
 
                 For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-api-packages/proget-api-packages-status
