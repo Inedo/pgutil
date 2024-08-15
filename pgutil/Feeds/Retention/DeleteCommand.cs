@@ -12,6 +12,11 @@ internal sealed partial class Program
             {
                 public static string Name => "delete";
                 public static string Description => "Deletes a retention rule from a feed";
+                public static string Examples => """
+                      $> pgutil feeds retention delete --feed=public-npm --rule=4
+
+                    For more information, see: https://docs.inedo.com/docs/proget/reference-api/feeds/proget-api-feeds/proget-api-feeds-update
+                    """;
 
                 public static void Configure(ICommandBuilder builder)
                 {

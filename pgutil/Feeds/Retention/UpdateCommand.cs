@@ -12,6 +12,15 @@ internal sealed partial class Program
             {
                 public static string Name => "update";
                 public static string Description => "Updates an existing retention rule";
+                public static string Examples => """
+                      $> pgutil feeds retention update --feed=public-nuget --deletePrereleaseVersions=true --rule=1
+
+                      $> pgutil feeds retention update --feed=approved-npm --keepUsedWithinDays= --rule=3
+
+                      $> pgutil feeds retention update --feed=public-pypi --deleteCached=true --keepVersionsCount=5 --rule=5
+
+                    For more information, see: https://docs.inedo.com/docs/proget/reference-api/feeds/proget-api-feeds/proget-api-feeds-update
+                    """;
 
                 public static void Configure(ICommandBuilder builder)
                 {

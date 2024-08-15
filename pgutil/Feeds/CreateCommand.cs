@@ -10,6 +10,11 @@ internal sealed partial class Program
         {
             public static string Name => "create";
             public static string Description => "Creates a feed";
+            public static string Examples => """
+                  $> pgutil feeds create --name=public-nuget --type=NuGet
+
+                For more information, see: https://docs.inedo.com/docs/proget/reference-api/feeds/proget-api-feeds/proget-api-feeds-create
+                """;
 
             public static void Configure(ICommandBuilder builder)
             {

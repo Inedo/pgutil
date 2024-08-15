@@ -10,6 +10,11 @@ internal sealed partial class Program
         {
             public static string Name => "delete";
             public static string Description => "Deletes a feed";
+            public static string Examples => """
+                  $> pgutil feeds create --name=public-npm
+
+                For more information, see: https://docs.inedo.com/docs/proget/reference-api/feeds/proget-api-feeds/proget-api-feeds-delete
+                """;
 
             public static void Configure(ICommandBuilder builder)
             {

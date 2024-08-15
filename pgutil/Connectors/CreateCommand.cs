@@ -11,6 +11,11 @@ internal sealed partial class Program
         {
             public static string Name => "create";
             public static string Description => "Creates a connector";
+            public static string Examples => """
+                  $> pgutil connectors create --name=nuget.org --type=NuGet --url=https://nuget.org
+
+                For more information, see: https://docs.inedo.com/docs/proget/reference-api/feeds/proget-api-connectors/proget-api-connectors-create
+                """;
 
             public static void Configure(ICommandBuilder builder)
             {

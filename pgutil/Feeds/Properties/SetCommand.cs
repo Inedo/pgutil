@@ -13,6 +13,15 @@ internal sealed partial class Program
             {
                 public static string Name => "set";
                 public static string Description => "Updates the value of a feed property";
+                public static string Examples => """
+                      $> pgutil feeds properties set --feed=approved-nuget --property=dropPath --value=c:\bulk-import\nuget-packages
+
+                      $> pgutil feeds properties set --feed=private-npm-nuget --property=connectors --value=registry.npmjs.org,nuget.org
+
+                      $> pgutil feeds properties set --feed=public-pypi --property=active --value=false
+
+                    For more information, see: https://docs.inedo.com/docs/proget/reference-api/feeds/proget-api-feeds/proget-api-feeds-update
+                    """;
 
                 public static void Configure(ICommandBuilder builder)
                 {

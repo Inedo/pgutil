@@ -10,6 +10,13 @@ internal sealed partial class Program
         {
             public static string Name => "list";
             public static string Description => "List feeds";
+            public static string Examples => """
+                  $> pgutil feeds list
+
+                  $> pgutil feeds list --inactive
+
+                For more information, see: https://docs.inedo.com/docs/proget/reference-api/feeds/proget-api-feeds/proget-api-feeds-list
+                """;
 
             public static void Configure(ICommandBuilder builder)
             {

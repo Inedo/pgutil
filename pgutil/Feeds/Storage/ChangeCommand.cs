@@ -16,13 +16,13 @@ internal sealed partial class Program
                 public static string Description => "Change feed storage configuration";
                 public static bool AllowAdditionalOptions => true;
                 public static string Examples => """
-                     > pgutil feeds storage change --feed=myPypiFeed --type=s3 --RegionEndpoint=us-east-1 --AccessKey=AKIAIOSFODNN7EXAMPLE --SecretAccessKey=wJalrXUtnFEMI/K7MDENG/bPxRfiCYKEY 
+                      $> pgutil feeds storage change --feed=approved-nuget --type=disk --StoragePath=C:\ProgramData\Proget\Packages
 
-                     > pgutil feeds storage change --feed=myNpmFeed --type=azure --ConnectionString=DefaultEndpointsProtocol=https;AccountName=myazurestorage;AccountKey=H+2dPzlkXN3k5r8GwS1o9YX3u5pAzU+8LWosFSQxBTG1CRl3q8k9ZjQz1qE1ZnxyG+0jl5vKlRjN2o2MWwzA==;EndpointSuffix=core.windows.net --ContainerName=projectdocuments --TargetPath=projectdocuments/uploads/2024/07/ 
+                      $> pgutil feeds storage change --feed=public-pypi --type=s3 --RegionEndpoint=us-east-1 --AccessKey=EXAMPLE --SecretAccessKey=XXXXXXXXXXXXXXXXXXXX
 
-                     > pgutil feeds storage change --feed=myNugetFeed --type=disk --StoragePath=C:\ProgramData\Proget\Packages 
+                      $> pgutil feeds storage change --feed=approved-npm --type=azure --ConnectionString=DefaultEndpointsProtocol=https;AccountName=myazurestorage;AccountKey=XXXXXXXXXXXXXXXXXXXXX;EndpointSuffix=core.windows.net --ContainerName=projectdocuments --TargetPath=projectdocuments/uploads/2024/07/
 
-                    For more information, see: https://docs.inedo.com/docs/proget/reference-api/feeds/proget-api-feeds/proget-api-feeds-storage-update 
+                    For more information, see: https://docs.inedo.com/docs/proget/reference-api/feeds/proget-api-feeds/proget-api-feeds-storage-update
                     """;
 
                 public static void Configure(ICommandBuilder builder)

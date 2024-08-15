@@ -12,6 +12,13 @@ internal sealed partial class Program
             {
                 public static string Name => "add";
                 public static string Description => "Adds a connector filter";
+                public static string Examples => """
+                      $> pgutil connectors filters add --connector=pypi.org --filter=!simplejson
+
+                      $> pgutil connectors filters add --connector=registry.npmjs.org --filter=Microsoft.*
+
+                    For more information, see: https://docs.inedo.com/docs/proget/reference-api/feeds/proget-api-connectors/proget-api-connectors-update
+                    """;
 
                 public static void Configure(ICommandBuilder builder)
                 {
