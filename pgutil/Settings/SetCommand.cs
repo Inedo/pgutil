@@ -4,12 +4,19 @@ namespace PgUtil;
 
 internal partial class Program
 {
-    internal sealed partial class SettingsCommand
+    private sealed partial class SettingsCommand
     {
         private sealed class SetCommand : IConsoleCommand
         {
             public static string Name => "set";
             public static string Description => "Sets the value of setting in ProGet";
+            public static string Examples => """
+                  $> pgutil settings set --name=Diagnostics.MinimumLogLevel --value=30
+
+                  $> pgutil settings set --name=Retention.KeepLatestExecutionCount --value=10
+
+                  $> pgutil settings set --name=Service.FeedReplicationExecuterThrottle --value=30
+                """;
 
             public static void Configure(ICommandBuilder builder)
             {
@@ -29,18 +36,18 @@ internal partial class Program
                 return 0;
             }
 
-            internal sealed class NameOption : IConsoleOption
+            private sealed class NameOption : IConsoleOption
             {
                 public static string Name => "--name";
                 public static string Description => "Name of the setting value to change";
                 public static bool Required => true;
             }
-            internal sealed class ValueOption : IConsoleOption
+
+            private sealed class ValueOption : IConsoleOption
             {
                 public static string Name => "--value";
                 public static string Description => "New value of the setting";
                 public static bool Required => false;
-
             }
         }
     }
