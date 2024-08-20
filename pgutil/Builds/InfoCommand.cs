@@ -9,7 +9,7 @@ internal partial class Program
         private sealed class InfoCommand : IConsoleCommand
         {
             public static string Name => "info";
-            public static string Description => "Show information about a build";
+            public static string Description => "Shows information about a build";
             public static string Examples => """
                   >$ pgutil builds info --build=4.5.0 --project=newApplication
 

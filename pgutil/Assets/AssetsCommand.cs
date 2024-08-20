@@ -7,7 +7,7 @@ internal partial class Program
     private sealed partial class AssetsCommand : IConsoleCommandContainer
     {
         public static string Name => "assets";
-        public static string Description => "Work with a ProGet asset directory";
+        public static string Description => "Works with a ProGet asset directory";
 
         public static void Configure(ICommandBuilder builder)
         {

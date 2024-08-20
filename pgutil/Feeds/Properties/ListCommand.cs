@@ -11,7 +11,7 @@ internal sealed partial class Program
             private sealed class ListCommand : IConsoleCommand
             {
                 public static string Name => "list";
-                public static string Description => "List properties of a feed";
+                public static string Description => "Lists properties of a feed";
                 public static string Examples => """
                       $> pgutil feeds properties list --feed=myNugetFeed
 

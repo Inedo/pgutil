@@ -11,7 +11,7 @@ internal partial class Program
             private sealed class DeleteCommand : IConsoleCommand
             {
                 public static string Name => "delete";
-                public static string Description => "Delete a comment";
+                public static string Description => "Deletes a comment";
                 public static string Examples => """
                       >$ pgutil builds comments delete --project=myProject --build=1.2.3 --number=4
 

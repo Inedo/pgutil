@@ -10,7 +10,7 @@ internal partial class Program
         private sealed class ScanCommand : IConsoleCommand
         {
             public static string Name => "scan";
-            public static string Description => "Generate a minimal SBOM from project dependencies and upload it to ProGet";
+            public static string Description => "Generates a minimal SBOM from project dependencies and uploads it to ProGet";
 
             public static void Configure(ICommandBuilder builder)
             {

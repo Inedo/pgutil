@@ -9,7 +9,7 @@ internal sealed partial class Program
         private sealed partial class FiltersCommand : IConsoleCommandContainer
         {
             public static string Name => "filters";
-            public static string Description => "List and update connector filters";
+            public static string Description => "Lists and updates connector filters";
 
             public static void Configure(ICommandBuilder builder)
             {

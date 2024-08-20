@@ -7,7 +7,7 @@ internal partial class Program
     internal sealed partial class SettingsCommand : IConsoleCommandContainer
     {
         public static string Name => "settings";
-        public static string Description => "Manage ProGet Settings";
+        public static string Description => "Manages ProGet Settings";
         public static void Configure(ICommandBuilder builder)
         {
             builder.WithOption<SourceOption>()

@@ -7,7 +7,7 @@ internal partial class Program
     private sealed partial class BuildsCommand : IConsoleCommandContainer
     {
         public static string Name => "builds";
-        public static string Description => "Manage SCA builds and SBOM documents";
+        public static string Description => "Manages SCA builds and SBOM documents";
         public static string Examples => """
               >$ pgutil builds create --build=1.0.0 --project=testApplication
 

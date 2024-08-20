@@ -12,7 +12,7 @@ internal partial class Program
             private sealed class ImportCommand : IConsoleCommand
             {
                 public static string Name => "import";
-                public static string Description => "Import the contents of a zip or tar archive to a folder";
+                public static string Description => "Imports the contents of a zip or tar archive to a folder";
                 public static string Examples => """
                       $> pgutil assets folder import --file=C:\Inedo\data-files\test-files.zip --path=test-files --feed=development-assets
 

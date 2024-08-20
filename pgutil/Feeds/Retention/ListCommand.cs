@@ -11,7 +11,7 @@ internal sealed partial class Program
             private sealed class ListCommand : IConsoleCommand
             {
                 public static string Name => "list";
-                public static string Description => "List retention rules on a feed";
+                public static string Description => "Lists retention rules on a feed";
                 public static string Examples => """
                       $> pgutil feeds retention list --feed=public-nuget
 

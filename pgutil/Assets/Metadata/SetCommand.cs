@@ -12,7 +12,7 @@ internal partial class Program
             private sealed class SetCommand : IConsoleCommandContainer
             {
                 public static string Name => "set";
-                public static string Description => "Set metadata for an asset";
+                public static string Description => "Sets metadata for an asset";
 
                 public static void Configure(ICommandBuilder builder)
                 {

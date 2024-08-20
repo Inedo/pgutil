@@ -9,7 +9,7 @@ internal partial class Program
         private sealed partial class MetadataCommand : IConsoleCommandContainer
         {
             public static string Name => "metadata";
-            public static string Description => "View or modify asset metadata";
+            public static string Description => "Views or modifies asset metadata";
 
             public static void Configure(ICommandBuilder builder)
             {

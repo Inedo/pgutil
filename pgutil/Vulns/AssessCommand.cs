@@ -7,7 +7,7 @@ internal sealed partial class VulnsCommand
     internal sealed class AssessCommand : IConsoleCommand
     {
         public static string Name => "assess";
-        public static string Description => "Assess a vulnerability by specifying its ID";
+        public static string Description => "Assesses a vulnerability by specifying its ID";
         public static string Examples => """
               >$ pgutil vulns assess --id=PGV-1234567 --type=ignore
 

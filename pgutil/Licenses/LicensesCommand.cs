@@ -7,7 +7,7 @@ internal partial class Program
     private sealed partial class LicensesCommand : IConsoleCommandContainer
     {
         public static string Name => "licenses";
-        public static string Description => "Manage license definitions and audit package licenses";
+        public static string Description => "Manages license definitions and audits package licenses";
 
         public static void Configure(ICommandBuilder builder)
         {

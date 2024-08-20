@@ -12,7 +12,7 @@ internal partial class Program
             private sealed class CreateCommand : IConsoleCommand
             {
                 public static string Name => "create";
-                public static string Description => "Create a comment";
+                public static string Description => "Creates a comment";
                 public static string Examples => """
                       >$ pgutil builds comments create --project=newApplication --build=1.0.1 --comment="Checked for errors on 01/01"
 
