@@ -12,7 +12,7 @@ internal partial class Program
             private sealed class CreateCommand : IConsoleCommand
             {
                 public static string Name => "create";
-                public static string Description => "Create or update project information";
+                public static string Description => "Creates or updates project information";
 
                 public static void Configure(ICommandBuilder builder)
                 {

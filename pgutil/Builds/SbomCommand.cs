@@ -10,7 +10,7 @@ internal partial class Program
         private sealed class SbomCommand : IConsoleCommand
         {
             public static string Name => "sbom";
-            public static string Description => "Generate a minimal SBOM document";
+            public static string Description => "Generates a minimal SBOM document";
 
             public static void Configure(ICommandBuilder builder)
             {

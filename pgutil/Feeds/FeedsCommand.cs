@@ -7,7 +7,7 @@ internal sealed partial class Program
     private sealed partial class FeedsCommand : IConsoleCommandContainer
     {
         public static string Name => "feeds";
-        public static string Description => "View and manage ProGet feeds";
+        public static string Description => "Views and manages ProGet feeds";
 
         public static void Configure(ICommandBuilder builder)
         {

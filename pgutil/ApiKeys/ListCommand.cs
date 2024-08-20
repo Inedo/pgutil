@@ -10,7 +10,7 @@ internal partial class Program
         private sealed class ListCommand : IConsoleCommand
         {
             public static string Name => "list";
-            public static string Description => "List API keys";
+            public static string Description => "Lists API keys";
 
             public static void Configure(ICommandBuilder builder)
             {

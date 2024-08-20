@@ -9,7 +9,7 @@ internal partial class Program
         private sealed partial class DetectionCommand : IConsoleCommandContainer
         {
             public static string Name => "detection";
-            public static string Description => "Add or remove license detection options";
+            public static string Description => "Adds or removes license detection options";
 
             public static void Configure(ICommandBuilder builder)
             {

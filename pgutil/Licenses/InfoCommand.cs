@@ -9,7 +9,7 @@ internal partial class Program
         private sealed class InfoCommand : IConsoleCommand
         {
             public static string Name => "info";
-            public static string Description => "Display information about a license";
+            public static string Description => "Displays information about a license";
             public static string Examples => """
                   $> pgutil licenses info --code=MIT
 

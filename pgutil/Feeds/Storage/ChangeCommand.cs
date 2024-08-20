@@ -13,7 +13,7 @@ internal sealed partial class Program
             private sealed partial class ChangeCommand : IConsoleCommand
             {
                 public static string Name => "change";
-                public static string Description => "Change feed storage configuration";
+                public static string Description => "Changes feed storage configuration";
                 public static bool AllowAdditionalOptions => true;
                 public static string Examples => """
                       $> pgutil feeds storage change --feed=approved-nuget --type=disk --StoragePath=C:\ProgramData\Proget\Packages

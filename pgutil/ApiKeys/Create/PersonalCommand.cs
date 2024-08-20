@@ -12,7 +12,7 @@ internal partial class Program
             private sealed class PersonalCommand : IConsoleCommand
             {
                 public static string Name => "personal";
-                public static string Description => "Creates a personal API key.  The key is the only thing written to stdout on success";
+                public static string Description => "Creates a personal API key. The key is the only thing written to stdout on success";
 
                 public static void Configure(ICommandBuilder builder)
                 {

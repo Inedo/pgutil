@@ -8,7 +8,7 @@ internal sealed partial class VulnsCommand
     internal sealed class PackageCommand : IConsoleCommand
     {
         public static string Name => "package";
-        public static string Description => "List vulnerabilities associated with a package";
+        public static string Description => "Lists vulnerabilities associated with a package";
 
         public static void Configure(ICommandBuilder builder)
         {

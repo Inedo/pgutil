@@ -10,7 +10,7 @@ internal partial class Program
         private sealed class TestCommand : IConsoleCommand
         {
             public static string Name => "test";
-            public static string Description => "Test the connection to a source";
+            public static string Description => "Tests the connection to a source";
 
             public static void Configure(ICommandBuilder builder)
             {

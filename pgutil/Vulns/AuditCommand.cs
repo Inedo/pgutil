@@ -9,7 +9,7 @@ internal sealed partial class VulnsCommand
     internal sealed class AuditCommand : IConsoleCommand
     {
         public static string Name => "audit";
-        public static string Description => "List vulnerabilities associated with a project file";
+        public static string Description => "Lists vulnerabilities associated with a project file";
         public static string Examples => """
               >$ pgutil vulns audit --project=c:\application-files\application.csproj
 

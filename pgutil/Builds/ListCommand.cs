@@ -9,7 +9,7 @@ internal partial class Program
         private sealed class ListCommand : IConsoleCommand
         {
             public static string Name => "list";
-            public static string Description => "List builds in a project";
+            public static string Description => "Lists builds in a project";
             public static string Examples => """
                   >$ pgutil builds list --project=newApplication
 
