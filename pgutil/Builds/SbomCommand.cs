@@ -11,6 +11,7 @@ internal partial class Program
         {
             public static string Name => "sbom";
             public static string Description => "Generates a minimal SBOM document";
+            public static bool Undisclosed => true;
 
             public static void Configure(ICommandBuilder builder)
             {
