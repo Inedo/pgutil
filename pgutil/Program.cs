@@ -37,15 +37,15 @@ internal sealed partial class Program : IConsoleCommandContainer
     public static void Configure(ICommandBuilder builder)
     {
         builder.WithCommand<SourcesCommand>()
+            .WithCommand<ApiKeysCommand>()
             .WithCommand<HealthCommand>()
             .WithCommand<PackagesCommand>()
-            .WithCommand<VulnsCommand>()
-            .WithCommand<BuildsCommand>()
-            .WithCommand<LicensesCommand>()
-            .WithCommand<ApiKeysCommand>()
-            .WithCommand<AssetsCommand>()
-            .WithCommand<SettingsCommand>()
             .WithCommand<FeedsCommand>()
-            .WithCommand<ConnectorsCommand>();
+            .WithCommand<ConnectorsCommand>()
+            .WithCommand<BuildsCommand>()            
+            .WithCommand<VulnsCommand>()
+            .WithCommand<LicensesCommand>()
+            .WithCommand<AssetsCommand>()
+            .WithCommand<SettingsCommand>();
     }
 }
