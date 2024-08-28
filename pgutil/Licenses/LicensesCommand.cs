@@ -15,12 +15,12 @@ internal partial class Program
                 .WithOption<ApiKeyOption>()
                 .WithOption<UserNameOption>()
                 .WithOption<PasswordOption>()
-                .WithCommand<ListCommand>()
-                .WithCommand<InfoCommand>()
                 .WithCommand<CreateCommand>()
-                .WithCommand<DeleteCommand>()
+                .WithCommand<InfoCommand>()
+                .WithCommand<ListCommand>()
+                .WithCommand<FilesCommand>()
                 .WithCommand<DetectionCommand>()
-                .WithCommand<FilesCommand>();
+                .WithCommand<DeleteCommand>();
         }
 
         private sealed class CodeOption : IConsoleOption
