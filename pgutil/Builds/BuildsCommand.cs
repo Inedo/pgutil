@@ -16,16 +16,16 @@ internal partial class Program
 
         public static void Configure(ICommandBuilder builder)
         {
-            builder.WithCommand<ListCommand>()
+            builder.WithCommand<CreateCommand>()
                 .WithCommand<InfoCommand>()
-                .WithCommand<CreateCommand>()
+                .WithCommand<ListCommand>()
                 .WithCommand<AuditCommand>()
-                .WithCommand<SbomCommand>()
-                .WithCommand<ScanCommand>()
                 .WithCommand<PromoteCommand>()
+                .WithCommand<ScanCommand>()
                 .WithCommand<ProjectsCommand>()
                 .WithCommand<IssuesCommand>()
-                .WithCommand<CommentsCommand>();
+                .WithCommand<CommentsCommand>()
+                .WithCommand<SbomCommand>();
         }
 
         private sealed class ProjectOption : IConsoleOption
