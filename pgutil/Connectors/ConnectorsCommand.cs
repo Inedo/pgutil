@@ -16,10 +16,10 @@ internal sealed partial class Program
                 .WithOption<UserNameOption>()
                 .WithOption<PasswordOption>()
                 .WithCommand<CreateCommand>()
-                .WithCommand<DeleteCommand>()
-                .WithCommand<ListCommand>()
                 .WithCommand<PropertiesCommand>()
-                .WithCommand<FiltersCommand>();
+                .WithCommand<ListCommand>()
+                .WithCommand<FiltersCommand>()
+                .WithCommand<DeleteCommand>();
         }
     }
 }
