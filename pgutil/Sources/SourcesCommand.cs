@@ -12,8 +12,8 @@ internal partial class Program
 
         public static void Configure(ICommandBuilder builder)
         {
-            builder.WithCommand<ListCommand>()
-                .WithCommand<AddCommand>()
+            builder.WithCommand<AddCommand>()
+                .WithCommand<ListCommand>()
                 .WithCommand<RemoveCommand>()
                 .WithCommand<TestCommand>();
         }

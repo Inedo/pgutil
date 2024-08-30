@@ -19,15 +19,15 @@ internal partial class Program
                 .WithOption<PasswordOption>()
                 .WithOption<FeedOption>()
                 .WithOption<NoConnectorsFlag>()
+                .WithCommand<LatestCommand>()
+                .WithCommand<VersionsCommand>()
                 .WithCommand<DownloadCommand>()
                 .WithCommand<UploadCommand>()
                 .WithCommand<DeleteCommand>()
                 .WithCommand<StatusCommand>()
                 .WithCommand<RepackageCommand>()
                 .WithCommand<PromoteCommand>()
-                .WithCommand<AuditCommand>()
-                .WithCommand<LatestCommand>()
-                .WithCommand<VersionsCommand>();
+                .WithCommand<AuditCommand>();
         }
 
         private sealed class PackageNameOption : IConsoleOption
