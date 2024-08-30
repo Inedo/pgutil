@@ -6,7 +6,7 @@ namespace PgUtil;
 internal sealed partial class VulnsCommand : IConsoleCommandContainer
 {
     public static string Name => "vulns";
-    public static string Description => "Audit packages and assess vulnerabilities";
+    public static string Description => "Audits packages and assesses vulnerabilities";
 
     public static void Configure(ICommandBuilder builder)
     {

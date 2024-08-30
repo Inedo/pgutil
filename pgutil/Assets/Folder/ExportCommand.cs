@@ -12,7 +12,7 @@ internal partial class Program
             private sealed class ExportCommand : IConsoleCommand
             {
                 public static string Name => "export";
-                public static string Description => "Export the contents of an asset directory folder to an archive file";
+                public static string Description => "Exports the contents of an asset directory folder to an archive file";
                 public static string Examples => """
                       $> pgutil assets folder export --file=C:\Inedo\production-packages.zip --feed=production-assets --path=production-files
 

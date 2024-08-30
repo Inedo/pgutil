@@ -7,7 +7,7 @@ internal partial class Program
     internal sealed partial class ApiKeysCommand : IConsoleCommandContainer
     {
         public static string Name => "apikeys";
-        public static string Description => "Manage ProGet API keys";
+        public static string Description => "Manages ProGet API keys";
         public static void Configure(ICommandBuilder builder)
         {
             builder.WithOption<SourceOption>()

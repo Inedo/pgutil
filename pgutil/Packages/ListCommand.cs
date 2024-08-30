@@ -9,7 +9,7 @@ internal partial class Program
         private sealed class LatestCommand : IConsoleCommand
         {
             public static string Name => "list";
-            public static string Description => "Display latest versions of packages in a feed";
+            public static string Description => "Displays latest versions of packages in a feed";
             public static string Examples => """
                   $> pgutil packages list --feed=public-nuget
                   $> pgutil packages list --package=@babel/runtime --feed=approved-npm

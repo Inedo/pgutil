@@ -9,7 +9,7 @@ internal partial class Program
         private sealed partial class CommentsCommand : IConsoleCommandContainer
         {
             public static string Name => "comments";
-            public static string Description => "View and manage build comments";
+            public static string Description => "Views and manages build comments";
 
             public static void Configure(ICommandBuilder builder)
             {

@@ -9,7 +9,7 @@ internal partial class Program
         private sealed partial class ProjectsCommand : IConsoleCommandContainer
         {
             public static string Name => "projects";
-            public static string Description => "View and manage projects";
+            public static string Description => "Views and manages projects";
 
             public static void Configure(ICommandBuilder builder)
             {

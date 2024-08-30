@@ -11,7 +11,7 @@ internal partial class Program
             private sealed class ListCommand : IConsoleCommand
             {
                 public static string Name => "list";
-                public static string Description => "List projects";
+                public static string Description => "Lists projects";
 
                 public static void Configure(ICommandBuilder builder)
                 {

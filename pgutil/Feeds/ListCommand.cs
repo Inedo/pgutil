@@ -9,7 +9,7 @@ internal sealed partial class Program
         private sealed class ListCommand : IConsoleCommand
         {
             public static string Name => "list";
-            public static string Description => "List feeds";
+            public static string Description => "Lists feeds";
             public static string Examples => """
                   $> pgutil feeds list
 

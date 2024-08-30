@@ -12,7 +12,16 @@ internal partial class Program
             private sealed class PersonalCommand : IConsoleCommand
             {
                 public static string Name => "personal";
-                public static string Description => "Creates a personal API key.  The key is the only thing written to stdout on success";
+                public static string Description => "Creates a personal API key. The key is the only thing written to stdout on success";
+                public static string Examples => """
+                      $> pgutil apikeys create personal --username=jrdobbs --password=hunter42
+
+                      $> pgutil apikeys create personal --user=johnsmith
+
+                      $> pgutil apikeys create personal --user=mikejones --name="Mike Jones" --description="API key for Mike Jones"
+
+                    For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-apikeys/proget-api-apikeys-create
+                    """;
 
                 public static void Configure(ICommandBuilder builder)
                 {

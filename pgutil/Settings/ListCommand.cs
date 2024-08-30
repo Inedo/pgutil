@@ -4,12 +4,17 @@ namespace PgUtil;
 
 internal partial class Program
 {
-    internal sealed partial class SettingsCommand
+    private sealed partial class SettingsCommand
     {
         private sealed class ListCommand : IConsoleCommand
         {
             public static string Name => "list";
             public static string Description => "Displays the settings displayed generally shown under Admin > Advanced Settings in ProGet";
+            public static string Examples => """
+                  $> pgutil settings list
+
+                  $> pgutil settings list --expanded
+                """;
 
             public static void Configure(ICommandBuilder builder)
             {
@@ -32,7 +37,7 @@ internal partial class Program
                     }
                     else
                     {
-                        CM.WriteLine($"{setting.Name}");
+                        CM.WriteLine(setting.Name);
                         CM.WriteTwoColumnList(
                             ("  Type:", setting.ValueType.ToString()),
                             ("  Desc:", setting.Description ?? "(not set)"),
@@ -45,13 +50,14 @@ internal partial class Program
                 return 0;
             }
 
-            internal sealed class ShowAllOption : IConsoleFlagOption
+            private sealed class ShowAllOption : IConsoleFlagOption
             {
                 public static string Name => "--show-all";
                 public static string Description => "Includes hidden settings";
                 public static bool Undisclosed => true;
             }
-            internal sealed class ExpandedOption : IConsoleFlagOption
+
+            private sealed class ExpandedOption : IConsoleFlagOption
             {
                 public static string Name => "--expanded";
                 public static string Description => "Include detail and type information about settings";

@@ -10,7 +10,7 @@ internal sealed partial class Program
         private sealed partial class RetentionCommand : IConsoleCommandContainer
         {
             public static string Name => "retention";
-            public static string Description => "List or modify feed retention rules";
+            public static string Description => "Lists or modifies feed retention rules";
 
             public static void Configure(ICommandBuilder builder)
             {

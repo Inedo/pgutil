@@ -13,6 +13,13 @@ internal partial class Program
             {
                 public static string Name => "system";
                 public static string Description => "Creates a system API key. The key is the only thing written to stdout on success";
+                public static string Examples => """
+                      $> pgutil apikeys create system --apis="feeds,sca" --expiration="2024/08/01" --description="Feeds & SCA"
+
+                      $> pgutil apikeys create system --apis="feeds" --key=feeds12345 --logging=both --name="Feeds Key" 
+
+                    For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-apikeys/proget-api-apikeys-create
+                    """;
 
                 public static void Configure(ICommandBuilder builder)
                 {

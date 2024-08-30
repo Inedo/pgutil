@@ -11,9 +11,17 @@ internal partial class Program
         {
             private sealed class FeedCommand : IConsoleCommand
             {
-                public readonly static string[] AvailablePackagePermissions = ["view", "add", "promote", "delete"];
+                private readonly static string[] AvailablePackagePermissions = ["view", "add", "promote", "delete"];
+
                 public static string Name => "feed";
                 public static string Description => "Creates a feed API key. The key is the only thing written to stdout on success";
+                public static string Examples => """
+                      $> pgutil apikeys create feed --feed=public-npm --permissions="view,add" --key=abcd12345
+
+                      $> pgutil apikeys create feed --group=production-feeds --key=wxyz67890 --expiration="2024/08/01"
+
+                    For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-apikeys/proget-api-apikeys-create
+                    """;
 
                 public static void Configure(ICommandBuilder builder)
                 {
@@ -35,7 +43,7 @@ internal partial class Program
                     _ = context.TryGetOption<FeedNameOption>(out var feed);
                     _ = context.TryGetOption<FeedGroupOption>(out var group);
 
-                    if ( (feed is not null && group is not null) || (feed is null && group is null) )
+                    if ((feed is not null && group is not null) || (feed is null && group is null))
                     {
                         CM.WriteError("either --feed or --group must be specified (but not both)");
                         context.WriteUsage();
@@ -44,9 +52,9 @@ internal partial class Program
 
                     var permissions = context.TryGetOption<PackagePermissionsOption>(out var permissionsValue)
                         ? permissionsValue.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-                        : FeedCommand.AvailablePackagePermissions;
-                    
-                    if (permissions.Length == 0 || permissions.Any(p => !FeedCommand.AvailablePackagePermissions.Contains(p)))
+                        : AvailablePackagePermissions;
+
+                    if (permissions.Length == 0 || permissions.Any(p => !AvailablePackagePermissions.Contains(p)))
                     {
                         CM.WriteError<PackagePermissionsOption>("an invalid value was specified");
                         context.WriteUsage();
@@ -75,23 +83,22 @@ internal partial class Program
                 {
                     public static bool Required => false;
                     public static string Name => "--permissions";
-                    public static string Description => 
-                        $"Specifies the package permissions to give access to when creating a feed API key. " +
-                        $"Value is a comma-separated list of any combination of: {{{string.Join(", ", FeedCommand.AvailablePackagePermissions)}}}";
+                    public static string Description => $"Specifies the package permissions to give access to when creating a feed API key. Value is a comma-separated list of any combination of: {{{string.Join(", ", AvailablePackagePermissions)}}}";
                 }
+
                 private sealed class FeedNameOption : IConsoleOption
                 {
                     public static bool Required => false;
                     public static string Name => "--feed";
                     public static string Description => "Name of the feed to associate with the key";
                 }
+
                 private sealed class FeedGroupOption : IConsoleOption
                 {
                     public static bool Required => false;
                     public static string Name => "--group";
                     public static string Description => "Name of the feed group to associate with the key";
                 }
-
             }
         }
     }

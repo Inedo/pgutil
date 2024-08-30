@@ -11,7 +11,7 @@ internal sealed partial class Program
             private sealed class ListCommand : IConsoleCommand
             {
                 public static string Name => "list";
-                public static string Description => "List connector filters";
+                public static string Description => "Lists connector filters";
                 public static string Examples => """
                       $> pgutil connectors filters list --connector=nuget.org
 

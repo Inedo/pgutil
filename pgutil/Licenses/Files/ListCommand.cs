@@ -11,7 +11,7 @@ internal partial class Program
             private sealed class ListCommand : IConsoleCommand
             {
                 public static string Name => "list";
-                public static string Description => "List license files known by ProGet";
+                public static string Description => "Lists license files known by ProGet";
 
                 public static void Configure(ICommandBuilder builder)
                 {

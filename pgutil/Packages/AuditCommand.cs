@@ -9,7 +9,7 @@ internal partial class Program
         private sealed class AuditCommand : IConsoleCommand
         {
             public static string Name => "audit";
-            public static string Description => "Analyze a package for compliance issues";
+            public static string Description => "Analyzes a package for compliance issues";
             public static string Examples => """
                   $> pgutil packages audit --feed=approved-nuget --package=Newtonsoft.Json --version=12.0.3
                   $> pgutil packages audit --feed=public-npm --package=@babel/runtime --version=7.25.0

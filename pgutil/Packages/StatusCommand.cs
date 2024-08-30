@@ -10,7 +10,7 @@ internal partial class Program
         private sealed class StatusCommand : IConsoleCommandContainer
         {
             public static string Name => "status";
-            public static string Description => "Change the status of a package on ProGet";
+            public static string Description => "Changes the status of a package on ProGet";
             public static string Examples => """
                   $> pgutil packages status unlisted  --feed=public-nuget --package=Newtonsoft.Json --version=13.0.3 --state=listed
                   $> pgutil packages status deprecated --feed=approved-npm --package=@babel/runtime --version=7.21.0 --state=deprecated --reason=Updated

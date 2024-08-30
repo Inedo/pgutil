@@ -9,7 +9,7 @@ internal partial class Program
         private sealed class DownloadCommand : IConsoleCommand
         {
             public static string Name => "download";
-            public static string Description => "Download a package file from ProGet";
+            public static string Description => "Downloads a package file from ProGet";
             public static string Examples => """
                  > pgutil packages download --feed=public-nuget --package=Newtonsoft.Json --version=13.0.3 --output-file=c:\myPackages\NuGetPackages\Newtonsoft.Json.13.0.3.nupkg 
                  > pgutil packages download --feed=approved-npm --package=@babel/runtime --version=7.25.0 --output-file=C:\npm-packages\package.tgz 

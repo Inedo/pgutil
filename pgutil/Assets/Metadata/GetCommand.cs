@@ -11,7 +11,7 @@ internal partial class Program
             private sealed class GetCommand : IConsoleCommand
             {
                 public static string Name => "get";
-                public static string Description => "Display metadata for an asset";
+                public static string Description => "Displays metadata for an asset";
                 public static string Examples => """
                       $> pgutil assets metadata get --path=data-files/data.bin --feed=development-assets
 

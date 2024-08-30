@@ -11,16 +11,26 @@ internal sealed partial class Program : IConsoleCommandContainer
 
     public static async Task<int> Main(string[] args)
     {
+        var latestVersion = UpdateChecker.GetLatestVersion();
+
         if (args.Length == 0)
         {
+            var currentVersion = typeof(Program).Assembly.GetName().Version;
+
             Console.Write(
                 $"""
                     .--. --. ..- - .. .-.. 
-                        pgutil v{typeof(Program).Assembly.GetName().Version:3}
+                        pgutil v{currentVersion:3}
                     .--. --. ..- - .. .-.. 
 
 
                 """);
+
+            if (latestVersion is not null && currentVersion < latestVersion)
+            {
+                CM.WriteLine(ConsoleColor.Blue, $"pgutil v{latestVersion} is now available.");
+                CM.WriteLine();
+            }
         }
 
         try

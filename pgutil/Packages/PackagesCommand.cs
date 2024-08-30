@@ -9,7 +9,7 @@ internal partial class Program
     private sealed partial class PackagesCommand : IConsoleCommandContainer
     {
         public static string Name => "packages";
-        public static string Description => "Work with packages on a ProGet server";
+        public static string Description => "Works with packages on a ProGet server";
 
         public static void Configure(ICommandBuilder builder)
         {

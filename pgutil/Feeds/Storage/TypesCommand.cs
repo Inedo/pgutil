@@ -11,7 +11,7 @@ internal sealed partial class Program
             private sealed class TypesCommand : IConsoleCommand
             {
                 public static string Name => "types";
-                public static string Description => "List storage types supported on this source";
+                public static string Description => "Lists storage types supported on this source";
 
                 public static void Configure(ICommandBuilder builder)
                 {

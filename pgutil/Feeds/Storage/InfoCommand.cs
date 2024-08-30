@@ -11,7 +11,7 @@ internal sealed partial class Program
             private sealed class InfoCommand : IConsoleCommand
             {
                 public static string Name => "info";
-                public static string Description => "Display storage configuration for a feed";
+                public static string Description => "Displays storage configuration for a feed";
                 public static string Examples => """
                       $> pgutil feeds storage info --feed=approved-nuget
 

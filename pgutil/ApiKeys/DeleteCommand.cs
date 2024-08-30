@@ -10,6 +10,11 @@ internal partial class Program
         {
             public static string Name => "delete";
             public static string Description => "Deletes an API key from ProGet";
+            public static string Examples => """
+                  $> pgutil apikeys delete --id=43
+
+                For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-apikeys/proget-api-apikeys-delete
+                """;
 
             public static void Configure(ICommandBuilder builder)
             {

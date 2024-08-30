@@ -9,7 +9,7 @@ internal sealed partial class Program
         private sealed partial class PropertiesCommand : IConsoleCommandContainer
         {
             public static string Name => "properties";
-            public static string Description => "List or modify values of feed properties";
+            public static string Description => "Lists or modifies values of feed properties";
 
             public static void Configure(ICommandBuilder builder)
             {

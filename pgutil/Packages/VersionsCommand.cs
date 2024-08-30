@@ -9,7 +9,7 @@ internal partial class Program
         private sealed class VersionsCommand : IConsoleCommand
         {
             public static string Name => "versions";
-            public static string Description => "Display all versions of packages in a feed";
+            public static string Description => "Displays all versions of packages in a feed";
             public static string Examples => """
                   $> pgutil packages versions --package=Newtonsoft.Json --feed=approved-nuget
                   $> pgutil packages versions --package=@babel/runtime --feed=public-npm --stable=true

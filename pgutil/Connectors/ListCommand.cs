@@ -9,7 +9,7 @@ internal sealed partial class Program
         private sealed class ListCommand : IConsoleCommand
         {
             public static string Name => "list";
-            public static string Description => "List connectors in ProGet";
+            public static string Description => "Lists connectors in ProGet";
 
             public static void Configure(ICommandBuilder builder)
             {

@@ -11,7 +11,7 @@ internal partial class Program
             private sealed class ListCommand : IConsoleCommand
             {
                 public static string Name => "list";
-                public static string Description => "List issues";
+                public static string Description => "Lists issues";
                 public static string Examples => """
                       >$ pgutil builds issues list --project=testApplication --build=1.2.0
 
