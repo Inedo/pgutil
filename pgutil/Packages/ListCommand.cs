@@ -32,7 +32,10 @@ internal partial class Program
                 _ = TryGetPackageName(context, out _, out var name, out var group);
 
                 await foreach (var p in client.ListLatestPackagesAsync(feed, name, group, context.HasFlag<StableOnlyFlag>(), cancellationToken))
-                    Console.WriteLine($"{p.Name} {p.Version}");
+                    if (string.IsNullOrEmpty(p.Group))
+                        Console.WriteLine($"{p.Name} {p.Version}");
+                    else
+                        Console.WriteLine($"{p.Group}/{p.Name} {p.Version}");
 
                 return 0;
             }
