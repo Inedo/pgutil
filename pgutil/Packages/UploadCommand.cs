@@ -14,6 +14,7 @@ internal partial class Program
                   $> pgutil packages upload --feed=approved-nuget --input-file=C:\development\nuget_packages\Newtonsoft.Json.13.0.3.nupkg
                   $> pgutil packages upload --feed=public-npm --input-file=C:\packages\npm_packages\package.tgz
                   $> pgutil packages upload --feed=approved-debian --input-file=C:\projects\project-packages\debhelper_13.15.3_all.deb --distribution=main
+                  $> pgutil packages upload --feed=internal-maven --input-file=my-app-1.1.jar --artifactPath=/com/my-company/my-app/1.1
 
                 For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-api-packages/proget-api-packages-upload
                 """;
@@ -22,7 +23,8 @@ internal partial class Program
             {
                 builder.WithOption<InputFileOption>()
                     .WithOption<StdInFlag>()
-                    .WithOption<DistributionOption>();
+                    .WithOption<DistributionOption>()
+                    .WithOption<ArtifactPathOption>();
             }
 
             public static async Task<int> ExecuteAsync(CommandContext context, CancellationToken cancellationToken)
@@ -37,6 +39,9 @@ internal partial class Program
                 var fileName = context.GetOptionOrDefault<InputFileOption>();
                 if (!string.IsNullOrEmpty(fileName))
                     fileName = Path.GetFileName(fileName);
+
+                if (context.TryGetOption<ArtifactPathOption>(out var artifactPath))
+                    fileName = $"{artifactPath.TrimEnd('/')}/{fileName}";
 
                 if (!Console.IsOutputRedirected && source.CanSeek)
                 {
@@ -113,6 +118,13 @@ internal partial class Program
                 public static bool Required => false;
                 public static string Name => "--distribution";
                 public static string Description => "Distribution of the package. Only applies to Debian packages (default is main)";
+            }
+
+            private sealed class ArtifactPathOption : IConsoleOption
+            {
+                public static bool Required => false;
+                public static string Name => "--artifactPath";
+                public static string Description => "Artifact path in the feed; only applies to Maven artifacts (required)";
             }
         }
     }
