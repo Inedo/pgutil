@@ -10,6 +10,11 @@ internal partial class Program
         {
             public static string Name => "promote";
             public static string Description => "Promotes a build to another stage";
+            public static string Examples => """
+                  $> pgutil builds promote --project=DataApplication --build=1.0.2 --stage=Test
+
+                For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-api-sca/builds/proget-api-sca-builds-list.md
+                """;
 
             public static void Configure(ICommandBuilder builder)
             {

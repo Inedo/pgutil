@@ -12,6 +12,11 @@ internal partial class Program
             public static string Name => "sbom";
             public static string Description => "Generates a minimal SBOM document";
             public static bool Undisclosed => true;
+            public static string Examples => """
+                  $> pgutil builds sbom --input=WebApplicationTool.csproj --output=C:\pgutil\output.xml --project-name="Web Application Tool" --version=1.2.3 
+
+                For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-api-sca/sbom/proget-api-sca-sbom-export
+                """;
 
             public static void Configure(ICommandBuilder builder)
             {
