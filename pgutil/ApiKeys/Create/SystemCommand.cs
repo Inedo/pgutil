@@ -35,9 +35,12 @@ internal partial class Program
                 {
                     var client = context.GetProGetClient();
 
-                    var apis = context.TryGetOption<ApisOption>(out var apiValue)
-                        ? apiValue.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-                        : ["full-control"];
+                    if (!context.TryGetOption<ApisOption>(out var apiValue))
+                        apiValue = "full-control";
+
+                    var apis = apiValue == "full-control"
+                        ? ["feeds", "sca", "sbom-upload"]
+                        : apiValue.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
                     if (apis.Length == 0 || apis.Any(a => a != "feeds" && a != "sca" && a != "sbom-upload"))
                     {

@@ -422,7 +422,7 @@ public sealed class ProGetClient
 
     public IAsyncEnumerable<ProjectInfo> ListProjectsAsync(CancellationToken cancellationToken = default)
     {
-        return this.ListItemsAsync("api/sca/builds", ProGetApiJsonContext.Default.ProjectInfo, cancellationToken);
+        return this.ListItemsAsync("api/sca/projects", ProGetApiJsonContext.Default.ProjectInfo, cancellationToken);
     }
     public Task<ProjectInfo> GetProjectAsync(string name, CancellationToken cancellationToken = default)
     {
