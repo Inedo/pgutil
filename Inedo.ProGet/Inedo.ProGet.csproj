@@ -6,7 +6,14 @@
     <IsAotCompatible>true</IsAotCompatible>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>CS1591</NoWarn>
-    <RepositoryUrl>https://github.com/Inedo/pgutil</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/Inedo/pgutil</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Inedo/pgutil.git</RepositoryUrl>
+    <Authors>Inedo</Authors>
+    <Company>Inedo</Company>
+    <Product>ProGet</Product>
+    <Copyright>Copyright © Inedo 2024</Copyright>
+    <PackageTags>proget</PackageTags>
     <RepositoryType>git</RepositoryType>
     <Description>A HTTP Client that wraps ProGet's HTTP Endpoints. 
 
