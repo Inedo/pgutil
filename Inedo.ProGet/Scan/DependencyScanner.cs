@@ -47,6 +47,8 @@ public abstract class DependencyScanner
         ArgumentNullException.ThrowIfNull(args.FileSystem);
         ArgumentNullException.ThrowIfNull(args.SourcePath);
 
+        args = args with { SourcePath = Path.Combine(Environment.CurrentDirectory, args.SourcePath) };
+
         if (type == DependencyScannerType.Auto)
         {
             type = GetImplicitType(args.SourcePath);
