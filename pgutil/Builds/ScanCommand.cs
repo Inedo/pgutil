@@ -14,7 +14,7 @@ internal partial class Program
             public static string Examples => """
                   $> pgutil builds scan --input=WebDataTool.csproj --project-name="Web Data Tool" --version=1.2.3
 
-                For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-api-sca/projects/proget-api-sca-projects-scan
+                For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-api-sca/builds/proget-api-sca-builds-scan
                 """;
 
             public static void Configure(ICommandBuilder builder)
@@ -27,7 +27,10 @@ internal partial class Program
                     .WithOption<ProjectNameOption>()
                     .WithOption<VersionOption>()
                     .WithOption<ProjectTypeOption>()
-                    .WithOption<IncludeProjectReferencesFlag>();
+                    .WithOption<IncludeProjectReferencesFlag>()
+                    .WithOption<IncludeDevDependenciesFlag>()
+                    .WithOption<DoNotScanNodeModulesFlag>()
+                    .WithOption<ScannerTypeOption>();
             }
 
             public static async Task<int> ExecuteAsync(CommandContext context, CancellationToken cancellationToken)
@@ -36,7 +39,13 @@ internal partial class Program
 
                 CM.WriteLine("Scanning for dependencies in ", new TextSpan(input, ConsoleColor.White), "...");
 
-                var scanner = DependencyScanner.GetScanner(new CreateDependencyScannerArgs(input, SourceFileSystem.Default, IncludeProjectReferences: context.HasFlag<IncludeProjectReferencesFlag>()));
+                var scanner = DependencyScanner.GetScanner(new CreateDependencyScannerArgs(
+                    input, 
+                    SourceFileSystem.Default, 
+                    IncludeProjectReferences: context.HasFlag<IncludeProjectReferencesFlag>(), 
+                    DoNotScanNodeModules: context.HasFlag<DoNotScanNodeModulesFlag>(),
+                    IncludeDevDependencies: context.HasFlag<IncludeDevDependenciesFlag>()
+                ), Enum.TryParse<DependencyScannerType>(context.GetOption<ScannerTypeOption>(), out var _type) ? _type : DependencyScannerType.Auto);
                 var projects = await scanner.ResolveDependenciesAsync(cancellationToken);
                 if (projects.Count == 0)
                 {

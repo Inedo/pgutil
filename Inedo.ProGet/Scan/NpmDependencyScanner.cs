@@ -4,7 +4,7 @@ namespace Inedo.DependencyScan;
 
 internal sealed class NpmDependencyScanner(CreateDependencyScannerArgs args) : DependencyScanner(args)
 {
-    private readonly bool packageLockOnly = args.PackageLockOnly;
+    private readonly bool packageLockOnly = args.DoNotScanNodeModules;
     private readonly bool includeDevDependencies = args.IncludeDevDependencies;
 
     public override DependencyScannerType Type => DependencyScannerType.Npm;
