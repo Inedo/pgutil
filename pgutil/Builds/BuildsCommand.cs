@@ -44,9 +44,9 @@ internal partial class Program
 
         private sealed class InputOption : IConsoleOption
         {
-            public static bool Required => true;
+            public static bool Required => false;
             public static string Name => "--input";
-            public static string Description => "Project to scan for dependencies";
+            public static string Description => "Project to scan for dependencies (default=/)";
         }
 
         private sealed class ProjectNameOption : IConsoleOption

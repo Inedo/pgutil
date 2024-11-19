@@ -40,20 +40,27 @@ public abstract class DependencyScanner
     /// </summary>
     /// <param name="args">Options for the dependency scanner.</param>
     /// <param name="type">Type of project to scan for.</param>
+    /// <param name="cancellationToken">Cancellation token</param>
     /// <returns><see cref="DependencyScanner"/> for the specified path.</returns>
-    public static DependencyScanner GetScanner(CreateDependencyScannerArgs args, DependencyScannerType type = DependencyScannerType.Auto)
+    public static async Task<DependencyScanner> GetScannerAsync(CreateDependencyScannerArgs args, DependencyScannerType type = DependencyScannerType.Auto, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(args);
         ArgumentNullException.ThrowIfNull(args.FileSystem);
-        ArgumentNullException.ThrowIfNull(args.SourcePath);
 
         args = args with { SourcePath = Path.Combine(Environment.CurrentDirectory, args.SourcePath) };
 
         if (type == DependencyScannerType.Auto)
         {
-            type = GetImplicitType(args.SourcePath);
+            var (scannerType, filePath) = await GetImplicitTypeAsync(args.FileSystem, args.SourcePath, cancellationToken).ConfigureAwait(false);
+            type = scannerType;
+            args = args with { SourcePath = filePath };
             if (type == DependencyScannerType.Auto)
                 throw new DependencyScannerException("Could not automatically determine project type.");
+        }
+        else if (string.IsNullOrWhiteSpace(args.SourcePath))
+        {
+            var file = await GetImplicitFileAsync(type, args.SourcePath, cancellationToken).ConfigureAwait(false);
+            args = args with { SourcePath = file };
         }
 
         return type switch
@@ -77,15 +84,75 @@ public abstract class DependencyScanner
         }
     }
 
-    private static DependencyScannerType GetImplicitType(string fileName)
+    private static async Task<string> GetImplicitFileAsync(DependencyScannerType scannerType, string folder, CancellationToken cancellationToken = default)
     {
+        if (scannerType == DependencyScannerType.Npm)
+            return folder;
+        else if (scannerType == DependencyScannerType.NuGet)
+        {
+            var files = await SourceFileSystem.Default.FindFilesAsync(folder, "*.sln", true, cancellationToken).ToListAsync(cancellationToken);
+            if (files.Count == 1)
+                return files[0].FullName;
+            if (files.Count > 1)
+                throw new DependencyScannerException("Multiple solution files found in directory.  Specify which solution file you would like to scan be using \"--input\" argument.");
+            files = await SourceFileSystem.Default.FindFilesAsync(folder, "*.csproj", true, cancellationToken).ToListAsync(cancellationToken);
+            if (files.Count == 1)
+                return files[0].FullName;
+            if (files.Count > 1)
+                throw new DependencyScannerException("Multiple project files found in directory.  Specify which project file you would like to scan be using \"--input\" argument.");
+            throw new DependencyScannerException("No solution or project files found in directory. Specify which file you would like to scan be using \"--input\" argument.");
+        }
+        else if (scannerType == DependencyScannerType.PyPI || scannerType == DependencyScannerType.Conda)
+        {
+            var files = await SourceFileSystem.Default.FindFilesAsync(folder, "requirements.txt", true, cancellationToken).ToListAsync(cancellationToken);
+            if (files.Count == 1)
+                return files[0].FullName; 
+            if (files.Count > 1)
+                throw new DependencyScannerException("Multiple requirements.txt files found in directory.  Specify which requirements.txt file you would like to scan be using \"--input\" argument.");
+
+            throw new DependencyScannerException("No solution or project files found in directory. Specify which file you would like to scan be using \"--input\" argument.");
+        }
+        throw new DependencyScannerException("Could not automatically determine project type.");
+    }
+
+    private static async Task<(DependencyScannerType scannerType, string filePath)> GetImplicitTypeAsync(ISourceFileSystem fileSystem, string fileName, CancellationToken cancellationToken = default)
+    {
+        if(File.GetAttributes(fileName).HasFlag(FileAttributes.Directory))
+        {
+            var files = await fileSystem.FindFilesAsync(fileName, "*.sln", true, cancellationToken).ToListAsync(cancellationToken);
+            if(files.Count == 1)
+                return (scannerType: DependencyScannerType.NuGet, filePath: files[0].FullName);
+            else if (files.Count > 1)
+                throw new DependencyScannerException("Multiple solution files found in directory.  Specify which solution file you would like to scan be using \"--input\" argument.");
+
+            files = await fileSystem.FindFilesAsync(fileName, "*.csproj", true, cancellationToken).ToListAsync(cancellationToken);
+            if(files.Count == 1)
+                return (scannerType: DependencyScannerType.NuGet, filePath: files[0].FullName);
+            else if (files.Count > 1)
+                throw new DependencyScannerException("Multiple project files found in directory.  Specify which project file you would like to scan be using \"--input\" argument.");
+
+            files = await fileSystem.FindFilesAsync(fileName, "package-lock.json", true, cancellationToken).ToListAsync(cancellationToken);
+            if(files.Count > 0)
+                return (scannerType: DependencyScannerType.Npm, filePath: fileName);
+
+            files = await fileSystem.FindFilesAsync(fileName, "requirements.txt", true, cancellationToken).ToListAsync(cancellationToken);
+            if (files.Count == 1)
+            {
+                var type = getPythonScannerType(files[0].FullName);
+                return (scannerType: type, filePath: files[0].FullName);
+            }
+            else if (files.Count > 1)
+                throw new DependencyScannerException("Multiple requirements.txt files found in directory.  Specify which requirements.text file you would like to scan be using \"--input\" argument.");
+
+            return (DependencyScannerType.Auto, fileName);
+        }
+
         return Path.GetExtension(fileName).ToLowerInvariant() switch
         {
-            ".sln" or ".csproj" => DependencyScannerType.NuGet,
-            ".json" => DependencyScannerType.Npm,
-            _ => Path.GetFileName(fileName).Equals("requirements.txt", StringComparison.OrdinalIgnoreCase) ? getPythonScannerType(fileName) : DependencyScannerType.Auto
+            ".sln" or ".csproj" => (DependencyScannerType.NuGet, fileName),
+            ".json" => (DependencyScannerType.Npm, fileName),
+            _ => Path.GetFileName(fileName).Equals("requirements.txt", StringComparison.OrdinalIgnoreCase) ? (getPythonScannerType(fileName), fileName) : (DependencyScannerType.Auto, fileName)
         };
-
         static DependencyScannerType getPythonScannerType(string fileName)
         {
             try

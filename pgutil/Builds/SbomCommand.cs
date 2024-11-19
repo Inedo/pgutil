@@ -34,7 +34,7 @@ internal partial class Program
 
                 CM.WriteLine("Scanning for dependencies in ", new TextSpan(input, ConsoleColor.White), "...");
 
-                var scanner = DependencyScanner.GetScanner(new CreateDependencyScannerArgs(input, SourceFileSystem.Default, IncludeProjectReferences: context.HasFlag<IncludeProjectReferencesFlag>()));
+                var scanner = await DependencyScanner.GetScannerAsync(new CreateDependencyScannerArgs(input, SourceFileSystem.Default, IncludeProjectReferences: context.HasFlag<IncludeProjectReferencesFlag>()));
                 var projects = await scanner.ResolveDependenciesAsync(cancellationToken);
                 if (projects.Count == 0)
                 {

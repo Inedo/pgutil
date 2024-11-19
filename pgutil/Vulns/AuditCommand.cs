@@ -48,7 +48,7 @@ internal sealed partial class VulnsCommand
 
             CM.WriteLine("Scanning for dependencies in ", new TextSpan(input, ConsoleColor.White), "...");
 
-            var scanner = DependencyScanner.GetScanner(new CreateDependencyScannerArgs(input, SourceFileSystem.Default), scannerType);
+            var scanner = await DependencyScanner.GetScannerAsync(new CreateDependencyScannerArgs(input, SourceFileSystem.Default), scannerType);
             var projects = await scanner.ResolveDependenciesAsync(cancellationToken);
             if (projects.Count == 0)
             {
