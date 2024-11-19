@@ -21,4 +21,8 @@ This is essentially the .NET-library version of pgutil, and is built from the pg
 
 To learn how to use the library, see [Getting Started with Inedo.NuGet](https://docs.inedo.com/docs/proget-reference-api#net-library-nuget-package).</Description>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Linq.Async" Version="6.0.1" />
+    <PackageReference Include="tomlyn.signed" Version="0.17.0" />
+  </ItemGroup>
 </Project>

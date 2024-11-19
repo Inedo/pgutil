@@ -36,9 +36,9 @@ internal partial class Program
 
             public static async Task<int> ExecuteAsync(CommandContext context, CancellationToken cancellationToken)
             {
-                var input = context.GetOption<InputOption>();
+               context.TryGetOption<InputOption>(out var input);
 
-                CM.WriteLine("Scanning for dependencies in ", new TextSpan(input, ConsoleColor.White), "...");
+                CM.WriteLine("Scanning for dependencies in ", new TextSpan(input ?? Environment.CurrentDirectory, ConsoleColor.White), "...");
                 var scannerType = Enum.TryParse<DependencyScannerType>(context.GetOption<ScannerTypeOption>(), out var _type) ? _type : DependencyScannerType.Auto;
                 var scanner = await DependencyScanner.GetScannerAsync(new CreateDependencyScannerArgs(
                     input ?? string.Empty, 

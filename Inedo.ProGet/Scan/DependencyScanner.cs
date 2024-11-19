@@ -69,6 +69,7 @@ public abstract class DependencyScanner
             DependencyScannerType.Npm => new NpmDependencyScanner(args),
             DependencyScannerType.PyPI => new PypiDependencyScanner(args),
             DependencyScannerType.Conda => new CondaDependencyScanner(args),
+            DependencyScannerType.Cargo => new CargoDependencyScanner(args),
             _ => throw new ArgumentOutOfRangeException(nameof(type))
         };
     }
@@ -87,6 +88,8 @@ public abstract class DependencyScanner
     private static async Task<string> GetImplicitFileAsync(DependencyScannerType scannerType, string folder, CancellationToken cancellationToken = default)
     {
         if (scannerType == DependencyScannerType.Npm)
+            return folder;
+        else if (scannerType == DependencyScannerType.Cargo)
             return folder;
         else if (scannerType == DependencyScannerType.NuGet)
         {
@@ -110,7 +113,7 @@ public abstract class DependencyScanner
             if (files.Count > 1)
                 throw new DependencyScannerException("Multiple requirements.txt files found in directory.  Specify which requirements.txt file you would like to scan be using \"--input\" argument.");
 
-            throw new DependencyScannerException("No solution or project files found in directory. Specify which file you would like to scan be using \"--input\" argument.");
+            throw new DependencyScannerException("No requirements.txt files found in directory. Specify which file you would like to scan be using \"--input\" argument.");
         }
         throw new DependencyScannerException("Could not automatically determine project type.");
     }
@@ -134,6 +137,9 @@ public abstract class DependencyScanner
             files = await fileSystem.FindFilesAsync(fileName, "package-lock.json", true, cancellationToken).ToListAsync(cancellationToken);
             if(files.Count > 0)
                 return (scannerType: DependencyScannerType.Npm, filePath: fileName);
+            files = await fileSystem.FindFilesAsync(fileName, "Cargo.lock", true, cancellationToken).ToListAsync(cancellationToken);
+            if(files.Count > 0)
+                return (scannerType: DependencyScannerType.Cargo, filePath: fileName);
 
             files = await fileSystem.FindFilesAsync(fileName, "requirements.txt", true, cancellationToken).ToListAsync(cancellationToken);
             if (files.Count == 1)

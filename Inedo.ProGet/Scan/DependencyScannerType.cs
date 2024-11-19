@@ -24,5 +24,9 @@ public enum DependencyScannerType
     /// <summary>
     /// Conda.
     /// </summary>
-    Conda
+    Conda,
+    /// <summary>
+    /// Cargo.
+    /// </summary>
+    Cargo
 }
