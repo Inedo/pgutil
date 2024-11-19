@@ -96,5 +96,11 @@ internal partial class Program
             public static string Description => "Type of project scanner to use; auto, npm, NuGet, PyPI, or Conda (default=auto)";
             public static string DefaultValue => "auto";
         }
+        
+        private sealed class DoNotAuditFlag : IConsoleFlagOption
+        {
+            public static string Name => "--noaudit";
+            public static string Description => "Do not run audit after scan";
+        }
     }
 }

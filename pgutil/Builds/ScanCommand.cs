@@ -30,7 +30,8 @@ internal partial class Program
                     .WithOption<IncludeProjectReferencesFlag>()
                     .WithOption<IncludeDevDependenciesFlag>()
                     .WithOption<DoNotScanNodeModulesFlag>()
-                    .WithOption<ScannerTypeOption>();
+                    .WithOption<ScannerTypeOption>()
+                    .WithOption<DoNotAuditFlag>();
             }
 
             public static async Task<int> ExecuteAsync(CommandContext context, CancellationToken cancellationToken)
@@ -65,7 +66,42 @@ internal partial class Program
                 await client.PublishSbomAsync(projects, consumer, context.GetOption<ProjectTypeOption>(), scanner.Type.ToString().ToLowerInvariant(), cancellationToken);
                 CM.WriteLine("SBOM published.");
 
-                return 0;
+                if(context.HasFlag<DoNotAuditFlag>())
+                    return 0;
+
+                CM.WriteLine("Auditing ", new TextSpan($"{consumer.Name} {consumer.Version}", ConsoleColor.White), "...");
+                var results = await client.AuditBuildAsync(consumer.Name, consumer.Version, cancellationToken);
+                if (results.LastAnalyzedDate.HasValue)
+                {
+                    CM.WriteLine("Analyzed: ", new TextSpan(results.LastAnalyzedDate.Value.ToLocalTime().ToString(), ConsoleColor.White));
+                    CM.WriteLine(
+                        "Status: ",
+                        new TextSpan(
+                            results.StatusText,
+                            results.StatusCode switch
+                            {
+                                "N" when results.UnresolvedIssueCount == 0 => ConsoleColor.Blue,
+                                "N" => ConsoleColor.Red,
+                                "W" => ConsoleColor.DarkYellow,
+                                "I" => ConsoleColor.Yellow,
+                                _ => ConsoleColor.Green
+                            }
+                        )
+                    );
+
+                    return results.StatusCode switch
+                    {
+                        "N" when results.UnresolvedIssueCount == 0 => 0,
+                        "N" => -1,
+                        _ => 0
+                    };
+                }
+                else
+                {
+                    // this should not happen
+                    CM.WriteError("ProGet reported that the build was not analyzed.");
+                    return -1;
+                }
             }
         }
     }
