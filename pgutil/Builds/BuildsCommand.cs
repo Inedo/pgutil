@@ -93,7 +93,7 @@ internal partial class Program
         {
             public static bool Required => false;
             public static string Name => "--scanner-type";
-            public static string Description => "Type of project scanner to use; auto, npm, NuGet, PyPI, or Conda (default=auto)";
+            public static string Description => "Type of project scanner to use; auto, npm, NuGet, PyPI, Conda, or Cargo (default=auto)";
             public static string DefaultValue => "auto";
         }
         
