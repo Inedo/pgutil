@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Text;
+using Inedo.ProGet.Scan;
 
 namespace Inedo.DependencyScan;
 
@@ -70,6 +71,7 @@ public abstract class DependencyScanner
             DependencyScannerType.PyPI => new PypiDependencyScanner(args),
             DependencyScannerType.Conda => new CondaDependencyScanner(args),
             DependencyScannerType.Cargo => new CargoDependencyScanner(args),
+            DependencyScannerType.Composer => new ComposerDependencyScanner(args),
             _ => throw new ArgumentOutOfRangeException(nameof(type))
         };
     }
@@ -90,6 +92,8 @@ public abstract class DependencyScanner
         if (scannerType == DependencyScannerType.Npm)
             return folder;
         else if (scannerType == DependencyScannerType.Cargo)
+            return folder;
+        else if (scannerType == DependencyScannerType.Composer)
             return folder;
         else if (scannerType == DependencyScannerType.NuGet)
         {
@@ -137,9 +141,14 @@ public abstract class DependencyScanner
             files = await fileSystem.FindFilesAsync(fileName, "package-lock.json", true, cancellationToken).ToListAsync(cancellationToken);
             if(files.Count > 0)
                 return (scannerType: DependencyScannerType.Npm, filePath: fileName);
+            
             files = await fileSystem.FindFilesAsync(fileName, "Cargo.lock", true, cancellationToken).ToListAsync(cancellationToken);
             if(files.Count > 0)
                 return (scannerType: DependencyScannerType.Cargo, filePath: fileName);
+            
+            files = await fileSystem.FindFilesAsync(fileName, "composer.lock", true, cancellationToken).ToListAsync(cancellationToken);
+            if(files.Count > 0)
+                return (scannerType: DependencyScannerType.Composer, filePath: fileName);
 
             files = await fileSystem.FindFilesAsync(fileName, "requirements.txt", true, cancellationToken).ToListAsync(cancellationToken);
             if (files.Count == 1)
@@ -156,7 +165,9 @@ public abstract class DependencyScanner
         return Path.GetExtension(fileName).ToLowerInvariant() switch
         {
             ".sln" or ".csproj" => (DependencyScannerType.NuGet, fileName),
-            ".json" => (DependencyScannerType.Npm, fileName),
+            ".toml" => (DependencyScannerType.Cargo, fileName),
+            ".lock" => Path.GetFileName(fileName).Equals("Cargo.lock", StringComparison.OrdinalIgnoreCase) ? (DependencyScannerType.Cargo, fileName) : (DependencyScannerType.Composer, fileName),
+            ".json" => Path.GetFileName(fileName).Equals("composer.json", StringComparison.OrdinalIgnoreCase) ? (DependencyScannerType.Composer, fileName) : (DependencyScannerType.Npm, fileName),
             _ => Path.GetFileName(fileName).Equals("requirements.txt", StringComparison.OrdinalIgnoreCase) ? (getPythonScannerType(fileName), fileName) : (DependencyScannerType.Auto, fileName)
         };
         static DependencyScannerType getPythonScannerType(string fileName)

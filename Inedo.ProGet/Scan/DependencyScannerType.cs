@@ -28,5 +28,9 @@ public enum DependencyScannerType
     /// <summary>
     /// Cargo.
     /// </summary>
-    Cargo
+    Cargo,
+    /// <summary>
+    /// Cargo.
+    /// </summary>
+    Composer
 }

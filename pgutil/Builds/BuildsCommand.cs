@@ -80,7 +80,7 @@ internal partial class Program
         private sealed class IncludeDevDependenciesFlag : IConsoleFlagOption
         {
             public static string Name => "--include-dev-dependencies";
-            public static string Description => "Include npm development dependencies from the package-lock.json file in the generated SBOM document";
+            public static string Description => "Include development dependencies for npm or composer in the generated SBOM document";
         }
 
         private sealed class DoNotScanNodeModulesFlag : IConsoleFlagOption
@@ -93,7 +93,7 @@ internal partial class Program
         {
             public static bool Required => false;
             public static string Name => "--scanner-type";
-            public static string Description => "Type of project scanner to use; auto, npm, NuGet, PyPI, Conda, or Cargo (default=auto)";
+            public static string Description => "Type of project scanner to use; auto, npm, NuGet, PyPI, Conda, Composer, or Cargo (default=auto)";
             public static string DefaultValue => "auto";
         }
         
