@@ -44,6 +44,15 @@ public sealed class BuildInfo
     // An absolute URL for the build overview page
     public required string ViewBuildUrl { get; init; }
 
+    // Timestamp when the build was created
+    public DateTime? Created { get; init; }
+
+    // Release number field
+    public string? Release { get; init; }
+
+    // Current stage of the build
+    public string? Stage { get; init; }
+
     public BuildComment[]? Comments { get; init; }
 
     public BuildPackage[]? Packages { get; init; }

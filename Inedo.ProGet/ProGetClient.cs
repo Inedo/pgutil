@@ -528,23 +528,16 @@ public sealed class ProGetClient
         using var reader = new StreamReader(stream, Encoding.UTF8);
         throw new ProGetApiException(response.StatusCode, reader.ReadToEnd());
     }
-    internal static Task CheckResponseAsync(HttpResponseMessage response, CancellationToken cancellationToken)
-        => CheckResponseAsync(response, null, null, cancellationToken);
+    internal static Task CheckResponseAsync(HttpResponseMessage response, CancellationToken cancellationToken) => CheckResponseAsync(response, null, null, cancellationToken);
     private static async Task CheckResponseAsync(HttpResponseMessage response, Version? versionRequired, ProGetEdition? editionRequired, CancellationToken cancellationToken)
     {
         if (response.IsSuccessStatusCode)
             return;
 
-        if (versionRequired is not null
-            && response.Headers.TryGetValues("X-ProGet-Version", out var versionHeaders)
-            && Version.TryParse(versionHeaders.FirstOrDefault(), out var version)
-            && versionRequired > version)
+        if (versionRequired is not null && response.Headers.TryGetValues("X-ProGet-Version", out var versionHeaders) && Version.TryParse(versionHeaders.FirstOrDefault(), out var version) && versionRequired > version)
             throw new ProGetVersionRequiredException(versionRequired, version);
 
-        if (editionRequired is not null
-            && response.Headers.TryGetValues("X-ProGet-Edition", out var editionHeaders)
-            && Enum.TryParse<ProGetEdition>(editionHeaders.FirstOrDefault(), true, out var edition)
-            && edition <= editionRequired)
+        if (editionRequired is not null && response.Headers.TryGetValues("X-ProGet-Edition", out var editionHeaders) && Enum.TryParse<ProGetEdition>(editionHeaders.FirstOrDefault(), true, out var edition) && edition <= editionRequired)
             throw new ProGetEditionRequiredException(editionRequired.Value, edition);
 
         var message = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);

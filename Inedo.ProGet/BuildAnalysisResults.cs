@@ -7,4 +7,5 @@ public sealed class BuildAnalysisResults
     public int? IssueCount { get; init; }
     public int? UnresolvedIssueCount { get; init; }
     public required string StatusText { get; init; }
+    public int? TotalPackages { get; init; }
 }
