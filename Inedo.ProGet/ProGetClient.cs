@@ -519,6 +519,30 @@ public sealed class ProGetClient
         return this.PostAsync($"api/storage?feed={Uri.EscapeDataString(feedName)}", configuration, ProGetApiJsonContext.Default.FeedStorageConfiguration, cancellationToken);
     }
 
+    public IAsyncEnumerable<UniversalPackageInfo> ListUniversalPackageVersions(string feedName, string group, string name, CancellationToken cancellationToken)
+    {
+        return this.ListItemsAsync($"upack/{Uri.EscapeDataString(feedName)}/versions?group={Uri.EscapeDataString(group)}&name={Uri.EscapeDataString(name)}", ProGetApiJsonContext.Default.UniversalPackageInfo, cancellationToken);
+    }
+    public async Task<ProGetDownloadStream> DownloadUniversalPackageAsync(string feedName, string? group, string name, string version, CancellationToken cancellationToken = default)
+    {
+        var fullName = name;
+        if (!string.IsNullOrEmpty(group))
+            fullName = $"{group}/{fullName}";
+
+        var url = $"upack/{Uri.EscapeDataString(feedName)}/download/{fullName}/{version}";
+        var response = await this.http.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+        try
+        {
+            await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
+            return new ProGetDownloadStream(response, await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false));
+        }
+        catch
+        {
+            response.Dispose();
+            throw;
+        }
+    }
+
     internal static void CheckResponse(HttpResponseMessage response)
     {
         if (response.IsSuccessStatusCode)
