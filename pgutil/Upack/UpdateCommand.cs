@@ -28,7 +28,7 @@ internal partial class Program
                 var fullName = context.GetOption<PackageNameOption>();
                 var (group, name) = ParseName(fullName);
 
-                using var registry = UniversalPackageRegistry.GetRegistry(false);
+                using var registry = UniversalPackageRegistry.GetRegistry(true);
                 var package = registry.GetInstalledPackages()
                     .FirstOrDefault(p => string.Equals(name, p.Name, StringComparison.OrdinalIgnoreCase) && string.Equals(group ?? string.Empty, p.Group ?? string.Empty, StringComparison.OrdinalIgnoreCase));
 

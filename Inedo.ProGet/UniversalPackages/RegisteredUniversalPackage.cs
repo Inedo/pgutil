@@ -15,5 +15,5 @@ public sealed class RegisteredUniversalPackage
     public string? InstalledUsing { get; init; }
     public string? InstalledBy { get; init; }
     [JsonExtensionData]
-    public IDictionary<string, JsonElement>? AdditionalData { get; init; }
+    public IDictionary<string, JsonElement>? AdditionalData { get; set; }
 }

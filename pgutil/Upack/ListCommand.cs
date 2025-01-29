@@ -18,7 +18,7 @@ internal partial class Program
 
             public static Task<int> ExecuteAsync(CommandContext context, CancellationToken cancellationToken)
             {
-                using var registry = UniversalPackageRegistry.GetRegistry(false);
+                using var registry = UniversalPackageRegistry.GetRegistry(true);
 
                 var packages = registry.GetInstalledPackages();
                 if (packages.Length > 0)

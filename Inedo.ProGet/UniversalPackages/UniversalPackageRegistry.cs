@@ -76,8 +76,12 @@ public sealed class UniversalPackageRegistry : IDisposable
         }
         catch (FileNotFoundException)
         {
-            return [];
         }
+        catch (JsonException)
+        {
+        }
+
+        return [];
     }
     public void RegisterPackage(RegisteredUniversalPackage package)
     {
