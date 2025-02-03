@@ -21,7 +21,8 @@ internal partial class Program
                     .WithOption<NameOption>()
                     .WithOption<VersionOption>()
                     .WithOption<SourceDirectoryOption>()
-                    .WithOption<TargetDirectoryOption>();
+                    .WithOption<TargetDirectoryOption>()
+                    .WithOption<OverwriteFlag>();
             }
 
             public static Task<int> ExecuteAsync(CommandContext context, CancellationToken cancellationToken)
@@ -87,7 +88,7 @@ internal partial class Program
                 if (manifest["name"] is null || manifest["version"] is null)
                     throw new PgUtilException("Package name and version must be specified either in a manifest file or using the --name and --version arguments");
 
-                var fileName = Path.Combine(context.GetOption<SourceDirectoryOption>(), $"{manifest["name"]}-{manifest["version"]}.upack");
+                var fileName = Path.Combine(context.GetOption<TargetDirectoryOption>(), $"{manifest["name"]}-{manifest["version"]}.upack");
                 if (!context.HasFlag<OverwriteFlag>() && File.Exists(fileName))
                     throw new PgUtilException($"{fileName} already exists and --overwrite was not specified");
 
