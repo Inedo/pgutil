@@ -11,6 +11,11 @@ internal partial class Program
         {
             public static string Name => "remove";
             public static string Description => "Removes an installed universal package";
+            public static string Examples => """
+                  $> pgutil upack remove --package=my-package
+
+                For more information, see: https://docs.inedo.com/docs/proget/feeds/universal#installing-universal-packages
+                """;
 
             public static void Configure(ICommandBuilder builder)
             {
