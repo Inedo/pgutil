@@ -11,6 +11,11 @@ internal partial class Program
         {
             public static string Name => "list";
             public static string Description => "List packages in the local registry";
+            public static string Examples => """
+                  $> pgutil upack list
+
+                For more information, see: https://docs.inedo.com/docs/proget/feeds/universal#installing-universal-packages
+                """;
 
             public static void Configure(ICommandBuilder builder)
             {
