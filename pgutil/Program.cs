@@ -15,12 +15,12 @@ internal sealed partial class Program : IConsoleCommandContainer
 
         if (args.Length == 0)
         {
-            var currentVersion = typeof(Program).Assembly.GetName().Version;
+            var currentVersion = typeof(Program).Assembly.GetName().Version!;
 
             Console.Write(
                 $"""
                     .--. --. ..- - .. .-.. 
-                        pgutil v{currentVersion:3}
+                        pgutil v{currentVersion.ToString(3)}
                     .--. --. ..- - .. .-.. 
 
 
