@@ -75,7 +75,10 @@ internal partial class Program
 
                     try
                     {
-                        entry.ExtractToFile(targetEntryPath, overwrite);
+                        if(targetEntryPath.EndsWith("\\") || targetEntryPath.EndsWith("/"))
+                            Directory.CreateDirectory(targetEntryPath);
+                        else
+                            entry.ExtractToFile(targetEntryPath, overwrite);
                     }
                     catch (IOException) when (File.Exists(targetEntryPath))
                     {
