@@ -52,7 +52,7 @@ internal partial class Program
                 }
 
                 await RemoveAsync(package, registry, cancellationToken);
-                await InstallAsync(context, pid, package.Path, registry, true, cancellationToken);
+                await InstallAsync(context, pid, package.Path, registry, true, true, cancellationToken);
                 return 0;
             }
         }

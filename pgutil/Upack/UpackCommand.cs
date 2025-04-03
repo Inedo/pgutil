@@ -21,7 +21,7 @@ internal partial class Program
                 .WithCommand<ListCommand>();
         }
 
-        private static async Task InstallAsync(CommandContext context, UniversalPackageInfo pid, string targetDirectory, UniversalPackageRegistry registry, bool overwrite, CancellationToken cancellationToken)
+        private static async Task InstallAsync(CommandContext context, UniversalPackageInfo pid, string targetDirectory, UniversalPackageRegistry registry, bool overwrite, bool register, CancellationToken cancellationToken)
         {
             var client = context.GetProGetClient();
 
@@ -40,21 +40,24 @@ internal partial class Program
             CM.WriteLine($"Installing to {targetDirectory}...");
             ExtractItems(tempPackageStream, targetDirectory, overwrite);
 
-            CM.WriteLine("Registering package...");
-            await registry.LockAsync($"pgutil upack install {pid.Name}", cancellationToken);
-            registry.RegisterPackage(
-                new RegisteredUniversalPackage
-                {
-                    Name = pid.Name,
-                    Group = pid.Group,
-                    Path = targetDirectory,
-                    Version = pid.Version,
-                    InstallationDate = DateTimeOffset.Now.ToString("o"),
-                    InstalledBy = Environment.UserName,
-                    InstalledUsing = "pgutil/" + typeof(Program).Assembly.GetName().Version?.ToString()
-                }
-            );
-            registry.Unlock();
+            if (register)
+            {
+                CM.WriteLine("Registering package...");
+                await registry.LockAsync($"pgutil upack install {pid.Name}", cancellationToken);
+                registry.RegisterPackage(
+                    new RegisteredUniversalPackage
+                    {
+                        Name = pid.Name,
+                        Group = pid.Group,
+                        Path = targetDirectory,
+                        Version = pid.Version,
+                        InstallationDate = DateTimeOffset.Now.ToString("o"),
+                        InstalledBy = Environment.UserName,
+                        InstalledUsing = "pgutil/" + typeof(Program).Assembly.GetName().Version?.ToString()
+                    }
+                );
+                registry.Unlock();
+            }
 
             CM.WriteLine("Installation complete.");
 

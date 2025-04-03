@@ -44,7 +44,7 @@ internal partial class Program
                 }
 
                 var pid = await GetPackageAsync(context, cancellationToken) ?? throw new PgUtilException("Package not found.");
-                await InstallAsync(context, pid, context.GetOption<TargetDirectoryOption>(), registry, context.HasFlag<OverwriteFlag>(), cancellationToken);
+                await InstallAsync(context, pid, context.GetOption<TargetDirectoryOption>(), registry, context.HasFlag<OverwriteFlag>(), !context.HasFlag<DoNotRegisterFlag>(), cancellationToken);
                 return 0;
             }
 
