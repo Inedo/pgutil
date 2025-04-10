@@ -10,7 +10,7 @@ public abstract class Option : ConsoleToken
     public abstract string[]? ValidValues { get; }
     public abstract string? DefaultValue { get; }
     public abstract bool HasValue { get; }
-
+    public abstract bool WarnWhenInvalidValue { get; }
     internal bool TryParse(string arg, out string? value)
     {
         value = null;
@@ -45,4 +45,5 @@ internal sealed class Option<TOption>(OptionOverrides? o = null) : Option where 
     public override string[]? ValidValues => o?.ValidValues ?? TOption.ValidValues;
     public override string? DefaultValue => o?.DefaultValue ?? TOption.DefaultValue;
     public override bool HasValue => TOption.HasValue;
+    public override bool WarnWhenInvalidValue => TOption.WarnWhenInvalidValue;
 }

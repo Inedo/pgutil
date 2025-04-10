@@ -1,4 +1,6 @@
-﻿namespace ConsoleMan;
+﻿using Microsoft.VisualBasic.FileIO;
+
+namespace ConsoleMan;
 
 public abstract class Command : ConsoleToken
 {
@@ -151,7 +153,13 @@ public abstract class Command : ConsoleToken
             {
                 if (o.Option.ValidValues is not null && !o.Option.ValidValues.Contains(o.Value, StringComparer.OrdinalIgnoreCase))
                 {
-                    CM.WriteError($"{o.Option.Name}={o.Option.ValidValues} is invalid. Valid values are: {string.Join(", ", o.Option.ValidValues)}");
+                    var message = $"{o.Option.Name}={o.Value} is invalid. Valid values are: {string.Join(", ", o.Option.ValidValues)}";
+                    if (o.Option.WarnWhenInvalidValue)
+                    {
+                        CM.WriteLine(ConsoleColor.DarkYellow, message);
+                        continue;
+                    }
+                    CM.WriteError(message);
                     error = true;
                 }
             }
