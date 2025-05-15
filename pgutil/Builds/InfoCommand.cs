@@ -13,7 +13,7 @@ internal partial class Program
             public static string Examples => """
                   >$ pgutil builds info --build=4.5.0 --project=newApplication
 
-                For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-api-sca/builds/proget-api-sca-builds-get
+                For more information, see: https://docs.inedo.com/docs/proget/api/sca/builds/get
                 """;
 
             public static void Configure(ICommandBuilder builder)

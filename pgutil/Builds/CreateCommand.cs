@@ -11,13 +11,9 @@ internal partial class Program
             public static string Name => "create";
             public static string Description => "Creates a build";
             public static string Examples => """
-                  >$ pgutil builds projects create --project=newProject
-                
-                  >$ pgutil builds projects create --project=newApplication --type=Application
-                
-                  >$ pgutil builds projects create --project=testApplication --type=Application --url=https://proget.corp.local
+                >$ pgutil builds create --build=1.0.0 --project=testApplication
 
-                For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-api-sca/projects/proget-api-sca-projects-create
+                For more information, see: https://docs.inedo.com/docs/proget/api/sca/builds/create
                 """;
 
             public static void Configure(ICommandBuilder builder)

@@ -17,7 +17,7 @@ internal partial class Program
             public static string Examples => """
                   $> pgutil builds scan --project-name="Web Data Tool" --version=1.2.3
 
-                For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-api-sca/builds/proget-api-sca-builds-scan
+                For more information, see: https://docs.inedo.com/docs/proget/api/sca/builds/scan
                 """;
 
             public static void Configure(ICommandBuilder builder)

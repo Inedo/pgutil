@@ -15,7 +15,7 @@ internal partial class Program
                 public static string Examples => """
                       >$ pgutil builds comments delete --project=myProject --build=1.2.3 --number=4
 
-                    For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-api-sca/issues/proget-api-sca-comments-delete
+                    For more information, see: https://docs.inedo.com/docs/proget/api/sca/comments/delete
                     """;
 
                 public static void Configure(ICommandBuilder builder)

@@ -13,7 +13,15 @@ internal partial class Program
             {
                 public static string Name => "create";
                 public static string Description => "Creates or updates project information";
+                public static string Examples => """
+                    >$ pgutil builds projects create --project=newProject
+                    
+                    >$ pgutil builds projects create --project=newApplication --type=Application
+                    
+                    >$ pgutil builds projects create --project=testApplication --type=Application --url=https://proget.corp.local
 
+                    For more information, see: https://docs.inedo.com/docs/proget/api/sca/projects/create
+                    """;
                 public static void Configure(ICommandBuilder builder)
                 {
                     builder.WithOption<ProjectOption>()
