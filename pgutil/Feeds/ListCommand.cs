@@ -15,7 +15,7 @@ internal sealed partial class Program
 
                   $> pgutil feeds list --inactive
 
-                For more information, see: https://docs.inedo.com/docs/proget/reference-api/feeds/proget-api-feeds/proget-api-feeds-list
+                For more information, see: https://docs.inedo.com/docs/proget/api/feedsfeeds/list
                 """;
 
             public static void Configure(ICommandBuilder builder)

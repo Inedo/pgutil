@@ -22,7 +22,7 @@ internal sealed partial class Program
 
                       $> pgutil feeds storage change --feed=approved-npm --type=azure --ConnectionString=DefaultEndpointsProtocol=https;AccountName=myazurestorage;AccountKey=XXXXXXXXXXXXXXXXXXXXX;EndpointSuffix=core.windows.net --ContainerName=projectdocuments --TargetPath=projectdocuments/uploads/2024/07/
 
-                    For more information, see: https://docs.inedo.com/docs/proget/reference-api/feeds/proget-api-feeds/proget-api-feeds-storage-update
+                    For more information, see: https://docs.inedo.com/docs/proget/api/feeds/storage-update
                     """;
 
                 public static void Configure(ICommandBuilder builder)

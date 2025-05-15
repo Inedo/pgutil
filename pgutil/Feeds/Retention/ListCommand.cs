@@ -15,7 +15,7 @@ internal sealed partial class Program
                 public static string Examples => """
                       $> pgutil feeds retention list --feed=public-nuget
 
-                    For more information, see: https://docs.inedo.com/docs/proget/reference-api/feeds/proget-api-feeds/proget-api-feeds-update
+                    For more information, see: https://docs.inedo.com/docs/proget/api/feeds/update
                     """;
 
                 public static void Configure(ICommandBuilder builder)

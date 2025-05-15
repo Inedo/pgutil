@@ -20,7 +20,7 @@ internal sealed partial class Program
 
                       $> pgutil feeds properties set --feed=public-pypi --property=active --value=false
 
-                    For more information, see: https://docs.inedo.com/docs/proget/reference-api/feeds/proget-api-feeds/proget-api-feeds-update
+                    For more information, see: https://docs.inedo.com/docs/proget/api/feeds/update
                     """;
 
                 public static void Configure(ICommandBuilder builder)
