@@ -13,7 +13,7 @@ internal partial class Program
             public static string Examples => """
                   $> pgutil assets upload --feed=production-assets --target-path=uploaded-files/download-stats.txt --file=C:\Inedo\data-files\download-stats.txt
 
-                For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-api-assets/file-endpoints/proget-api-assets-files-upload
+                For more information, see: https://docs.inedo.com/docs/proget/api/assets/files/upload
                 """;
 
             public static void Configure(ICommandBuilder builder)

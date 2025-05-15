@@ -15,7 +15,7 @@ internal partial class Program
                 public static string Examples => """
                       $> pgutil assets folder create --feed=development-assets --path=test-packages
 
-                    For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-api-assets/folder-endpoints/proget-api-assets-folders-create
+                    For more information, see: https://docs.inedo.com/docs/proget/api/assets/folders/create
                     """;
 
                 public static void Configure(ICommandBuilder builder)
