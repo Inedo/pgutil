@@ -11,7 +11,7 @@ internal partial class Program
         public static string Examples => """
               $> pgutil health --source=http://progets.corp.local/
 
-            For more information, see: https://docs.inedo.com/docs/proget/reference-api/health
+            For more information, see: https://docs.inedo.com/docs/proget/api/health
             """;
 
         public static void Configure(ICommandBuilder builder)

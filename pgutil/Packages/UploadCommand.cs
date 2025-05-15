@@ -16,7 +16,7 @@ internal partial class Program
                   $> pgutil packages upload --feed=approved-debian --input-file=C:\projects\project-packages\debhelper_13.15.3_all.deb --distribution=main
                   $> pgutil packages upload --feed=internal-maven --input-file=my-app-1.1.jar --artifactPath=/com/my-company/my-app/1.1
 
-                For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-api-packages/proget-api-packages-upload
+                For more information, see: https://docs.inedo.com/docs/proget/api/packages/upload
                 """;
 
             public static void Configure(ICommandBuilder builder)

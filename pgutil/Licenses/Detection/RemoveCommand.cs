@@ -20,7 +20,7 @@ internal partial class Program
 
                   $> pgutil licenses detection remove --code=NewLicense --type=url --value=https://proget.corp.local
 
-                For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-api-licenses/proget-api-licenses-update
+                For more information, see: https://docs.inedo.com/docs/proget/api/licenses/update
                 """;
 
                 public static void Configure(ICommandBuilder builder)

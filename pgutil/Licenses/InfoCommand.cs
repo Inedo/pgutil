@@ -13,7 +13,7 @@ internal partial class Program
             public static string Examples => """
                   $> pgutil licenses info --code=MIT
 
-                For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-api-licenses/proget-api-licenses-get
+                For more information, see: https://docs.inedo.com/docs/proget/api/licenses/get
                 """;
 
             public static void Configure(ICommandBuilder builder)
