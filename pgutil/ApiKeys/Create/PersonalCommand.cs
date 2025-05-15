@@ -20,7 +20,7 @@ internal partial class Program
 
                       $> pgutil apikeys create personal --user=mikejones --name="Mike Jones" --description="API key for Mike Jones"
 
-                    For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-apikeys/proget-api-apikeys-create
+                    For more information, see: https://docs.inedo.com/docs/proget/api/apikeys/create
                     """;
 
                 public static void Configure(ICommandBuilder builder)
