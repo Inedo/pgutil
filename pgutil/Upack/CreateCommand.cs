@@ -14,6 +14,12 @@ internal partial class Program
         {
             public static string Name => "create";
             public static string Description => "Creates a universal package";
+            public static string Examples => """
+                  $> $ pgutil upack create --name=my-package --version=1.2.3 --source-directory=.\package-files\my-package --target-directory=.\universal-packages
+                  $> $ pgutil upack create --manifest=.\package-files\my-package\upack.json --source-directory=.\package-files\my-package --target-directory=.\universal-packages
+
+                For more information, see: https://docs.inedo.com/docs/proget/feeds/universal#upack-create
+                """;
 
             public static void Configure(ICommandBuilder builder)
             {

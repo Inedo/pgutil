@@ -1,4 +1,6 @@
-﻿using ConsoleMan;
+﻿using System.Text.RegularExpressions;
+using ConsoleMan;
+using Microsoft.Extensions.FileSystemGlobbing;
 
 namespace PgUtil;
 
@@ -6,7 +8,7 @@ internal partial class Program
 {
     private sealed partial class PackagesCommand
     {
-        private sealed class UploadCommand : IConsoleCommand
+        private sealed partial class UploadCommand : IConsoleCommand
         {
             public static string Name => "upload";
             public static string Description => "Uploads a package file to ProGet.";
@@ -15,6 +17,7 @@ internal partial class Program
                   $> pgutil packages upload --feed=public-npm --input-file=C:\packages\npm_packages\package.tgz
                   $> pgutil packages upload --feed=approved-debian --input-file=C:\projects\project-packages\debhelper_13.15.3_all.deb --distribution=main
                   $> pgutil packages upload --feed=internal-maven --input-file=my-app-1.1.jar --artifactPath=/com/my-company/my-app/1.1
+                  $> pgutil packages upload --feed=internal-rpm --input-file=*.rpm
 
                 For more information, see: https://docs.inedo.com/docs/proget/api/packages/upload
                 """;
@@ -34,59 +37,76 @@ internal partial class Program
                 var feed = context.GetFeedName();
                 bool stdin = context.HasFlag<StdInFlag>();
 
-                using var source = getSource();
-
-                var fileName = context.GetOptionOrDefault<InputFileOption>();
-                if (!string.IsNullOrEmpty(fileName))
-                    fileName = Path.GetFileName(fileName);
-
-                if (context.TryGetOption<ArtifactPathOption>(out var artifactPath))
-                    fileName = $"{artifactPath.TrimEnd('/')}/{fileName}";
-
-                if (!Console.IsOutputRedirected && source.CanSeek)
+                int downloadedFiles = 0;
+                var inputFileNames = getSourceFileNames();
+                do
                 {
-                    long length = source.Length;
+                    using var source = getSource(out var fileName);
+                    downloadedFiles++;
 
-                    using var progress = ProgressWriter.Create(0, length, (v, w) =>
+                    if (!string.IsNullOrEmpty(fileName))
+                        fileName = Path.GetFileName(fileName);
+
+                    if (context.TryGetOption<ArtifactPathOption>(out var artifactPath))
+                        fileName = $"{artifactPath.TrimEnd('/')}/{fileName}";
+
+                    if (!Console.IsOutputRedirected && source.CanSeek)
                     {
-                        w.WriteSize(v);
-                        w.Write("/");
-                        w.WriteSize(length);
-                    });
+                        long length = source.Length;
 
-                    await client.UploadPackageAsync(source, feed, fileName, context.GetOptionOrDefault<DistributionOption>(), progress.SetCurrentValue, cancellationToken);
-                    progress.Completed();
-                }
-                else
-                {
-                    await client.UploadPackageAsync(source, feed, cancellationToken: cancellationToken);
-                }
+                        using var progress = ProgressWriter.Create(0, length, (v, w) =>
+                        {
+                            w.WriteSize(v);
+                            w.Write("/");
+                            w.WriteSize(length);
+                        });
 
-                Console.WriteLine("Upload complete.");
+                        await client.UploadPackageAsync(source, feed, fileName, context.GetOptionOrDefault<DistributionOption>(), progress.SetCurrentValue, cancellationToken);
+                        progress.Completed();
+                    }
+                    else
+                    {
+                        await client.UploadPackageAsync(source, feed, cancellationToken: cancellationToken);
+                    }
+
+                    Console.WriteLine("Upload complete.");
+                }
+                while (inputFileNames?.Count > 0);
+
                 return 0;
 
-                Stream getSource()
+                Stream getSource(out string? fileName)
                 {
                     if (stdin)
                     {
-                        if (context.TryGetOption<InputFileOption>(out _))
+                        if (inputFileNames is not null)
                         {
                             CM.WriteError<InputFileOption>("Input file name is cannot be used with --stdin.");
                             context.WriteUsage();
                             throw new PgUtilException();
                         }
 
-                        CM.WriteLine("Uploading package from ", new TextSpan($"<stdin>", ConsoleColor.White), " to ", new TextSpan(feed, ConsoleColor.White), " feed...");
+                        fileName = null;
+                        CM.WriteLine("Uploading package from ", new TextSpan("<stdin>", ConsoleColor.White), " to ", new TextSpan(feed, ConsoleColor.White), " feed...");
                         return Console.OpenStandardInput();
                     }
                     else
                     {
-                        if (!context.TryGetOption<InputFileOption>(out var inputFileName))
+                        if (inputFileNames is null)
                         {
                             CM.WriteError<InputFileOption>("Input file name is required when not using --stdin.");
                             context.WriteUsage();
                             throw new PgUtilException();
                         }
+
+                        if (inputFileNames.Count == 0 && downloadedFiles == 0)
+                        {
+                            CM.WriteError<InputFileOption>("No files matching the search expression were found.");
+                            throw new PgUtilException();
+                        }
+
+                        var inputFileName = inputFileNames[0];
+                        inputFileNames.RemoveAt(0);
 
                         if (!File.Exists(inputFileName))
                         {
@@ -94,17 +114,43 @@ internal partial class Program
                             throw new PgUtilException();
                         }
 
+                        fileName = inputFileName;
                         CM.WriteLine("Uploading ", new TextSpan(inputFileName, ConsoleColor.White), " to ", new TextSpan(feed, ConsoleColor.White), " feed...");
                         return File.Open(inputFileName, new FileStreamOptions { Access = FileAccess.Read, Mode = FileMode.Open, Options = FileOptions.SequentialScan | FileOptions.Asynchronous });
                     }
                 }
+
+                List<string>? getSourceFileNames()
+                {
+                    if (context.TryGetOption<InputFileOption>(out var inputFileName))
+                    {
+                        if (!inputFileName.Contains('*'))
+                            return [inputFileName];
+
+                        var fullPath =  Path.GetFullPath(inputFileName);
+                        int firstWildcardIndex = FirstWildcardRegex().Match(fullPath).Index;
+                        var rootPath = fullPath[..firstWildcardIndex];
+                        var wildcardPart = fullPath[(firstWildcardIndex)..];
+
+                        var matcher = new Matcher(OperatingSystem.IsWindows() ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal);
+                        matcher.AddInclude(wildcardPart.Replace('\\', '/'));
+                        return [.. matcher.GetResultsInFullPath(rootPath)];
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
             }
+
+            [GeneratedRegex(@"(?<=[/\\])[^/\\]*\*")]
+            internal static partial Regex FirstWildcardRegex();
 
             private sealed class InputFileOption : IConsoleOption
             {
                 public static bool Required => false;
                 public static string Name => "--input-file";
-                public static string Description => "Name of the file to upload.";
+                public static string Description => "Name of the file to upload. Wildcards are allowed.";
             }
 
             private sealed class StdInFlag : IConsoleFlagOption

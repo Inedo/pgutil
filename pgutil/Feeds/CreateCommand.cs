@@ -46,7 +46,8 @@ internal sealed partial class Program
                 public static bool Required => true;
                 public static string Name => "--type";
                 public static string Description => "Type of the feed to create";
-                public static string[] ValidValues => ["NuGet", "Chocolatey", "npm", "Bower", "Maven", "Universal", "PowerShell", "Docker", "RubyGems", "VSIX", "Debian", "PyPI", "Helm", "RPM", "Conda", "APK", "CRAN"];
+                public static string[] ValidValues => ["NuGet", "Chocolatey", "npm", "Bower", "Maven", "Universal", "PowerShell", "Docker", "RubyGems", "VSIX", "Debian", "PyPI", "Helm", "RPM", "Conda", "APK", "CRAN", "Asset" ];
+                public static bool WarnWhenInvalidValue => true;
             }
         }
     }

@@ -11,6 +11,11 @@ internal partial class Program
         {
             public static string Name => "install";
             public static string Description => "Installs a universal package from a feed";
+            public static string Examples => """
+                  $> pgutil upack install --package=my-package --version=1.2.3 --feed=universal --target=.\universal-packages\my-package-1.2.3.upack
+
+                For more information, see: https://docs.inedo.com/docs/proget/feeds/universal#installing-universal-packages
+                """;
 
             public static void Configure(ICommandBuilder builder)
             {
@@ -39,7 +44,7 @@ internal partial class Program
                 }
 
                 var pid = await GetPackageAsync(context, cancellationToken) ?? throw new PgUtilException("Package not found.");
-                await InstallAsync(context, pid, context.GetOption<TargetDirectoryOption>(), registry, context.HasFlag<OverwriteFlag>(), cancellationToken);
+                await InstallAsync(context, pid, context.GetOption<TargetDirectoryOption>(), registry, context.HasFlag<OverwriteFlag>(), !context.HasFlag<DoNotRegisterFlag>(), cancellationToken);
                 return 0;
             }
 

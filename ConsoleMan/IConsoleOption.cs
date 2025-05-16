@@ -6,6 +6,7 @@ public interface IConsoleOption : IConsoleArgument
     static virtual bool HasValue => true;
     static virtual string[]? ValidValues => null;
     static virtual string? DefaultValue => null;
+    static virtual bool WarnWhenInvalidValue => false;
 }
 
 public interface IConsoleEnumOption<TEnum> : IConsoleOption where TEnum : struct, Enum

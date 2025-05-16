@@ -38,13 +38,13 @@ internal partial class Program
                     if (!context.TryGetOption<ApisOption>(out var apiValue))
                         apiValue = "full-control";
 
-                    var apis = apiValue == "full-control"
-                        ? ["feeds", "sca", "sbom-upload"]
-                        : apiValue.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                    var apis = apiValue.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
-                    if (apis.Length == 0 || apis.Any(a => a != "feeds" && a != "sca" && a != "sbom-upload"))
+                    if (apis.Length == 0 
+                        || apis.Contains("full-control") && apis.Length > 1
+                        || apis.Any(a => a != "feeds" && a != "sca" && a != "sbom-upload" && a != "full-control"))
                     {
-                        CM.WriteError<ApisOption>("an invalid value for API was specified");
+                        CM.WriteError<ApisOption>("an invalid value for API was specified. Expected either \"full-control\" or a comma-separated list of \"feeds\", \"sca\", and \"sbom-upload\"");
                         return -1;
                     }
 
