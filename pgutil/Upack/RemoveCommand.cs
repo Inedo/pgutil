@@ -14,7 +14,7 @@ internal partial class Program
             public static string Examples => """
                   $> pgutil upack remove --package=my-package
 
-                For more information, see: https://docs.inedo.com/docs/proget/feeds/universal#installing-universal-packages
+                For more information, see: https://docs.inedo.com/docs/proget/feeds/universal#updating-and-removing-installed-packages
                 """;
 
             public static void Configure(ICommandBuilder builder)

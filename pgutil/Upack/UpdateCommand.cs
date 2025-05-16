@@ -14,7 +14,7 @@ internal partial class Program
             public static string Examples => """
                   $> pgutil upack update --package=my-package --version=2.0.1 --feed=universal
 
-                For more information, see: https://docs.inedo.com/docs/proget/feeds/universal#installing-universal-packages
+                For more information, see: https://docs.inedo.com/docs/proget/feeds/universal#updating-and-removing-installed-packages
                 """;
 
             public static void Configure(ICommandBuilder builder)
