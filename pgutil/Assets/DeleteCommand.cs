@@ -18,8 +18,8 @@ internal partial class Program
                   $> pgutil assets delete --feed=test-assets --path=test-files --force
 
                 For more information, see:
-                  * https://docs.inedo.com/docs/proget/reference-api/proget-api-assets/file-endpoints/proget-api-assets-files-delete
-                  * https://docs.inedo.com/docs/proget/reference-api/proget-api-assets/folder-endpoints/proget-api-assets-folders-delete
+                  * https://docs.inedo.com/docs/proget/api/assets/files/delete
+                  * https://docs.inedo.com/docs/proget/api/assets/folders/delete
                 """;
 
             public static void Configure(ICommandBuilder builder)

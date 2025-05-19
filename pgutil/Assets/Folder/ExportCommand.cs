@@ -16,7 +16,7 @@ internal partial class Program
                 public static string Examples => """
                       $> pgutil assets folder export --file=C:\Inedo\production-packages.zip --feed=production-assets --path=production-files
 
-                    For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-api-assets/folder-endpoints/proget-api-assets-folders-export
+                    For more information, see: https://docs.inedo.com/docs/proget/api/assets/folders/-export
                     """;
 
                 public static void Configure(ICommandBuilder builder)

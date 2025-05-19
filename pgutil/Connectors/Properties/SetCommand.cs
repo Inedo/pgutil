@@ -17,7 +17,7 @@ internal sealed partial class Program
 
                       $> pgutil connectors properties set --connector=registry.npmjs.org --property=timeout --value=30
 
-                    For more information, see: https://docs.inedo.com/docs/proget/reference-api/feeds/proget-api-connectors/proget-api-connectors-update
+                    For more information, see: https://docs.inedo.com/docs/proget/api/feeds/connectors/update
                     """;
 
                 public static void Configure(ICommandBuilder builder)

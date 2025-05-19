@@ -15,7 +15,7 @@ internal sealed partial class Program
                 public static string Examples => """
                       $> pgutil feeds properties list --feed=myNugetFeed
 
-                    For more information, see: https://docs.inedo.com/docs/proget/reference-api/feeds/proget-api-feeds/proget-api-feeds-get
+                    For more information, see: https://docs.inedo.com/docs/proget/api/feeds/get
                     """;
 
                 public static void Configure(ICommandBuilder builder)

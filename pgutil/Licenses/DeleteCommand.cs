@@ -13,7 +13,7 @@ internal partial class Program
             public static string Examples => """
                   $> pgutil licenses delete --code=GPL-3.0
 
-                For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-api-licenses/proget-api-licenses-delete
+                For more information, see: https://docs.inedo.com/docs/proget/api/licenses/delete
                 """;
 
             public static void Configure(ICommandBuilder builder)

@@ -13,7 +13,7 @@ internal sealed partial class Program
             public static string Examples => """
                   $> pgutil connectors delete --connector=nuget.org
 
-                For more information, see: https://docs.inedo.com/docs/proget/reference-api/feeds/proget-api-connectors/proget-api-connectors-delete
+                For more information, see: https://docs.inedo.com/docs/proget/api/connectors/delete
                 """;
 
             public static void Configure(ICommandBuilder builder)

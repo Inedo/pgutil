@@ -15,7 +15,7 @@ internal partial class Program
                 public static string Examples => """
                       $> pgutil licenses files add --code=ABC-1.0 --file=C:\documents\license-files\abc-1.0-license-file.txt
 
-                    For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-api-licenses/proget-api-licenses-update
+                    For more information, see: https://docs.inedo.com/docs/proget/api/licenses/update
                     """;
 
                 public static void Configure(ICommandBuilder builder)

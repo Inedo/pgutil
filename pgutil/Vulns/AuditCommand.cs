@@ -15,7 +15,7 @@ internal sealed partial class VulnsCommand
 
               >$ pgutil vulns audit --project=c:\projects\abc-nuget-project.csproj --type=nuget
 
-            For more information, see: https://docs.inedo.com/docs/proget/reference-api/vulnerabilities/proget-api-vulnerabilties-audit
+            For more information, see: https://docs.inedo.com/docs/proget/api/vulnerabilities/audit
             """;
 
         public static void Configure(ICommandBuilder builder)

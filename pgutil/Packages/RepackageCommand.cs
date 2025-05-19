@@ -15,7 +15,7 @@ internal partial class Program
                   $> pgutil packages repackage --feed=public-nuget --package=Newtonsoft.Json --version=13.0.3-beta1 --new-version=13.0.3
                   $> pgutil packages repackage --feed=approved-npm --package=@babel/runtime --version=7.21.4-esm.4 --new-version=7.21.5 
 
-                For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-api-packages/proget-api-packages-repackage
+                For more information, see: https://docs.inedo.com/docs/proget/api/packages/repackage
                 """;
 
             public static void Configure(ICommandBuilder builder)

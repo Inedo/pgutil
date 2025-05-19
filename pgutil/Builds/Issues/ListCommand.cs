@@ -15,7 +15,7 @@ internal partial class Program
                 public static string Examples => """
                       >$ pgutil builds issues list --project=testApplication --build=1.2.0
 
-                    For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-api-sca/issues/proget-api-sca-issues-list
+                    For more information, see: https://docs.inedo.com/docs/proget/api/sca/issues/list
                     """;
 
                 public static void Configure(ICommandBuilder builder)

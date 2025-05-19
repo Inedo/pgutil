@@ -15,7 +15,7 @@ internal sealed partial class Program
                 public static string Examples => """
                       $> pgutil feeds storage info --feed=approved-nuget
 
-                    For more information, see: https://docs.inedo.com/docs/proget/reference-api/feeds/proget-api-feeds/proget-api-feeds-storage-get
+                    For more information, see: https://docs.inedo.com/docs/proget/api/feeds/storage-get
                     """;
 
                 public static void Configure(ICommandBuilder builder)

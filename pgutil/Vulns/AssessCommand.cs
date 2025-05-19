@@ -15,7 +15,7 @@ internal sealed partial class VulnsCommand
 
               >$ pgutil vulns assess --id=PGV-0987654 --type=blocked --comment="Package non-compliant" --policy=myPolicy
 
-            For more information, see: https://docs.inedo.com/docs/proget/reference-api/vulnerabilities/proget-api-vulnerabilties-assess
+            For more information, see: https://docs.inedo.com/docs/proget/api/vulnerabilities/assess
             """;
 
         public static void Configure(ICommandBuilder builder)

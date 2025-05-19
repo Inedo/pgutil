@@ -17,7 +17,7 @@ internal sealed partial class Program
 
                       $> pgutil connectors filters remove --connector=registry.npmjs.org --filter=Microsoft.*
 
-                    For more information, see: https://docs.inedo.com/docs/proget/reference-api/feeds/proget-api-connectors/proget-api-connectors-update
+                    For more information, see: https://docs.inedo.com/docs/proget/api/connectors/update
                     """;
 
                 public static void Configure(ICommandBuilder builder)

@@ -15,7 +15,7 @@ internal partial class Program
                   $> pgutil packages delete --feed=public-pypi --package=Django --version=5.0.6 --filename=Django-5.0.6.tar.gz
                   $> pgutil packages delete --feed=private-debian --package=debhelper --version=13.15.3 --component=main --distro=stable --arch=all
 
-                For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-api-packages/proget-api-packages-delete
+                For more information, see: https://docs.inedo.com/docs/proget/api/packages/delete
                 """;
 
             public static void Configure(ICommandBuilder builder) => WithPackageOptions(builder);

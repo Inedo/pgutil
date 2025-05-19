@@ -20,7 +20,7 @@ internal partial class Program
 
                       $> pgutil apikeys create feed --group=production-feeds --key=wxyz67890 --expiration="2024/08/01"
 
-                    For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-apikeys/proget-api-apikeys-create
+                    For more information, see: https://docs.inedo.com/docs/proget/api/apikeys/create
                     """;
 
                 public static void Configure(ICommandBuilder builder)

@@ -19,7 +19,7 @@ internal sealed partial class Program
 
                       $> pgutil feeds retention update --feed=public-pypi --deleteCached=true --keepVersionsCount=5 --rule=5
 
-                    For more information, see: https://docs.inedo.com/docs/proget/reference-api/feeds/proget-api-feeds/proget-api-feeds-update
+                    For more information, see: https://docs.inedo.com/docs/proget/api/feeds/update
                     """;
 
                 public static void Configure(ICommandBuilder builder)

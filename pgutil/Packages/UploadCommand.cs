@@ -19,7 +19,7 @@ internal partial class Program
                   $> pgutil packages upload --feed=internal-maven --input-file=my-app-1.1.jar --artifactPath=/com/my-company/my-app/1.1
                   $> pgutil packages upload --feed=internal-rpm --input-file=*.rpm
 
-                For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-api-packages/proget-api-packages-upload
+                For more information, see: https://docs.inedo.com/docs/proget/api/packages/upload
                 """;
 
             public static void Configure(ICommandBuilder builder)

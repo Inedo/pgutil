@@ -27,9 +27,7 @@ internal partial class Program
                     public static string Examples => """
                           $> pgutil assets metadata set custom --path=data-files/data.bin --feed=development-assets --key=project-name --value=project-alpha
 
-                          $> pgutil assets metadata set cache --path=project-files/data.bin --feed=production-assets --type=TTL --value=60
-
-                        For more information, see: https://docs.inedo.com/docs/proget/reference-api/proget-api-assets/metadata-endpoints/proget-api-assets-metadata-set
+                        For more information, see: https://docs.inedo.com/docs/proget/api/assets/metadata/set
                         """;
 
                     public static void Configure(ICommandBuilder builder)
@@ -86,6 +84,11 @@ internal partial class Program
                 {
                     public static string Name => "cache";
                     public static string Description => "Sets the cache header";
+                    public static string Examples => """
+                          $> pgutil assets metadata set cache --path=project-files/data.bin --feed=production-assets --type=TTL --value=60
+
+                        For more information, see: https://docs.inedo.com/docs/proget/api/assets/metadata/set
+                        """;
 
                     public static void Configure(ICommandBuilder builder)
                     {
