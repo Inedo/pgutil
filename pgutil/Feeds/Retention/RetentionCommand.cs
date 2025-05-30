@@ -64,7 +64,7 @@ internal sealed partial class Program
 
                     int p<TOption>() where TOption : IRetentionOption
                     {
-                        if (!context.TryGetOption<TOption>(true, out var value))
+                        if (!context.TryGetOption<TOption>(out var value))
                             return 0;
 
                         TOption.Assign(rule, value);
