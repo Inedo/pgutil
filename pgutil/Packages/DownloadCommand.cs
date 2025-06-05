@@ -85,6 +85,10 @@ internal partial class Program
 
                         progress.Completed();
                     }
+                    else
+                    {
+                        await source.CopyToAsync(fileStream, cancellationToken);
+                    }
 
                     CM.WriteLine($"Download complete ({source.BytesRead:N0} bytes)");
                 }
