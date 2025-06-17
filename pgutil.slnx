@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="pgutil\pgutil.csproj" />
+  <Project Path="Inedo.ProGet\Inedo.ProGet.csproj" />
+</Solution>
