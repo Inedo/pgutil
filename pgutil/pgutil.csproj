@@ -25,7 +25,7 @@
   <ItemGroup>
     <None Include="..\README.md" Link="README.md" Pack="true" PackagePath="/" />
     <PackageReference Include="ConsoleMan" Version="1.0.0" />
-    <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="9.0.3" />
+    <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="9.0.6" />
     <TrimmerRootAssembly Include="pgutil" />
     <TrimmerRootAssembly Include="Tomlyn.Signed" />
   </ItemGroup>
