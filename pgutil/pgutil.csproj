@@ -27,6 +27,6 @@
     <PackageReference Include="ConsoleMan" Version="1.0.0" />
     <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="9.0.6" />
     <TrimmerRootAssembly Include="pgutil" />
-    <TrimmerRootAssembly Include="Tomlyn.Signed" />
+    <TrimmerRootAssembly Include="Tomlyn" />
   </ItemGroup>
 </Project>
