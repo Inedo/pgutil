@@ -143,7 +143,8 @@ internal partial class Program
 
             await foreach (var p in client.ListUniversalPackageVersions(feedName, group ?? string.Empty, name, cancellationToken))
             {
-                var otherParsedVersion = UniversalPackageVersion.Parse(p.Version);
+                if (!UniversalPackageVersion.TryParse(p.Version, out var otherParsedVersion))
+                    continue;
                 if (latest)
                 {
                     if (string.IsNullOrEmpty(otherParsedVersion.Prerelease))
