@@ -29,6 +29,7 @@ namespace Inedo.ProGet;
 [JsonSerializable(typeof(FeedStorageType))]
 [JsonSerializable(typeof(FeedStorageConfiguration))]
 [JsonSerializable(typeof(UniversalPackageInfo))]
+[JsonSerializable(typeof(ScaPermissionInfo))]
 [JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase, Converters = [typeof(AssetUserMetadataTypeConverter)], UseStringEnumConverter = true, DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull)]
 internal sealed partial class ProGetApiJsonContext : JsonSerializerContext
 {

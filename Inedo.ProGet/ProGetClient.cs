@@ -334,6 +334,14 @@ public sealed class ProGetClient
         using var responseStream = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
         return (await JsonSerializer.DeserializeAsync(responseStream, ProGetApiJsonContext.Default.AuditPackageResults, cancellationToken).ConfigureAwait(false))!;
     }
+    public async Task<ScaPermissionInfo> GetScaPermissionsAsync(CancellationToken cancellationToken = default)
+    {
+        using var response = await this.http.GetAsync("api/sca/permissions", cancellationToken).ConfigureAwait(false);
+        await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
+
+        using var responseStream = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+        return (await JsonSerializer.DeserializeAsync(responseStream, ProGetApiJsonContext.Default.ScaPermissionInfo, cancellationToken).ConfigureAwait(false))!;
+    }
 
     public IAsyncEnumerable<LicenseInfo> ListLicensesAsync(CancellationToken cancellationToken = default)
     {
