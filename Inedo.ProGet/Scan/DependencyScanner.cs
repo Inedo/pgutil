@@ -124,9 +124,15 @@ public abstract class DependencyScanner
 
     private static async Task<(DependencyScannerType scannerType, string filePath)> GetImplicitTypeAsync(ISourceFileSystem fileSystem, string fileName, CancellationToken cancellationToken = default)
     {
-        if(File.GetAttributes(fileName).HasFlag(FileAttributes.Directory))
+        if(fileSystem.IsDirectoryAsync(fileName))
         {
-            var files = await fileSystem.FindFilesAsync(fileName, "*.sln", true, cancellationToken).ToListAsync(cancellationToken);
+            var files = await fileSystem.FindFilesAsync(fileName, "*.slnx", true, cancellationToken).ToListAsync(cancellationToken);
+            if(files.Count == 1)
+                return (scannerType: DependencyScannerType.NuGet, filePath: files[0].FullName);
+            else if (files.Count > 1)
+                throw new DependencyScannerException("Multiple solution files found in directory.  Specify which solution file you would like to scan be using \"--input\" argument.");
+
+            files = await fileSystem.FindFilesAsync(fileName, "*.sln", true, cancellationToken).ToListAsync(cancellationToken);
             if(files.Count == 1)
                 return (scannerType: DependencyScannerType.NuGet, filePath: files[0].FullName);
             else if (files.Count > 1)
@@ -164,7 +170,7 @@ public abstract class DependencyScanner
 
         return Path.GetExtension(fileName).ToLowerInvariant() switch
         {
-            ".sln" or ".csproj" => (DependencyScannerType.NuGet, fileName),
+            ".slnx" or ".sln" or ".csproj" => (DependencyScannerType.NuGet, fileName),
             ".toml" => (DependencyScannerType.Cargo, fileName),
             ".lock" => Path.GetFileName(fileName).Equals("Cargo.lock", StringComparison.OrdinalIgnoreCase) ? (DependencyScannerType.Cargo, fileName) : (DependencyScannerType.Composer, fileName),
             ".json" => Path.GetFileName(fileName).Equals("composer.json", StringComparison.OrdinalIgnoreCase) ? (DependencyScannerType.Composer, fileName) : (DependencyScannerType.Npm, fileName),

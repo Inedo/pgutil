@@ -25,5 +25,10 @@ public static class SourceFileSystem
                 .Select(f => new SimpleFileInfo(f.FullName, f.LastWriteTimeUtc))
                 .ToAsyncEnumerable();
         }
+
+        public bool IsDirectoryAsync(string path)
+        {
+            return File.GetAttributes(path).HasFlag(FileAttributes.Directory);
+        }
     }
 }

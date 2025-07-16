@@ -14,7 +14,7 @@ internal sealed partial class NuGetDependencyScanner(CreateDependencyScannerArgs
 
     public override async Task<IReadOnlyCollection<ScannedProject>> ResolveDependenciesAsync(CancellationToken cancellationToken = default)
     {
-        if (this.SourcePath.EndsWith(".sln", StringComparison.OrdinalIgnoreCase))
+        if (this.SourcePath.EndsWith(".sln", StringComparison.OrdinalIgnoreCase) || this.SourcePath.EndsWith(".slnx", StringComparison.OrdinalIgnoreCase))
         {
             var projects = new List<ScannedProject>();
 
@@ -68,67 +68,80 @@ internal sealed partial class NuGetDependencyScanner(CreateDependencyScannerArgs
 
     private async IAsyncEnumerable<string> ReadFoldersAndProjectsFromSolutionAsync(string solutionPath, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        var dictFolders = new Dictionary<Guid, string>();
-        var dictProjects = new Dictionary<Guid, string>();
-        var dictMappings = new Dictionary<Guid, Guid>();
-
-        await foreach (var l in this.ReadLinesAsync(solutionPath, cancellationToken))
+        if (this.SourcePath.EndsWith(".slnx", StringComparison.OrdinalIgnoreCase))
         {
-            var match = SolutionFolderRegex().Match(l);
-            if (match.Success)
+            using var solutionStream = await this.FileSystem.OpenReadAsync(solutionPath, cancellationToken).ConfigureAwait(false);
+            var xmlDoc = await XDocument.LoadAsync(solutionStream, LoadOptions.None, cancellationToken).ConfigureAwait(false);
+            var projectPaths = xmlDoc.Root?.Elements("Project").Select(e => (string?)e.Attribute("Path"));
+            foreach (var project in projectPaths ?? [])
             {
-                // Solution Folder
-                dictFolders[Guid.Parse(match.Groups[3].ValueSpan)] = match.Groups[1].Value;
-            }
-            else if ((match = SolutionProjectRegex().Match(l)).Success)
-            {
-                // Project
-                dictProjects[Guid.Parse(match.Groups[2].ValueSpan)] = match.Groups[1].Value;
-            }
-            else if ((match = ProjectMappingRegex().Match(l)).Success)
-            {
-                // Mappings of projects to solution folders
-                dictMappings[Guid.Parse(match.Groups[1].ValueSpan)] = Guid.Parse(match.Groups[2].ValueSpan);
+                if (!string.IsNullOrWhiteSpace(project))
+                    yield return project;
             }
         }
-
-        // Get GUIDs of Solutionfolders and Subfolders
-        var includeFoldersGuids = new HashSet<Guid>();
-        foreach (var kvp in dictFolders)
+        else
         {
-            var folderGuid = kvp.Key;
-            var list = new List<Guid>();
+            var dictFolders = new Dictionary<Guid, string>();
+            var dictProjects = new Dictionary<Guid, string>();
+            var dictMappings = new Dictionary<Guid, Guid>();
 
-            // check solution folders recursively
-            while (folderGuid != default)
+            await foreach (var l in this.ReadLinesAsync(solutionPath, cancellationToken))
             {
-                list.Add(folderGuid);
-
-                // check whether the name of the folder is included in the "include" list
-                if (dictFolders.TryGetValue(folderGuid, out var folderName) && includeFolders.Contains(folderName))
+                var match = SolutionFolderRegex().Match(l);
+                if (match.Success)
                 {
-                    foreach (var guid in list)
-                        includeFoldersGuids.Add(guid);
-                    break;
+                    // Solution Folder
+                    dictFolders[Guid.Parse(match.Groups[3].ValueSpan)] = match.Groups[1].Value;
                 }
-
-                // check whether solution folder is child of a parent folder
-                if (dictMappings.TryGetValue(folderGuid, out folderGuid) == false)
-                    break;
+                else if ((match = SolutionProjectRegex().Match(l)).Success)
+                {
+                    // Project
+                    dictProjects[Guid.Parse(match.Groups[2].ValueSpan)] = match.Groups[1].Value;
+                }
+                else if ((match = ProjectMappingRegex().Match(l)).Success)
+                {
+                    // Mappings of projects to solution folders
+                    dictMappings[Guid.Parse(match.Groups[1].ValueSpan)] = Guid.Parse(match.Groups[2].ValueSpan);
+                }
             }
-        }
 
-        foreach (var kvp in dictProjects)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
+            // Get GUIDs of Solutionfolders and Subfolders
+            var includeFoldersGuids = new HashSet<Guid>();
+            foreach (var kvp in dictFolders)
+            {
+                var folderGuid = kvp.Key;
+                var list = new List<Guid>();
 
-            if (includeFolders.Count == 0 ||
-                (dictMappings.TryGetValue(kvp.Key, out var folderGuid) // get folder Guid from project Guid
-                && includeFoldersGuids.Contains(folderGuid))) // check if folder is in list of included folders
-                yield return kvp.Value;
+                // check solution folders recursively
+                while (folderGuid != default)
+                {
+                    list.Add(folderGuid);
+
+                    // check whether the name of the folder is included in the "include" list
+                    if (dictFolders.TryGetValue(folderGuid, out var folderName) && includeFolders.Contains(folderName))
+                    {
+                        foreach (var guid in list)
+                            includeFoldersGuids.Add(guid);
+                        break;
+                    }
+
+                    // check whether solution folder is child of a parent folder
+                    if (dictMappings.TryGetValue(folderGuid, out folderGuid) == false)
+                        break;
+                }
+            }
+
+            foreach (var kvp in dictProjects)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                if (includeFolders.Count == 0 ||
+                    (dictMappings.TryGetValue(kvp.Key, out var folderGuid) // get folder Guid from project Guid
+                    && includeFoldersGuids.Contains(folderGuid))) // check if folder is in list of included folders
+                    yield return kvp.Value;
+            }
         }
     }
-
 
     private async Task<Dictionary<string, ProjectAssets>> FindAllAssetsAsync(string solutionPath, CancellationToken cancellationToken)
     {

@@ -60,6 +60,14 @@ public interface ISourceFileSystem
     /// A read-only <see cref="Stream"/> on the specified path.
     /// </returns>
     Task<Stream> OpenReadAsync(string path, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Determines whether the specified path refers to an existing directory.
+    /// </summary>
+    /// <param name="path">The path to check.</param>
+    /// <returns>True if path is a directory</returns>
+    bool IsDirectoryAsync(string path);
+
     /// <summary>
     /// Searches a directory for files matching a wildcard filter.
     /// </summary>
