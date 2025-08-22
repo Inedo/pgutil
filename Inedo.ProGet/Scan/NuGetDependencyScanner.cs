@@ -72,7 +72,7 @@ internal sealed partial class NuGetDependencyScanner(CreateDependencyScannerArgs
         {
             using var solutionStream = await this.FileSystem.OpenReadAsync(solutionPath, cancellationToken).ConfigureAwait(false);
             var xmlDoc = await XDocument.LoadAsync(solutionStream, LoadOptions.None, cancellationToken).ConfigureAwait(false);
-            var projectPaths = xmlDoc.Root?.Elements("Project").Select(e => (string?)e.Attribute("Path"));
+            var projectPaths = xmlDoc.Root?.Descendants("Project").Select(e => (string?)e.Attribute("Path"));
             foreach (var project in projectPaths ?? [])
             {
                 if (!string.IsNullOrWhiteSpace(project))
