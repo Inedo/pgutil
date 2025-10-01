@@ -1,5 +1,7 @@
-﻿using System.Net.Http.Headers;
+﻿using System;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
@@ -549,6 +551,21 @@ public sealed class ProGetClient
             response.Dispose();
             throw;
         }
+    }
+
+    public IAsyncEnumerable<SecurityPermission> ListPermissionsAsync(CancellationToken cancellationToken = default)
+    {
+        return this.ListItemsAsync("api/security/permissions/list", ProGetApiJsonContext.Default.SecurityPermission, cancellationToken);
+    }
+    public Task AddPermissionAsync(SecurityPermission permission, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(permission);
+        return this.PostAsync("api/security/permissions/add", permission, ProGetApiJsonContext.Default.SecurityPermission, cancellationToken);
+    }
+    public async Task DeletePermissionAsync(int permissionId, CancellationToken cancellationToken = default)
+    {
+        using var response = await this.http.PostAsync($"api/security/permissions/delete?permissionId={permissionId}", null, cancellationToken);
+        await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
     }
 
     internal static void CheckResponse(HttpResponseMessage response)
