@@ -24,7 +24,9 @@ internal sealed partial class NuGetDependencyScanner(CreateDependencyScannerArgs
 
             await foreach (var p in ReadFoldersAndProjectsFromSolutionAsync(this.SourcePath, cancellationToken).ConfigureAwait(false))
             {
-                var projectPath = this.FileSystem.Combine(solutionRoot, p);
+                var normalizedPath = p.Replace('\\', Path.DirectorySeparatorChar).Replace('/', Path.DirectorySeparatorChar);
+                var projectPath = Path.GetFullPath(this.FileSystem.Combine(solutionRoot, normalizedPath));
+
                 IAsyncEnumerable<DependencyPackage> packages;
 
                 if (assets.TryGetValue(projectPath, out var a))
