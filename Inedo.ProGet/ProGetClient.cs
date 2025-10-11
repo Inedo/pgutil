@@ -568,6 +568,11 @@ public sealed class ProGetClient
         await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
     }
 
+    public IAsyncEnumerable<SecurityTaskAttribute> ListSecurityAttributesAsync(CancellationToken cancellationToken = default)
+    {
+        return this.ListItemsAsync("api/security/attributes/list", ProGetApiJsonContext.Default.SecurityTaskAttribute, cancellationToken);
+    }
+
     internal static void CheckResponse(HttpResponseMessage response)
     {
         if (response.IsSuccessStatusCode)
