@@ -54,7 +54,19 @@ internal static class Extensions
         else if (userName is not null)
             source = source with { Username = userName, Password = password ?? string.Empty, Token = null };
 
-        return source.GetProGetClient();
+        var client = source.GetProGetClient();
+        if (context.TryGetOption<TimeoutOption>(out var timeoutString))
+        {
+            if (!int.TryParse(timeoutString, out int seconds) || seconds < 0)
+            {
+                CM.WriteError<TimeoutOption>("Invalid value.");
+                throw new PgUtilException();
+            }
+
+            client.Timeout = new TimeSpan(0, 0, seconds);
+        }
+
+        return client;
     }
     public static AssetDirectoryClient GetAssetDirectoryClient(this CommandContext context)
     {
@@ -69,6 +81,15 @@ internal static class Extensions
         }
 
         return pgClient.GetAssetDirectoryClient(name);
+    }
+
+    public static ICommandBuilder WithProGetClientOptions(this ICommandBuilder builder)
+    {
+        return builder.WithOption<SourceOption>()
+            .WithOption<ApiKeyOption>()
+            .WithOption<UserNameOption>()
+            .WithOption<PasswordOption>()
+            .WithOption<TimeoutOption>();
     }
 
     public static async Task<List<T>> ToListAsync<T>(this IAsyncEnumerable<T> source)
