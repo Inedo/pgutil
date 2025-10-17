@@ -13,10 +13,7 @@ internal partial class Program
 
         public static void Configure(ICommandBuilder builder)
         {
-            builder.WithOption<SourceOption>()
-                .WithOption<ApiKeyOption>()
-                .WithOption<UserNameOption>()
-                .WithOption<PasswordOption>()
+            builder.WithProGetClientOptions()
                 .WithOption<FeedOption>()
                 .WithOption<NoConnectorsFlag>()
                 .WithCommand<LatestCommand>()

@@ -10,10 +10,7 @@ internal partial class Program
         public static string Description => "Manages ProGet API keys";
         public static void Configure(ICommandBuilder builder)
         {
-            builder.WithOption<SourceOption>()
-                .WithOption<ApiKeyOption>()
-                .WithOption<UserNameOption>()
-                .WithOption<PasswordOption>()
+            builder.WithProGetClientOptions()
                 .WithCommand<CreateCommand>()
                 .WithCommand<ListCommand>()
                 .WithCommand<DeleteCommand>();

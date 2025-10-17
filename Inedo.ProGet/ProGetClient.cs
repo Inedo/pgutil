@@ -14,9 +14,7 @@ namespace Inedo.ProGet;
 public sealed class ProGetClient
 {
     private readonly HttpClient http;
-    public ProGetAuthenticationType AuthenticationType { get; }
-    public string? UserName { get; }
-    public string Url { get; }
+
     public ProGetClient(string url)
     {
         ArgumentException.ThrowIfNullOrEmpty(url);
@@ -26,13 +24,14 @@ public sealed class ProGetClient
 
         this.http = new(new HttpClientHandler { UseDefaultCredentials = true })
         {
-            BaseAddress = new Uri(url)
+            BaseAddress = new Uri(url),
+            Timeout = new TimeSpan(0, 5, 0)
         };
     }
     public ProGetClient(string url, string username, string password) : this(url, $"{username}:{password}")
     {
         ArgumentException.ThrowIfNullOrEmpty(username);
-        ArgumentException.ThrowIfNullOrEmpty(password); 
+        ArgumentException.ThrowIfNullOrEmpty(password);
         this.AuthenticationType = ProGetAuthenticationType.UsernamePassword;
         this.UserName = username;
     }
@@ -41,6 +40,15 @@ public sealed class ProGetClient
         ArgumentException.ThrowIfNullOrEmpty(apiKey);
         this.http.DefaultRequestHeaders.Add("X-ApiKey", apiKey);
         this.AuthenticationType = ProGetAuthenticationType.ApiKey;
+    }
+
+    public ProGetAuthenticationType AuthenticationType { get; }
+    public string? UserName { get; }
+    public string Url { get; }
+    public TimeSpan Timeout
+    {
+        get => this.http.Timeout;
+        set => this.http.Timeout = value;
     }
 
     public async Task<ProGetHealthInfo> GetInstanceHealthAsync(CancellationToken cancellationToken = default)
