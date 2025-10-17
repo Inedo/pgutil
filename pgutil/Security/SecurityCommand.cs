@@ -11,10 +11,7 @@ internal partial class Program
 
         public static void Configure(ICommandBuilder builder)
         {
-            builder.WithOption<SourceOption>()
-                .WithOption<ApiKeyOption>()
-                .WithOption<UserNameOption>()
-                .WithOption<PasswordOption>()
+            builder.WithProGetClientOptions()
                 .WithCommand<PermissionsCommand>()
                 .WithCommand<AttributesCommand>();
         }
