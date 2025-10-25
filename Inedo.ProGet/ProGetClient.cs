@@ -581,6 +581,27 @@ public sealed class ProGetClient
         return this.ListItemsAsync("api/security/attributes/list", ProGetApiJsonContext.Default.SecurityTaskAttribute, cancellationToken);
     }
 
+    public IAsyncEnumerable<SecurityTask> ListSecurityTasksAsync(CancellationToken cancellationToken = default)
+    {
+        return this.ListItemsAsync("api/security/tasks/list", ProGetApiJsonContext.Default.SecurityTask, cancellationToken);
+    }
+    public Task CreateSecurityTaskAsync(SecurityTask task, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(task);
+        return this.PostAsync("api/security/tasks/add", task, ProGetApiJsonContext.Default.SecurityTask, cancellationToken);
+    }
+    public Task UpdateSecurityTaskAsync(SecurityTask task, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(task);
+        return this.PostAsync("api/security/tasks/update", task, ProGetApiJsonContext.Default.SecurityTask, cancellationToken);
+    }
+    public async Task DeleteSecurityTaskAsync(string taskName, CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(taskName);
+        using var response = await this.http.PostAsync($"api/security/tasks/delete?task={Uri.EscapeDataString(taskName)}", null, cancellationToken);
+        await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
+    }
+
     internal static void CheckResponse(HttpResponseMessage response)
     {
         if (response.IsSuccessStatusCode)

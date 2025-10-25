@@ -32,6 +32,7 @@ namespace Inedo.ProGet;
 [JsonSerializable(typeof(ScaPermissionInfo))]
 [JsonSerializable(typeof(SecurityPermission))]
 [JsonSerializable(typeof(SecurityTaskAttribute))]
+[JsonSerializable(typeof(SecurityTask))]
 [JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase, Converters = [typeof(AssetUserMetadataTypeConverter)], UseStringEnumConverter = true, DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull)]
 internal sealed partial class ProGetApiJsonContext : JsonSerializerContext
 {

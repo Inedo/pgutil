@@ -13,7 +13,8 @@ internal partial class Program
         {
             builder.WithProGetClientOptions()
                 .WithCommand<PermissionsCommand>()
-                .WithCommand<AttributesCommand>();
+                .WithCommand<AttributesCommand>()
+                .WithCommand<TasksCommand>();
         }
     }
 }
