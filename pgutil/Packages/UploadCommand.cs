@@ -50,6 +50,8 @@ internal partial class Program
                     if (context.TryGetOption<ArtifactPathOption>(out var artifactPath))
                         fileName = $"{artifactPath.TrimEnd('/')}/{fileName}";
 
+                    var distribution = context.GetOptionOrDefault<DistributionOption>();
+
                     if (!Console.IsOutputRedirected && source.CanSeek)
                     {
                         long length = source.Length;
@@ -61,12 +63,12 @@ internal partial class Program
                             w.WriteSize(length);
                         });
 
-                        await client.UploadPackageAsync(source, feed, fileName, context.GetOptionOrDefault<DistributionOption>(), progress.SetCurrentValue, cancellationToken);
+                        await client.UploadPackageAsync(source, feed, fileName: fileName, distribution: distribution, progress.SetCurrentValue, cancellationToken);
                         progress.Completed();
                     }
                     else
                     {
-                        await client.UploadPackageAsync(source, feed, cancellationToken: cancellationToken);
+                        await client.UploadPackageAsync(source, feed, distribution: distribution, cancellationToken: cancellationToken);
                     }
 
                     Console.WriteLine("Upload complete.");
