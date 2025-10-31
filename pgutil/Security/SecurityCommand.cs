@@ -14,7 +14,9 @@ internal partial class Program
             builder.WithProGetClientOptions()
                 .WithCommand<PermissionsCommand>()
                 .WithCommand<AttributesCommand>()
-                .WithCommand<TasksCommand>();
+                .WithCommand<TasksCommand>()
+                .WithCommand<UsersCommand>()
+                .WithCommand<GroupsCommand>();
         }
     }
 }

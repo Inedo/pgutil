@@ -602,6 +602,48 @@ public sealed class ProGetClient
         await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
     }
 
+    public Task CreateUserAsync(SecurityUser user, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(user);
+        return this.PostAsync("api/security/users/add", user, ProGetApiJsonContext.Default.SecurityUser, cancellationToken);
+    }
+    public Task UpdateUserAsync(SecurityUser user, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(user);
+        return this.PostAsync("api/security/users/update", user, ProGetApiJsonContext.Default.SecurityUser, cancellationToken);
+    }
+    public async Task DeleteUserAsync(string userName, CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(userName);
+        using var response = await this.http.PostAsync($"api/security/users/delete?user={Uri.EscapeDataString(userName)}", null, cancellationToken);
+        await CheckResponseAsync(response, cancellationToken);
+    }
+    public IAsyncEnumerable<SecurityUser> ListUsersAsync(CancellationToken cancellationToken = default)
+    {
+        return this.ListItemsAsync("api/security/users/list", ProGetApiJsonContext.Default.SecurityUser, cancellationToken);
+    }
+
+    public Task CreateUserGroupAsync(SecurityGroup group, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(group);
+        return this.PostAsync("api/security/groups/add", group, ProGetApiJsonContext.Default.SecurityGroup, cancellationToken);
+    }
+    public Task UpdateUserGroupAsync(SecurityGroup group, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(group);
+        return this.PostAsync("api/security/groups/update", group, ProGetApiJsonContext.Default.SecurityGroup, cancellationToken);
+    }
+    public async Task DeleteUserGroupAsync(string groupName, CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(groupName);
+        using var response = await this.http.PostAsync($"api/security/groups/delete?group={Uri.EscapeDataString(groupName)}", null, cancellationToken);
+        await CheckResponseAsync(response, cancellationToken);
+    }
+    public IAsyncEnumerable<SecurityGroup> ListUserGroups(CancellationToken cancellationToken = default)
+    {
+        return this.ListItemsAsync("api/security/groups/list", ProGetApiJsonContext.Default.SecurityGroup, cancellationToken);
+    }
+
     internal static void CheckResponse(HttpResponseMessage response)
     {
         if (response.IsSuccessStatusCode)
