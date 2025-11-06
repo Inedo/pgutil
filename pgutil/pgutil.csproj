@@ -1,32 +1,36 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <RootNamespace>PgUtil</RootNamespace>
-    <Authors>Inedo</Authors>
-    <Company>Inedo</Company>
-    <Product>ProGet</Product>
-    <Copyright>Copyright © Inedo 2025</Copyright>
-    <Description>CLI for ProGet's APIs.</Description>
-    <PackageProjectUrl>https://github.com/Inedo/pgutil</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/Inedo/pgutil.git</RepositoryUrl>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageTags>proget</PackageTags>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackAsTool>true</PackAsTool>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>0.0.0</Version>
-  </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Inedo.ProGet\Inedo.ProGet.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\README.md" Link="README.md" Pack="true" PackagePath="/" />
-    <PackageReference Include="ConsoleMan" Version="1.0.0" />
-    <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="9.0.6" />
-    <TrimmerRootAssembly Include="pgutil" />
-    <TrimmerRootAssembly Include="Tomlyn" />
-  </ItemGroup>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<RootNamespace>PgUtil</RootNamespace>
+		<Authors>Inedo</Authors>
+		<Company>Inedo</Company>
+		<Product>ProGet</Product>
+		<Copyright>Copyright © Inedo 2025</Copyright>
+		<Description>CLI for ProGet's APIs.</Description>
+		<PackageProjectUrl>https://github.com/Inedo/pgutil</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/Inedo/pgutil.git</RepositoryUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageTags>proget</PackageTags>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackAsTool>true</PackAsTool>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<Version>0.0.0</Version>
+	</PropertyGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Inedo.ProGet\Inedo.ProGet.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="..\README.md" Link="README.md" Pack="true" PackagePath="/" />
+		<PackageReference Include="ConsoleMan" Version="1.0.0" />
+		<PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="9.0.6" />
+		<TrimmerRootAssembly Include="pgutil" />
+		<TrimmerRootAssembly Include="Tomlyn" />
+	</ItemGroup>
+	<ItemGroup>
+		<SuppressILLinkerWarning Include="IL2104" TargetAssembly="Tomlyn" />
+		<SuppressILLinkerWarning Include="IL3053" TargetAssembly="Tomlyn" />
+	</ItemGroup>
 </Project>
