@@ -19,6 +19,9 @@
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Version>0.0.0</Version>
 	</PropertyGroup>
+	<PropertyGroup Condition="$(Configuration)=='Release'">
+		<NoWarn>IL2104;IL3053</NoWarn>
+	</PropertyGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Inedo.ProGet\Inedo.ProGet.csproj" />
 	</ItemGroup>
@@ -28,9 +31,5 @@
 		<PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="9.0.6" />
 		<TrimmerRootAssembly Include="pgutil" />
 		<TrimmerRootAssembly Include="Tomlyn" />
-	</ItemGroup>
-	<ItemGroup>
-		<SuppressILLinkerWarning Include="IL2104" TargetAssembly="Tomlyn" />
-		<SuppressILLinkerWarning Include="IL3053" TargetAssembly="Tomlyn" />
 	</ItemGroup>
 </Project>
