@@ -24,7 +24,8 @@ internal partial class Program
                 .WithCommand<StatusCommand>()
                 .WithCommand<RepackageCommand>()
                 .WithCommand<PromoteCommand>()
-                .WithCommand<AuditCommand>();
+                .WithCommand<AuditCommand>()
+                .WithCommand<MetadataCommand>();
         }
 
         private sealed class PackageNameOption : IConsoleOption
