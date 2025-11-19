@@ -1,5 +1,7 @@
-﻿using System.Net.Http.Headers;
+﻿using System;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
@@ -565,6 +567,89 @@ public sealed class ProGetClient
             response.Dispose();
             throw;
         }
+    }
+
+    public IAsyncEnumerable<SecurityPermission> ListPermissionsAsync(CancellationToken cancellationToken = default)
+    {
+        return this.ListItemsAsync("api/security/permissions/list", ProGetApiJsonContext.Default.SecurityPermission, cancellationToken);
+    }
+    public Task AddPermissionAsync(SecurityPermission permission, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(permission);
+        return this.PostAsync("api/security/permissions/add", permission, ProGetApiJsonContext.Default.SecurityPermission, cancellationToken);
+    }
+    public async Task DeletePermissionAsync(int permissionId, CancellationToken cancellationToken = default)
+    {
+        using var response = await this.http.PostAsync($"api/security/permissions/delete?permissionId={permissionId}", null, cancellationToken);
+        await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
+    }
+
+    public IAsyncEnumerable<SecurityTaskAttribute> ListSecurityAttributesAsync(CancellationToken cancellationToken = default)
+    {
+        return this.ListItemsAsync("api/security/attributes/list", ProGetApiJsonContext.Default.SecurityTaskAttribute, cancellationToken);
+    }
+
+    public IAsyncEnumerable<SecurityTask> ListSecurityTasksAsync(CancellationToken cancellationToken = default)
+    {
+        return this.ListItemsAsync("api/security/tasks/list", ProGetApiJsonContext.Default.SecurityTask, cancellationToken);
+    }
+    public Task CreateSecurityTaskAsync(SecurityTask task, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(task);
+        return this.PostAsync("api/security/tasks/add", task, ProGetApiJsonContext.Default.SecurityTask, cancellationToken);
+    }
+    public Task UpdateSecurityTaskAsync(SecurityTask task, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(task);
+        return this.PostAsync("api/security/tasks/update", task, ProGetApiJsonContext.Default.SecurityTask, cancellationToken);
+    }
+    public async Task DeleteSecurityTaskAsync(string taskName, CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(taskName);
+        using var response = await this.http.PostAsync($"api/security/tasks/delete?task={Uri.EscapeDataString(taskName)}", null, cancellationToken);
+        await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
+    }
+
+    public Task CreateUserAsync(SecurityUser user, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(user);
+        return this.PostAsync("api/security/users/add", user, ProGetApiJsonContext.Default.SecurityUser, cancellationToken);
+    }
+    public Task UpdateUserAsync(SecurityUser user, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(user);
+        return this.PostAsync("api/security/users/update", user, ProGetApiJsonContext.Default.SecurityUser, cancellationToken);
+    }
+    public async Task DeleteUserAsync(string userName, CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(userName);
+        using var response = await this.http.PostAsync($"api/security/users/delete?user={Uri.EscapeDataString(userName)}", null, cancellationToken);
+        await CheckResponseAsync(response, cancellationToken);
+    }
+    public IAsyncEnumerable<SecurityUser> ListUsersAsync(CancellationToken cancellationToken = default)
+    {
+        return this.ListItemsAsync("api/security/users/list", ProGetApiJsonContext.Default.SecurityUser, cancellationToken);
+    }
+
+    public Task CreateUserGroupAsync(SecurityGroup group, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(group);
+        return this.PostAsync("api/security/groups/add", group, ProGetApiJsonContext.Default.SecurityGroup, cancellationToken);
+    }
+    public Task UpdateUserGroupAsync(SecurityGroup group, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(group);
+        return this.PostAsync("api/security/groups/update", group, ProGetApiJsonContext.Default.SecurityGroup, cancellationToken);
+    }
+    public async Task DeleteUserGroupAsync(string groupName, CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(groupName);
+        using var response = await this.http.PostAsync($"api/security/groups/delete?group={Uri.EscapeDataString(groupName)}", null, cancellationToken);
+        await CheckResponseAsync(response, cancellationToken);
+    }
+    public IAsyncEnumerable<SecurityGroup> ListUserGroups(CancellationToken cancellationToken = default)
+    {
+        return this.ListItemsAsync("api/security/groups/list", ProGetApiJsonContext.Default.SecurityGroup, cancellationToken);
     }
 
     internal static void CheckResponse(HttpResponseMessage response)

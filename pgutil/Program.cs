@@ -52,11 +52,12 @@ internal sealed partial class Program : IConsoleCommandContainer
             .WithCommand<PackagesCommand>()
             .WithCommand<FeedsCommand>()
             .WithCommand<ConnectorsCommand>()
-            .WithCommand<BuildsCommand>()            
+            .WithCommand<BuildsCommand>()
             .WithCommand<VulnsCommand>()
             .WithCommand<LicensesCommand>()
             .WithCommand<AssetsCommand>()
             .WithCommand<UpackCommand>()
-            .WithCommand<SettingsCommand>();
+            .WithCommand<SettingsCommand>()
+            .WithCommand<SecurityCommand>();
     }
 }
