@@ -11,14 +11,15 @@ internal partial class Program
         {
             private sealed partial class MembersCommand
             {
-                private sealed class DeleteCommand : IConsoleCommand
+                private sealed class RemoveCommand : IConsoleCommand
                 {
-                    public static string Name => "delete";
+                    public static string Name => "remove";
                     public static string Description => "Removes a user from a group";
 
                     public static void Configure(ICommandBuilder builder)
                     {
-                        builder.WithOption<MemberOption>();
+                        builder.WithOption<NameOption>()
+                            .WithOption<MemberOption>();
                     }
 
                     public static async Task<int> ExecuteAsync(CommandContext context, CancellationToken cancellationToken)

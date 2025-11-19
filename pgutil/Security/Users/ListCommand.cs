@@ -22,13 +22,13 @@ internal partial class Program
                 public static async Task<int> ExecuteAsync(CommandContext context, CancellationToken cancellationToken)
                 {
                     var client = context.GetProGetClient();
-                    var searchTerm = context.GetOption<SearchTermOption>();
+                    var searchTerm = context.GetOptionOrDefault<SearchTermOption>();
 
                     bool any = false;
 
                     await foreach (var user in client.ListUsersAsync(cancellationToken))
                     {
-                        if (!string.IsNullOrEmpty(searchTerm) || isInclused(searchTerm, user))
+                        if (string.IsNullOrEmpty(searchTerm) || isInclused(searchTerm, user))
                         {
                             any = true;
                             CM.WriteLine($"{user.Name} ({user.DisplayName})");

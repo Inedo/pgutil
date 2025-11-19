@@ -18,7 +18,7 @@ internal partial class Program
                 {
                     builder.WithOption<UserNameOption>()
                         .WithOption<DisplayNameOption>()
-                        .WithOption<EmailOption>()
+                        .WithOption<EmailOption>(true)
                         .WithOption<PasswordOption>();
                 }
 

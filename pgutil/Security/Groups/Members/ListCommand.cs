@@ -17,6 +17,7 @@ internal partial class Program
 
                     public static void Configure(ICommandBuilder builder)
                     {
+                        builder.WithOption<NameOption>();
                     }
 
                     public static async Task<int> ExecuteAsync(CommandContext context, CancellationToken cancellationToken)

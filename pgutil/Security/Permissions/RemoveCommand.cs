@@ -8,10 +8,10 @@ internal partial class Program
     {
         private sealed partial class PermissionsCommand
         {
-            private sealed class DeleteCommand : IConsoleCommand
+            private sealed class RemoveCommand : IConsoleCommand
             {
-                public static string Name => "delete";
-                public static string Description => "Deletes a permission";
+                public static string Name => "remove";
+                public static string Description => "Removes a permission";
 
                 public static void Configure(ICommandBuilder builder)
                 {
@@ -22,9 +22,9 @@ internal partial class Program
                 {
                     var client = context.GetProGetClient();
                     int id = context.GetOption<IdOption, int>();
-                    Console.WriteLine($"Deleting permission id={id}...");
+                    Console.WriteLine($"Removing permission id={id}...");
                     await client.DeletePermissionAsync(id, cancellationToken);
-                    Console.WriteLine("Permission deleted.");
+                    Console.WriteLine("Permission removed.");
                     return 0;
                 }
 
@@ -32,7 +32,7 @@ internal partial class Program
                 {
                     public static bool Required => true;
                     public static string Name => "--id";
-                    public static string Description => "Integer ID of the permission to delete";
+                    public static string Description => "Integer ID of the permission to remove";
                 }
             }
         }

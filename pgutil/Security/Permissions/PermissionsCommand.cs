@@ -16,7 +16,7 @@ internal partial class Program
             {
                 builder.WithCommand<ListCommand>()
                     .WithCommand<AddCommand>()
-                    .WithCommand<DeleteCommand>();
+                    .WithCommand<RemoveCommand>();
             }
 
             private static void FormatPermission(SecurityPermission p)

@@ -16,9 +16,8 @@ internal partial class Program
                 public static void Configure(ICommandBuilder builder)
                 {
                     builder.WithCommand<AddCommand>()
-                        .WithCommand<DeleteCommand>()
-                        .WithCommand<ListCommand>()
-                        .WithOption<NameOption>();
+                        .WithCommand<RemoveCommand>()
+                        .WithCommand<ListCommand>();
                 }
 
                 private sealed class MemberOption : IConsoleOption
