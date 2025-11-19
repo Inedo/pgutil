@@ -344,6 +344,14 @@ public sealed class ProGetClient
         using var responseStream = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
         return (await JsonSerializer.DeserializeAsync(responseStream, ProGetApiJsonContext.Default.AuditPackageResults, cancellationToken).ConfigureAwait(false))!;
     }
+    public Task<PackageMetadata> GetPackageMetadataAsync(PackageIdentifier package, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(package);
+
+        var url = GetPackageUrl($"api/packages/{Uri.EscapeDataString(package.Feed)}/metadata", package);
+        return this.GetItemAsync(url, ProGetApiJsonContext.Default.PackageMetadata, cancellationToken);
+    }
+
     public async Task<ScaPermissionInfo> GetScaPermissionsAsync(CancellationToken cancellationToken = default)
     {
         using var response = await this.http.GetAsync("api/sca/permissions", cancellationToken).ConfigureAwait(false);
