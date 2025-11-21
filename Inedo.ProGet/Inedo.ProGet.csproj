@@ -24,5 +24,6 @@ To learn how to use the library, see [Getting Started with Inedo.NuGet](https://
   <ItemGroup>
     <PackageReference Include="System.Linq.Async" Version="6.0.3" />
     <PackageReference Include="Tomlyn" Version="0.19.0" />
+    <PackageReference Include="YamlDotNet" Version="16.2.1" />
   </ItemGroup>
 </Project>

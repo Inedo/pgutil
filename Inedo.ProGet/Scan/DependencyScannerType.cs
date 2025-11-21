@@ -18,6 +18,10 @@ public enum DependencyScannerType
     /// </summary>
     Npm,
     /// <summary>
+    /// pnpm.
+    /// </summary>
+    Pnpm,
+    /// <summary>
     /// PyPI.
     /// </summary>
     PyPI,
