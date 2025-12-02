@@ -85,7 +85,7 @@ internal sealed partial class VulnsCommand
             public static bool Required => false;
             public static string Name => "--type";
             public static string Description => "Type of package to audit for vulnerabilities";
-            public static string[] ValidValues => ["apk", "deb", "maven", "nuget", "conda", "cran", "helm", "npm", "pypi", "rpm", "gem", "pnpm"];
+            public static string[] ValidValues => ["apk", "deb", "maven", "nuget", "conda", "cran", "helm", "npm", "pypi", "rpm", "gem"];
         }
 
         private sealed class ProjectOption : IConsoleOption
