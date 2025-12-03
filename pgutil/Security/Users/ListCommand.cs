@@ -13,6 +13,12 @@ internal partial class Program
             {
                 public static string Name => "list";
                 public static string Description => "Lists user accounts";
+                public static string Examples => """
+                      $> pgutil security users list
+                      $> pgutil security users list --search-term="John"
+
+                    For more information, see: https://docs.inedo.com/docs/proget/api/security/users/list
+                    """;
 
                 public static void Configure(ICommandBuilder builder)
                 {

@@ -14,6 +14,11 @@ internal partial class Program
                 {
                     public static string Name => "list";
                     public static string Description => "List members of a group";
+                    public static string Examples => """
+                          $> pgutil security groups members list --name=Developers
+                        
+                        For more information, see: https://docs.inedo.com/docs/proget/api/security/groups/list-members
+                        """;
 
                     public static void Configure(ICommandBuilder builder)
                     {

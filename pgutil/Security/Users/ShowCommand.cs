@@ -12,6 +12,11 @@ internal partial class Program
             {
                 public static string Name => "show";
                 public static string Description => "Displays information about a user account";
+                public static string Examples => """
+                      $> pgutil security users show --username="John Smith"
+
+                    For more information, see: https://docs.inedo.com/docs/proget/api/security/users/show
+                    """;
 
                 public static void Configure(ICommandBuilder builder)
                 {

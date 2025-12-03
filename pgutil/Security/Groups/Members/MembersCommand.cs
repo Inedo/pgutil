@@ -11,7 +11,7 @@ internal partial class Program
             private sealed partial class MembersCommand : IConsoleCommandContainer
             {
                 public static string Name => "members";
-                public static string Description => "Manage group membership";
+                public static string Description => "Manages group membership";
 
                 public static void Configure(ICommandBuilder builder)
                 {

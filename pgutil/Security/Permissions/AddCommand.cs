@@ -13,6 +13,14 @@ internal partial class Program
             {
                 public static string Name => "add";
                 public static string Description => "Adds a permission";
+                public static string Examples => """
+                      $> pgutil security permissions add --task="View & Download Packages" --user="John Smith"
+                      $> pgutil security permissions add --task="Promote Packages" --group=Developers --feed=approved-nuget
+                      $> pgutil security permissions add --task="View & Download Packages" --group=Developers --feed=unapproved-nuget --deny
+                      $> pgutil security permissions add --task="Manage Feed" --name-"David Jones" --feed-group=production-packages
+                    
+                    For more information, see: https://docs.inedo.com/docs/proget/api/security/permissions/add
+                    """;
 
                 public static void Configure(ICommandBuilder builder)
                 {

@@ -15,6 +15,11 @@ internal partial class Program
                 {
                     public static string Name => "remove";
                     public static string Description => "Removes a user from a group";
+                    public static string Examples => """
+                          $> pgutil security groups members remove --name=Developers --member="John Smith"
+                        
+                        For more information, see: https://docs.inedo.com/docs/proget/api/security/groups/remove-member
+                        """;
 
                     public static void Configure(ICommandBuilder builder)
                     {
