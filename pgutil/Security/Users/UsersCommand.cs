@@ -9,7 +9,7 @@ internal partial class Program
         private sealed partial class UsersCommand : IConsoleCommandContainer
         {
             public static string Name => "users";
-            public static string Description => "Manage users in ProGet";
+            public static string Description => "Manages users in ProGet";
 
             public static void Configure(ICommandBuilder builder)
             {

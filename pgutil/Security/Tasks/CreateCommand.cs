@@ -64,7 +64,7 @@ internal partial class Program
                 private sealed class ForceFlag : IConsoleFlagOption
                 {
                     public static string Name => "--force";
-                    public static string Description => "Overwrite an existing task with the same name if necessary";
+                    public static string Description => "Overwrites an existing task with the same name if necessary";
                 }
             }
         }

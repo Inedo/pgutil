@@ -104,7 +104,7 @@ internal partial class Program
                 private sealed class DenyFlag : IConsoleFlagOption
                 {
                     public static string Name => "--deny";
-                    public static string Description => "Create this as a deny permission instead of a grant";
+                    public static string Description => "Creates this as a deny permission instead of a grant";
                 }
             }
         }
