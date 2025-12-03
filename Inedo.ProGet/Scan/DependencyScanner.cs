@@ -144,10 +144,14 @@ public abstract class DependencyScanner
             else if (files.Count > 1)
                 throw new DependencyScannerException("Multiple project files found in directory.  Specify which project file you would like to scan be using \"--input\" argument.");
 
+            files = await fileSystem.FindFilesAsync(fileName, "pnpm-lock.yaml", true, cancellationToken).ToListAsync(cancellationToken);
+            if (files.Count > 0)
+                return (scannerType: DependencyScannerType.Npm, filePath: files[0].FullName);
+
             files = await fileSystem.FindFilesAsync(fileName, "package-lock.json", true, cancellationToken).ToListAsync(cancellationToken);
             if(files.Count > 0)
                 return (scannerType: DependencyScannerType.Npm, filePath: fileName);
-            
+
             files = await fileSystem.FindFilesAsync(fileName, "Cargo.lock", true, cancellationToken).ToListAsync(cancellationToken);
             if(files.Count > 0)
                 return (scannerType: DependencyScannerType.Cargo, filePath: fileName);
@@ -173,6 +177,7 @@ public abstract class DependencyScanner
             ".slnx" or ".sln" or ".csproj" => (DependencyScannerType.NuGet, fileName),
             ".toml" => (DependencyScannerType.Cargo, fileName),
             ".lock" => Path.GetFileName(fileName).Equals("Cargo.lock", StringComparison.OrdinalIgnoreCase) ? (DependencyScannerType.Cargo, fileName) : (DependencyScannerType.Composer, fileName),
+            ".yaml" => Path.GetFileName(fileName).Equals("pnpm-lock.yaml", StringComparison.OrdinalIgnoreCase) ? (DependencyScannerType.Npm, fileName) : (DependencyScannerType.Auto, fileName),
             ".json" => Path.GetFileName(fileName).Equals("composer.json", StringComparison.OrdinalIgnoreCase) ? (DependencyScannerType.Composer, fileName) : (DependencyScannerType.Npm, fileName),
             _ => Path.GetFileName(fileName).Equals("requirements.txt", StringComparison.OrdinalIgnoreCase) ? (getPythonScannerType(fileName), fileName) : (DependencyScannerType.Auto, fileName)
         };
