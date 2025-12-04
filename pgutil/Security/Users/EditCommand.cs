@@ -13,7 +13,14 @@ internal partial class Program
             {
                 public static string Name => "edit";
                 public static string Description => "Modifies an existing user account";
+                public static string Examples => """
+                      $> pgutil security users edit --username="John Smith" --displayname=johnsmith
+                      $> pgutil security users edit --username="David Jones" --password=newpassword123
+                      $> pgutil security security users edit --username="Robert Davies" --displayname=rdavies --email=newemail@kramerica.com
 
+                    For more information, see: https://docs.inedo.com/docs/proget/api/security/users/edit
+                    """;
+                
                 public static void Configure(ICommandBuilder builder)
                 {
                     builder.WithOption<UserNameOption>()

@@ -9,7 +9,7 @@ internal partial class Program
         private sealed partial class TasksCommand : IConsoleCommandContainer
         {
             public static string Name => "tasks";
-            public static string Description => "Manage security tasks on ProGet";
+            public static string Description => "Manages security tasks on ProGet";
 
             public static void Configure(ICommandBuilder builder)
             {

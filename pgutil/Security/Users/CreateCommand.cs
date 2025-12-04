@@ -13,6 +13,11 @@ internal partial class Program
             {
                 public static string Name => "create";
                 public static string Description => "Creates a new user account";
+                public static string Examples => """
+                      $> pgutil security users create --username="John Smith" --displayname=jsmith --email=jsmith@kramerica.com  --password=password123
+
+                    For more information, see: https://docs.inedo.com/docs/proget/api/security/users/create
+                    """;
 
                 public static void Configure(ICommandBuilder builder)
                 {

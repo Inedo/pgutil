@@ -12,6 +12,11 @@ internal partial class Program
             {
                 public static string Name => "delete";
                 public static string Description => "Deletes a user group";
+                public static string Examples => """
+                      $> pgutil security groups delete --name=Developers
+                    
+                    For more information, see: https://docs.inedo.com/docs/proget/api/security/groups/delete
+                    """;
 
                 public static void Configure(ICommandBuilder builder)
                 {

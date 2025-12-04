@@ -9,7 +9,7 @@ internal partial class Program
         private sealed partial class GroupsCommand : IConsoleCommandContainer
         {
             public static string Name => "groups";
-            public static string Description => "Manage user groups in ProGet";
+            public static string Description => "Manages user groups in ProGet";
 
             public static void Configure(ICommandBuilder builder)
             {
