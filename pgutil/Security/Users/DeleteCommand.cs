@@ -12,6 +12,11 @@ internal partial class Program
             {
                 public static string Name => "delete";
                 public static string Description => "Deletes a user account";
+                public static string Examples => """
+                      $> pgutil security users delete --username="John Smith"
+
+                    For more information, see: https://docs.inedo.com/docs/proget/api/security/users/delete
+                    """;              
 
                 public static void Configure(ICommandBuilder builder)
                 {

@@ -13,6 +13,11 @@ internal partial class Program
             {
                 public static string Name => "delete";
                 public static string Description => "Deletes a security task from ProGet";
+                public static string Examples => """
+                      $> pgutil security tasks delete --name="Basic Feed Access"
+
+                    For more information, see: https://docs.inedo.com/docs/proget/api/security/tasks/delete
+                    """;
 
                 public static void Configure(ICommandBuilder builder)
                 {

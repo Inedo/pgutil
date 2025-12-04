@@ -13,6 +13,12 @@ internal partial class Program
             {
                 public static string Name => "create";
                 public static string Description => "Creates a ProGet security task";
+                public static string Examples => """
+                      $> pgutil security tasks create --name="Basic Feed Access" --attributes=Feeds_ViewFeed
+                      $> pgutil security tasks create --name="Developer Access" --attributes=Feeds_ViewFeed,Feeds_DownloadPackage,Feeds_PullPackage
+
+                    For more information, see: https://docs.inedo.com/docs/proget/api/security/tasks/create
+                    """;
 
                 public static void Configure(ICommandBuilder builder)
                 {
@@ -64,7 +70,7 @@ internal partial class Program
                 private sealed class ForceFlag : IConsoleFlagOption
                 {
                     public static string Name => "--force";
-                    public static string Description => "Overwrite an existing task with the same name if necessary";
+                    public static string Description => "Overwrites an existing task with the same name if necessary";
                 }
             }
         }

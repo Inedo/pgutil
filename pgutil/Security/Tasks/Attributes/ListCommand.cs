@@ -9,7 +9,7 @@ internal partial class Program
         private sealed class AttributesCommand : IConsoleCommandContainer
         {
             public static string Name => "attributes";
-            public static string Description => "View security task attributes";
+            public static string Description => "Views security task attributes";
 
             public static void Configure(ICommandBuilder builder)
             {
@@ -19,7 +19,7 @@ internal partial class Program
             private sealed class ListCommand : IConsoleCommand
             {
                 public static string Name => "list";
-                public static string Description => "List available security task attributes";
+                public static string Description => "Lists available security task attributes";
 
                 public static void Configure(ICommandBuilder builder)
                 {

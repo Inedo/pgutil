@@ -10,7 +10,7 @@ internal partial class Program
         private sealed partial class PermissionsCommand : IConsoleCommandContainer
         {
             public static string Name => "permissions";
-            public static string Description => "Manage security permissions on ProGet";
+            public static string Description => "Manages security permissions on ProGet";
 
             public static void Configure(ICommandBuilder builder)
             {
