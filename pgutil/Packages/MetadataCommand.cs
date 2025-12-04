@@ -10,8 +10,13 @@ internal partial class Program
         private sealed class MetadataCommand : IConsoleCommand
         {
             public static string Name => "metadata";
-            public static string Description => "Display metadata about a package";
+            public static string Description => "Displays metadata about a package";
+            public static string Examples => """
+                 > pgutil packages packages metadata --package="MyPackage" --version=1.2.3   
+                 > pgutil packages packages metadata --package="Newtonsoft.Json" --version=12.0.3 --feed=public-nuget  
 
+                For more information, see: https://docs.inedo.com/docs/proget/api/packages/metadata 
+                """;
             public static void Configure(ICommandBuilder builder)
             {
                 builder.WithOption<PackageNameOption>()
