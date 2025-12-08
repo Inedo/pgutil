@@ -19,7 +19,9 @@ internal partial class Program
                       $> pgutil apikeys create feed --feed=public-npm --permissions="view,add" --key=abcd12345
 
                       $> pgutil apikeys create feed --group=production-feeds --key=wxyz67890 --expiration="2024/08/01"
-
+                    
+                      $> pgutil apikeys create feed --feed=*
+                    
                     For more information, see: https://docs.inedo.com/docs/proget/api/apikeys/create
                     """;
 
@@ -64,7 +66,7 @@ internal partial class Program
                     var info = new ApiKeyInfo
                     {
                         Type = ApiKeyType.Feed,
-                        Feed = feed,
+                        Feed = feed == "*" ? null : feed,
                         FeedGroup = group,
                         Key = context.GetOptionOrDefault<KeyOption>(),
                         DisplayName = context.GetOptionOrDefault<NameOption>(),
@@ -90,7 +92,7 @@ internal partial class Program
                 {
                     public static bool Required => false;
                     public static string Name => "--feed";
-                    public static string Description => "Name of the feed to associate with the key";
+                    public static string Description => "Name of the feed to associate with the key, or \"*\" for all feeds";
                 }
 
                 private sealed class FeedGroupOption : IConsoleOption

@@ -39,7 +39,7 @@ internal partial class Program
                         data.Add(("  User:", key.User ?? "(unknown)"));
                     else if (key.Type == ApiKeyType.Feed)
                     {
-                        data.Add(key.FeedGroup is not null ? ("  Feed group:", key.FeedGroup) : ("  Feed:", key.Feed ?? "(unknown)"));
+                        data.Add(key.FeedGroup is not null ? ("  Feed group:", key.FeedGroup) : ("  Feed:", key.Feed ?? "* (all)"));
                         data.Add(("  Permissions:", string.Join(", ", key.PackagePermissions ?? [])));
                     }
                     CM.WriteTwoColumnList(data);
