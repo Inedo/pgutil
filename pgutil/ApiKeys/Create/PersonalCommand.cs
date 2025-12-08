@@ -47,8 +47,7 @@ internal partial class Program
                         Type = ApiKeyType.Personal,
                         DisplayName = context.GetOptionOrDefault<NameOption>(),
                         Description = context.GetOptionOrDefault<DescriptionOption>(),
-                        User = user,
-                        Logging = ApiKeyBodyLogging.None
+                        User = user
                     };
 
                     var result = await client.CreateApiKeyAsync(info, cancellationToken).ConfigureAwait(false);

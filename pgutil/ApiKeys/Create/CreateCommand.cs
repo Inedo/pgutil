@@ -52,14 +52,6 @@ internal partial class Program
                 public static string Name => "--show-key";
                 public static string Description => "Writes the newly created API key to stdout";
             }
-
-            private sealed class LoggingOption : IConsoleEnumOption<ApiKeyBodyLogging>
-            {
-                public static bool Required => false;
-                public static string Name => "--logging";
-                public static string Description => "Request/response logging for the API key";
-                public static string DefaultValue => "none";
-            }
         }
     }
 }

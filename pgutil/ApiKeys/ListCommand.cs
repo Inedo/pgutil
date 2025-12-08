@@ -30,7 +30,6 @@ internal partial class Program
                     {
                         ("  Id:", key.Id.ToString()!),
                         ("  Expiration:", key.Expiration?.ToShortDateString() ?? "None"),
-                        ("  Logging:", key.Logging.ToString()),
                         ("  Type:", (key.Type).ToString())
                     };
                     if (key.Type == ApiKeyType.System)

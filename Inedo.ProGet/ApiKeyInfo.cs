@@ -69,7 +69,6 @@ public sealed class ApiKeyInfo
     public string? FeedGroup { get; set; }
 
     public DateTime? Expiration { get; set; }
-    public required ApiKeyBodyLogging Logging { get; set; }
 
     /// Name of the user the personal key applies to; required when Type is Personal (otherwise must be null)
     public string? User { get; set; }

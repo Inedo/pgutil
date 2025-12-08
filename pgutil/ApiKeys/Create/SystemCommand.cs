@@ -27,7 +27,6 @@ internal partial class Program
                         .WithOption<NameOption>()
                         .WithOption<DescriptionOption>()
                         .WithOption<ExpirationOption>()
-                        .WithOption<LoggingOption>()
                         .WithOption<ApisOption>();
                 }
 
@@ -55,7 +54,6 @@ internal partial class Program
                         DisplayName = context.GetOptionOrDefault<NameOption>(),
                         Description = context.GetOptionOrDefault<DescriptionOption>(),
                         Expiration = context.TryGetOption<ExpirationOption, DateTime>(out var d) ? d : null,
-                        Logging = context.TryGetEnumValue<LoggingOption, ApiKeyBodyLogging>(out var l) ? l : default,
                         SystemApis = apis
                     };
 
