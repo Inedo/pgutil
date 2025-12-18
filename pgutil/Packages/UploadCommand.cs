@@ -27,6 +27,7 @@ internal partial class Program
                 builder.WithOption<InputFileOption>()
                     .WithOption<StdInFlag>()
                     .WithOption<DistributionOption>()
+                    .WithOption<ComponentOption>()
                     .WithOption<ArtifactPathOption>();
             }
 
@@ -51,6 +52,7 @@ internal partial class Program
                         fileName = $"{artifactPath.TrimEnd('/')}/{fileName}";
 
                     var distribution = context.GetOptionOrDefault<DistributionOption>();
+                    var component = context.GetOptionOrDefault<ComponentOption>();
 
                     if (!Console.IsOutputRedirected && source.CanSeek)
                     {
@@ -63,12 +65,12 @@ internal partial class Program
                             w.WriteSize(length);
                         });
 
-                        await client.UploadPackageAsync(source, feed, fileName: fileName, distribution: distribution, progress.SetCurrentValue, cancellationToken);
+                        await client.UploadPackageAsync(source, feed, fileName, distribution, component, progress.SetCurrentValue, cancellationToken);
                         progress.Completed();
                     }
                     else
                     {
-                        await client.UploadPackageAsync(source, feed, distribution: distribution, cancellationToken: cancellationToken);
+                        await client.UploadPackageAsync(source, feed, distribution: distribution, component: component, cancellationToken: cancellationToken);
                     }
 
                     Console.WriteLine("Upload complete.");
@@ -165,7 +167,14 @@ internal partial class Program
             {
                 public static bool Required => false;
                 public static string Name => "--distribution";
-                public static string Description => "Distribution of the package. Only applies to Debian packages (default is main)";
+                public static string Description => "Distribution of the package. Only applies to Debian packages";
+            }
+
+            private sealed class ComponentOption : IConsoleOption
+            {
+                public static bool Required => false;
+                public static string Name => "--component";
+                public static string Description => "Component of the package. Only applies to Debian packages (default is main)";
             }
 
             private sealed class ArtifactPathOption : IConsoleOption

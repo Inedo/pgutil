@@ -263,7 +263,9 @@ public sealed class ProGetClient
             throw;
         }
     }
-    public async Task UploadPackageAsync(Stream source, string feed, string? fileName = null, string? distribution = null, Action<long>? reportProgress = null, CancellationToken cancellationToken = default)
+    [Obsolete("Use the other overload instead.")]
+    public Task UploadPackageAsync(Stream source, string feed, string? fileName, string? distribution, Action<long>? reportProgress, CancellationToken cancellationToken) => this.UploadPackageAsync(source, feed, fileName, distribution, null, reportProgress, cancellationToken);
+    public async Task UploadPackageAsync(Stream source, string feed, string? fileName = null, string? distribution = null, string? component = null, Action<long>? reportProgress = null, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(source);
         ArgumentException.ThrowIfNullOrEmpty(feed);
@@ -273,6 +275,8 @@ public sealed class ProGetClient
             url = $"{url}/{fileName}";
         if (!string.IsNullOrEmpty(distribution))
             url = $"{url}?distribution={Uri.EscapeDataString(distribution)}";
+        if (!string.IsNullOrEmpty(component))
+            url = $"{url}{(string.IsNullOrEmpty(distribution) ? '?' : '&')}component={Uri.EscapeDataString(component)}";
 
         using var content = getContent();
         using var response = await this.http.PutAsync(url, content, cancellationToken).ConfigureAwait(false);
