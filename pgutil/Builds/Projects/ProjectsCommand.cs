@@ -15,7 +15,8 @@ internal partial class Program
             {
                 builder.WithProGetClientOptions()
                     .WithCommand<ListCommand>()
-                    .WithCommand<CreateCommand>();
+                    .WithCommand<CreateCommand>()
+                    .WithCommand<DeleteCommand>();
             }
         }
     }

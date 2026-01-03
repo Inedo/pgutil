@@ -20,7 +20,8 @@ internal partial class Program
                 .WithCommand<ProjectsCommand>()
                 .WithCommand<IssuesCommand>()
                 .WithCommand<CommentsCommand>()
-                .WithCommand<SbomCommand>();
+                .WithCommand<SbomCommand>()
+                .WithCommand<DeleteCommand>();
         }
 
         private sealed class ProjectOption : IConsoleOption

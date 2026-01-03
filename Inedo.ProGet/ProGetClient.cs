@@ -469,6 +469,12 @@ public sealed class ProGetClient
         using var content = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
         return (await JsonSerializer.DeserializeAsync(content, ProGetApiJsonContext.Default.ProjectInfo, cancellationToken).ConfigureAwait(false))!;
     }
+    public async Task DeleteProjectAsync(string name, CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(name);
+        using var response = await this.http.DeleteAsync($"api/sca/projects?name={Uri.EscapeDataString(name)}", cancellationToken);
+        await CheckResponseAsync(response, cancellationToken);
+    }
 
     public IAsyncEnumerable<BuildInfo> ListBuildsAsync(string project, CancellationToken cancellationToken = default)
     {
@@ -488,6 +494,13 @@ public sealed class ProGetClient
         await CheckResponseAsync(response, cancellationToken).ConfigureAwait(false);
         using var content = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
         return (await JsonSerializer.DeserializeAsync(content, ProGetApiJsonContext.Default.BuildInfo, cancellationToken).ConfigureAwait(false))!;
+    }
+    public async Task DeleteBuildAsync(string project, string build, CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(project);
+        ArgumentException.ThrowIfNullOrEmpty(build);
+        using var response = await this.http.DeleteAsync($"api/sca/builds?project={Uri.EscapeDataString(project)}&version={Uri.EscapeDataString(build)}", cancellationToken);
+        await CheckResponseAsync(response, cancellationToken);
     }
 
     public IAsyncEnumerable<BuildIssue> ListIssuesAsync(string project, string build, CancellationToken cancellationToken = default)

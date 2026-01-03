@@ -9,7 +9,7 @@ internal partial class Program
         private sealed class CreateCommand : IConsoleCommand
         {
             public static string Name => "create";
-            public static string Description => "Creates a build";
+            public static string Description => "Creates or updates a build";
             public static string Examples => """
                 >$ pgutil builds create --build=1.0.0 --project=testApplication
 
@@ -28,16 +28,23 @@ internal partial class Program
             public static async Task<int> ExecuteAsync(CommandContext context, CancellationToken cancellationToken)
             {
                 var client = context.GetProGetClient();
-                _ = await client.CreateOrUpdateBuildAsync(
-                    new Inedo.ProGet.CreateOrUpdateBuildOptions
-                    {
-                        Project = context.GetOption<ProjectOption>(),
-                        Version = context.GetOption<BuildOption>(),
-                        Active = context.HasFlag<InactiveFlag>() ? false : null,
-                        Stage = context.GetOptionOrDefault<StageOption>()
-                    },
-                    cancellationToken
-                );
+
+                bool? active = null;
+                if (context.TryGetEnumValue<StatusOption, BuildStatus>(out var status))
+                    active = status == BuildStatus.Active;
+                else if (context.HasFlag<InactiveFlag>())
+                    active = false;
+
+                    _ = await client.CreateOrUpdateBuildAsync(
+                        new Inedo.ProGet.CreateOrUpdateBuildOptions
+                        {
+                            Project = context.GetOption<ProjectOption>(),
+                            Version = context.GetOption<BuildOption>(),
+                            Active = active,
+                            Stage = context.GetOptionOrDefault<StageOption>()
+                        },
+                        cancellationToken
+                    );
 
                 Console.WriteLine("Build created.");
                 return 0;
@@ -47,6 +54,14 @@ internal partial class Program
             {
                 public static string Name => "--inactive";
                 public static string Description => "Create the build in an inactive state";
+                public static bool Undisclosed => true;
+            }
+
+            private sealed class StatusOption : IConsoleEnumOption<BuildStatus>
+            {
+                public static bool Required => false;
+                public static string Name => "--status";
+                public static string Description => "Sets the status of the build";
             }
 
             private sealed class StageOption : IConsoleOption
@@ -54,6 +69,12 @@ internal partial class Program
                 public static bool Required => false;
                 public static string Name => "--stage";
                 public static string Description => "Initial pipeline stage of the build";
+            }
+
+            private enum BuildStatus
+            {
+                Active,
+                Archived
             }
         }
     }
