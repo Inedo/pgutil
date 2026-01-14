@@ -119,7 +119,7 @@ public sealed class PackageMetadataVulnerability
 public sealed class PackageMetadataVulnerabilityAssessment
 {
     // Assessment Type
-    // * Defaults are "Caution", "Blocked", or "Ignore"
+    // * Defaults values are "Caution", "Blocked", or "Ignore"
     // * Custom types may also be used
     public required string Type { get; init; }
 

@@ -27,16 +27,29 @@
 *                                                                              *
 *******************************************************************************/
 
-
-
 namespace Inedo.ProGet;
 
+// JSON Object used by the Audit Build HTTP endpoint
 public sealed class BuildAnalysisResults
 {
+    // Date and time the analysis was last performed
+    // * Date is output in ISO8601 format (e.g. "2019-08-01T00:00:00-07:00")
     public DateTime? LastAnalyzedDate { get; init; }
+
+    // Status code of the analysis
+    // * Values are either "C" (Compliant), "W" (Warn), or "N" (Noncompliant)
     public string? StatusCode { get; init; }
+
+    // Number of issues found during the analysis (e.g. 5)
     public int? IssueCount { get; init; }
+
+    // Number of unresolved issues found during the analysis (e.g. 2)
     public int? UnresolvedIssueCount { get; init; }
+
+    // Status text of the analysis
+    // * Will be either "Compliant", "Warn", or "Noncompliant"
     public required string StatusText { get; init; }
+
+    // Total number of packages analyzed in the build (e.g. 42)
     public int? TotalPackages { get; init; }
 }

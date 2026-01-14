@@ -31,9 +31,20 @@ namespace Inedo.ProGet;
 
 public sealed class CreateOrUpdateBuildOptions
 {
+    // Name of the project (e.g. "MyApp")
     public required string Project { get; init; }
+
+    // Version of the build (e.g. "1.0.0")
     public required string Version { get; init; }
+
+    // URL associated with the build (e.g. "https://buildmaster.local/applications/myapp")
     public string? Url { get; init; }
+
+    // Indicates whether the build is active
+    // Default is "true"
+    // Value is either "true" or "false"
     public bool? Active { get; init; }
+
+    // Stage of the build (e.g. "Integration", "Test", "Production")
     public string? Stage { get; init; }
 }

@@ -29,31 +29,38 @@
 
 namespace Inedo.ProGet;
 
-// JSON Object used by the Create/Update Build HTTP endpoint
+// JSON Object used by the Get/List Builds HTTP endpoints
 public sealed class BuildInfo
 {
-    // The build version number
+    // Build version number (e.g. "1.0.0")
     public required string Version { get; init; }
     
-    // Indicates whether the build is "active" or "inactive"
+    // Indicates whether the build is active
+    // * Default is "true"
+    // * Value is either "true" or "false"
     public bool Active { get; init; }
 
     // SBOM Metadata field
     public string? Url { get; init; }
 
-    // An absolute URL for the build overview page
+    // Absolute URL for the build overview page (e.g. "https://buildmaster.local/projects2/builds/build?buildId=5")
     public required string ViewBuildUrl { get; init; }
 
     // Timestamp when the build was created
+    // * Written in ISO8601 format (e.g. "2023-01-15T12:34:56Z")
     public DateTime? Created { get; init; }
 
-    // Release number field
+    // Release associated with the build (e.g. "1.0.0-RC1")
     public string? Release { get; init; }
 
-    // Current stage of the build
+    // Current stage of the build (e.g. "Integration", "Test", "Production")
     public string? Stage { get; init; }
 
+    // Comments associated with the build (e.g. "Fixed bug 1234")
+    // * See BuildCommentCreateInfo.cs for more details
     public BuildComment[]? Comments { get; init; }
 
+    // Packages associated with the build
+    // * See BuildPackage.cs for more details
     public BuildPackage[]? Packages { get; init; }
 }

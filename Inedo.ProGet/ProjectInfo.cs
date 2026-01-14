@@ -29,13 +29,13 @@
 
 namespace Inedo.ProGet;
 
-// JSON Object used by the Create/Update Project (SCA) HTTP endpoint
+// JSON Object used by the Create/Update/Get/List Projects (SCA) HTTP endpoints
 public sealed class ProjectInfo
 {
-    // The internal ID of project
+    // Internal ID of project (e.g. 5)
     public int? Id { get; set; }
 
-    // The name of the project.
+    // Name of the project (e.g. "My Application")
     // * Must be unique across the system
     public string? Name { get; set; }
 

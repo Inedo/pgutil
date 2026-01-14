@@ -30,7 +30,6 @@
 namespace Inedo.ProGet;
 
 // JSON Object used by the Promote Package HTTP endpoint
-
 public sealed class PromotePackageInput
 {
     // Source feed from which to promote the package (e.g. "unapproved-npm")

@@ -29,12 +29,25 @@
 
 namespace Inedo.ProGet;
 
+// JSON Object used by BuildInfo.cs
 public sealed class BuildCommentCreateInfo
 {
+    // Project name associated with the build (e.g. "My Application")
     public required string Project { get; init; }
+
+    // Build version associated with the build (e.g. "1.0.0")
     public required string Version { get; init; }
+
+    // Internal comment ID number (e.g. 2)
     public int? Number { get; set; }
+
+    // Name of the user that created the comment (e.g. "jsmith")
     public string? By { get; set; }
+
+    // Date that the comment was created
+    // * Date is output in ISO8601 format (e.g. "2019-08-01T00:00:00-07:00")
     public DateTime? Date { get; set; }
+
+    // The comment text (e.g. "This issue has been resolved.")
     public string? Comment { get; set; }
 }
