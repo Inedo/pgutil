@@ -32,30 +32,40 @@ using System.Text.Json.Serialization;
 
 namespace Inedo.ProGet;
 
-// JSON Object used by Packages List Latest/Versions HTTP endpoints
+// JSON Object used by List Packages/Package Versions HTTP endpoints
 public sealed class PackageVersionInfo
 {
     // PUrl of the package (see https://github.com/package-url/purl-spec/blob/master/PURL-TYPES.rst)
     [JsonPropertyName("purl")]
     public required string PUrl { get; init; }
+    
     // Group of the package identifier if the package type supports groups
     public string? Group { get; init; }
+    
     // Unique name of the package
     public required string Name { get; init; }
+    
     // Version of the package
     public required string Version { get; init; }
+    
     // Additional fields specific to the type of package (see https://github.com/package-url/purl-spec/blob/master/PURL-TYPES.rst)
     public string? Qualifier { get; init; }
+    
     // Total number of downloads of all versions of the package from the ProGet feed
     public long TotalDownloads { get; init; }
+    
     // Number of downloads of the latest version of the package from the ProGet feed
     public long Downloads { get; init; }
+    
     // Timestamp when the package was published to ProGet
     public DateTime Published { get; init; }
+    
     // User which published the package to ProGet; this information may not always be available
     public string? PublishedBy { get; init; }
+    
     // Size of the package file in bytes
     public long Size { get; init; }
+    
     // Indicates whether the package is visible to searches (assume true when not specified)
     public bool Listed { get; init; } = true;
 

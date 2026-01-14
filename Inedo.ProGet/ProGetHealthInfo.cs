@@ -34,25 +34,31 @@ namespace Inedo.ProGet;
 // * StatusDetails properties will return an error message if Status is "Error", else will be null
 public sealed class ProGetHealthInfo
 {
-    // The health state of the database.
+    // The health state of the database (e.g. "OK")
     public required string DatabaseStatus { get; init; }
 
+    // Details about the database status. ("null" if DatabaseStatus is "OK")
     public string? DatabaseStatusDetails { get; init; }
 
-    // The health state of the product license.
+    // The health state of the product license. (e.g. "OK")
     public required string LicenseStatus { get; init; }
 
+    // Details about the product license status. ("null" if LicenseStatus is "OK")
     public string? LicenseStatusDetail { get; init; }
 
+    // The current version number of ProGet (e.g. "2025.18")
     public required string VersionNumber { get; init; }
 
+    // The current release number of ProGet (e.g. "2025.0.18")
     public required string ReleaseNumber { get; init; }
 
-    // The health state of the service.
+    // The health state of the service. (e.g. "OK")
     public required string ServiceStatus { get; init; }
 
+    // Details about the service status. ("null" if ServiceStatus is "OK")
     public string? ServiceStatusDetail { get; init; }
 
+    // Information on status of replication (if configured, else will be null).
     public ReplicationStatusInfo? ReplicationStatus { get; init; }
     
     // JSON Object used by ReplicationStatus property
@@ -60,14 +66,16 @@ public sealed class ProGetHealthInfo
     // * Error properties will return an error message if Status is "Error", else will be null
     public sealed class ReplicationStatusInfo
     {
-        // The health state of a replication server 
+        // The health state of a replication server if applicable, else will be null
         public string? ServerStatus { get; init; }
 
+        // The error message for a replication server, else will be null
         public string? ServerError { get; init; }
 
-        // The health state of a replication client 
+        // The health state of a replication client if applicable, else will be null
         public string? ClientStatus { get; init; }
 
+        // The error message for a replication client, else will be null
         public string? ClientError { get; init; }
     }
 }

@@ -27,21 +27,24 @@
 *                                                                              *
 *******************************************************************************/
 
-
 namespace Inedo.ProGet;
 
 // JSON Object used by the Set Package Status HTTP endpoint
 public sealed class PackageStatus
 {
-    // Indicates whether package is visible to searches (default "true")
+    // Indicates whether package is visible to searches
+    // Default is "true"
+    // Value is either "true" or "false"
     public bool? Listed { get; init; }
 
     // Download override flag for package (default "null")
     public bool? Allow { get; init; }
 
-    //Indicates whether package is visible to searches (default "false")
+    //Indicates whether package is visible to searches
+    // Default is "false"
+    // Value is either "true" or "false"
     public bool? Deprecated { get; init; }
 
-    //Reason for deprecation
+    //Reason for deprecation (e.g. "Legacy (no longer maintained")
     public string? DeprecationReason { get; init; }
 }

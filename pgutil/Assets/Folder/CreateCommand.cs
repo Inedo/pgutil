@@ -13,7 +13,7 @@ internal partial class Program
                 public static string Name => "create";
                 public static string Description => "Creates a folder in an asset directory";
                 public static string Examples => """
-                      $> pgutil assets folder create --feed=development-assets --path=test-packages
+                      $> pgutil assets folders create --feed=development-assets --path=test-packages
 
                     For more information, see: https://docs.inedo.com/docs/proget/api/assets/folders/create
                     """;

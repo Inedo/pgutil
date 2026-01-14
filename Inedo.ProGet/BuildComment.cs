@@ -27,7 +27,6 @@
 *                                                                              *
 *******************************************************************************/
 
-
 namespace Inedo.ProGet;
 
 // JSON Object used by the Create/Update Comment (SCA) HTTP endpoint

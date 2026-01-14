@@ -29,7 +29,7 @@
 
 namespace Inedo.ProGet;
 
-// JSON Object used by Create ApiKey and List ApiKey HTTP endpoints
+// JSON Object used by Create/List ApiKey HTTP endpoints
 public sealed class ApiKeyInfo
 {
     // ProGet-generated unique ID for an API key; used when deleting a key and can never be set
