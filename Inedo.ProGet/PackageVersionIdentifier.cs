@@ -31,12 +31,15 @@ namespace Inedo.ProGet;
 
 // JSON Object used by the Audit Vulnerability HTTP endpoint
 public sealed record class PackageVersionIdentifier(
-    // The package type (e.g. "nuget")
+    // The package type (e.g. "npm")
     string Type,
 
+    // The package name (e.g. "react")
     string Name,
 
+    // The package version (e.g. "18.2.0")
     string Version,
 
+    // The package group/namespace (e.g. "types")
     string? Group = null
 );

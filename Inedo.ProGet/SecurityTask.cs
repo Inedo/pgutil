@@ -29,7 +29,7 @@
 
 namespace Inedo.ProGet;
 
-// JSON Object used by the Create Task HTTP endpoint
+// JSON Object used by the Create/List Task HTTP endpoints
 public sealed class SecurityTask
 {
     // Name given to the task (e.g. "View & Download Packages")

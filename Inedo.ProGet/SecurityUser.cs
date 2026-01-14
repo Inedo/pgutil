@@ -29,7 +29,7 @@
 
 namespace Inedo.ProGet;
 
-// JSON Object used by the Create/Edit User HTTP endpoint
+// JSON Object used by the Create/Edit/List User HTTP endpoints
 public sealed class SecurityUser
 {
     // Name of the user (e.g. "jsmith")
