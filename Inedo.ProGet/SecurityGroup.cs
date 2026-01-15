@@ -29,7 +29,7 @@
 
 namespace Inedo.ProGet;
 
-// JSON Object used by the Create Group HTTP endpoint
+// JSON Object used by the Create/List Groups and Add/Remove Group Members HTTP endpoints
 public sealed class SecurityGroup
 {
     // The name of the group (e.g. "Developers")

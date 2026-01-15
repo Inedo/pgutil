@@ -38,15 +38,16 @@ public sealed class BuildIssue
     public int Number { get; set; }
 
     // The date the issue was created
+    // * Date is output in ISO8601 format (e.g. "2019-08-01T00:00:00-07:00")
     public DateTime Created { get; set; }
 
-    // A list of reasons for the issue
+    // A list of reasons for the issue (e.g. "Vulnerability (PGV-2422512); No license detected")
     public string? Detail { get; set; }
     
-    // The package URL of the package associated with the issue
+    // The package URL of the package associated with the issue (e.g. "pkg:npm/express@4.18.2")
     [JsonPropertyName("purl")]
     public required string PUrl { get; set; }
 
-    // If "true" the issue is resolved
+    // Indicates that the issue has been resolved (e.g. true)
     public bool Resolved { get; set; }
 }

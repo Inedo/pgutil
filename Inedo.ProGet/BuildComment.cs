@@ -27,7 +27,6 @@
 *                                                                              *
 *******************************************************************************/
 
-
 namespace Inedo.ProGet;
 
 // JSON Object used by the Create/Update Comment (SCA) HTTP endpoint
@@ -36,12 +35,13 @@ public sealed class BuildComment
     // The comment number (e.g. 2)
     public int Number { get; set; }
 
-    // The name of the user that created the comment
+    // The name of the user that created the comment (e.g. "jsmith")
     public string? By { get; set; }
 
     // The date that the comment was created
+    // * Date is output in ISO8601 format (e.g. "2019-08-01T00:00:00-07:00")
     public DateTime Date { get; set; }
 
-    // The comment text
+    // The comment text (e.g. "This issue has been resolved.")
     public string? Comment { get; set; }
 }

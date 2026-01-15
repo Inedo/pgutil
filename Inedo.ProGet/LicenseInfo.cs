@@ -29,16 +29,16 @@
 
 namespace Inedo.ProGet;
 
-// JSON Object used by the Create License HTTP endpoint
+// JSON Object used by the Create/List/Update License HTTP endpoints
 public sealed class LicenseInfo
 {
-    // Id of the license
+    // Internal ID of the license (e.g. 1)
     public int? Id { get; init; }
 
-    // An SPDX license identifier
+    // An SPDX license identifier for the license (e.g. "MIT")
     public required string Code { get; init; }
 
-    // A friendly name for the license
+    // Friendly name for the license (e.g. "MIT License")
     public string? Title { get; init; }
 
     // Array of SPDX codes to map to this license

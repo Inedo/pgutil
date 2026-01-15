@@ -29,10 +29,10 @@
 
 namespace Inedo.ProGet;
 
-// JSON Object used by FeedStorageConfiguration.cs
+// JSON Object used by the Get/Update Feed Storage HTTP endpoints
 public sealed class FeedStorageConfiguration
 {
-    // Name of the feed storage type (e.g. "disk", "s3", or "azure")
+    // ID name of the feed storage type (e.g. "disk", "s3", or "azure")
     public required string Id { get; init; }
 
     // Properties specific to the feed storage type

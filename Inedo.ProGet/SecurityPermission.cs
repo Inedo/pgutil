@@ -29,7 +29,7 @@
 
 namespace Inedo.ProGet;
 
-// JSON Object used by the Add Permission HTTP endpoint
+// JSON Object used by the Add/List Permissions HTTP endpoints
 public sealed class SecurityPermission
 {
     // Unique id number of the permission (e.g. 3)

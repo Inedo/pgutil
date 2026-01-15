@@ -32,12 +32,14 @@ namespace Inedo.ProGet;
 // JSON Object used by BuildPackage.cs
 public sealed class BuildPackageComplianceInfo
 {
-    // Result of the package compliance assessment/audit (e.g. "Non-compliant")
+    // Result of the package compliance assessment/audit
+    // * Values can be "Compliant", "Warn" or "Noncompliant"
     public required string Result { get; init; }
 
-    // Reasons given for the assessment/audit
+    // Reasons given for the assessment/audit (e.g. "No license detected")
     public string? Detail { get; init; }
 
-    // The date of the compliance assessment/audit
+    // Date of the compliance assessment/audit
+    // * Date is output in ISO8601 format (e.g. "2019-08-01T00:00:00-07:00")
     public DateTime? Date { get; init; }
 }

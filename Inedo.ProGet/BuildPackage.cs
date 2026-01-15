@@ -36,14 +36,18 @@ public sealed class BuildPackage
 {
     [JsonPropertyName("purl")]
 
-    // A package url of the package
+    // Package url of the package
     // See https://github.com/package-url/purl-spec for more information on purl
     public required string PUrl { get; init; }
 
-    // An array of license IDs (SPDX codes)
+    // An array of license IDs (SPDX codes) (e.g. "MIT")
     public required string[] Licenses { get; init; }
 
+    // Compliance information for the package
+    // See BuildPackageComplianceInfo.cs for more details
     public required BuildPackageComplianceInfo Compliance { get; init; }
 
+    // Vulnerability information for the package
+    // See BuildPackageVulnerability.cs for more details
     public BuildPackageVulnerability[]? Vulnerabilities { get; init; }
 }
