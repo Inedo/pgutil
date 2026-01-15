@@ -70,7 +70,7 @@ internal partial class Program
                     }
                     else
                     {
-                        await client.UploadPackageAsync(source, feed, distribution: distribution, component: component, cancellationToken: cancellationToken);
+                        await client.UploadPackageAsync(source, feed, fileName, distribution, component, cancellationToken: cancellationToken);
                     }
 
                     Console.WriteLine("Upload complete.");
@@ -85,7 +85,7 @@ internal partial class Program
                     {
                         if (inputFileNames is not null)
                         {
-                            CM.WriteError<InputFileOption>("Input file name is cannot be used with --stdin.");
+                            CM.WriteError<InputFileOption>("Input file name cannot be used with --stdin.");
                             context.WriteUsage();
                             throw new PgUtilException();
                         }
