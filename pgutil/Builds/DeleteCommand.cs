@@ -13,7 +13,8 @@ internal partial class Program
 
             public static void Configure(ICommandBuilder builder)
             {
-                builder.WithOption<ProjectOption>()
+                builder.WithProGetClientOptions()
+                    .WithOption<ProjectOption>()
                     .WithOption<BuildOption>();
             }
 
