@@ -31,6 +31,7 @@ internal sealed partial class Program
                     WriteProperty("feedType", feed.FeedType);
                     WriteProperty("active", feed.Active);
                     WriteProperty("dropPath", feed.DropPath);
+                    WriteProperty("feedGroup", feed.FeedGroup);
                     WriteProperty("endpointUrl", feed.EndpointUrl);
                     WriteProperty("connectors", feed.Connectors);
                     WriteProperty("canPublish", feed.CanPublish);

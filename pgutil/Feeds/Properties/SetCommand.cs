@@ -55,6 +55,10 @@ internal sealed partial class Program
                             feed.Connectors = value.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
                             break;
 
+                        case "feedGroup":
+                            feed.FeedGroup = value.Trim();
+                            break;
+
                         case "vulnerabilitiesEnabled":
                             feed.VulnerabilitiesEnabled = getBool(value);
                             break;
@@ -85,7 +89,7 @@ internal sealed partial class Program
                     public static bool Required => true;
                     public static string Name => "--property";
                     public static string Description => "Name of feed property to set";
-                    public static string[] ValidValues => ["alternateNames", "active", "dropPath", "connectors", "vulnerabilitiesEnabled"];
+                    public static string[] ValidValues => ["alternateNames", "active", "dropPath", "feedGroup", "connectors", "vulnerabilitiesEnabled"];
                 }
 
                 private sealed class ValueOption : IConsoleOption

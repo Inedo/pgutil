@@ -47,6 +47,11 @@ public sealed class ProGetFeed
     // * Supplying "null" removes the description
     public string? Description { get; set; }
 
+    // Name of the group to which the feed belongs
+    // * Supplying "null" will leave the group membership unchanged
+    // * Supplying an empty string "" will remove the group membership
+    public string? FeedGroup { get; set; }
+
     // Indicates whether the feed is active ("true") or disabled ("false")
     public bool? Active { get; set; }
 
