@@ -16,9 +16,9 @@ internal partial class Program
                 public static string Name => "feed";
                 public static string Description => "Creates a feed API key. The key is the only thing written to stdout on success";
                 public static string Examples => """
-                      $> pgutil apikeys create feed --feed=public-npm --permissions="view,add" --key=abcd12345
+                      $> pgutil apikeys create feed --feed="public-npm,public-nuget" --permissions="view,add" --key=abcd12345
 
-                      $> pgutil apikeys create feed --group=production-feeds --key=wxyz67890 --expiration="2024/08/01"
+                      $> pgutil apikeys create feed --group="production-feeds,test-feeds" --key=wxyz67890 --expiration="2024/08/01"
                     
                       $> pgutil apikeys create feed --feed=*
                     
@@ -90,14 +90,14 @@ internal partial class Program
                 {
                     public static bool Required => false;
                     public static string Name => "--feed";
-                    public static string Description => "Name of the feed to associate with the key, or \"*\" for all feeds";
+                    public static string Description => "Name of the feeds to associate with the key. Value is a comma-separated list of feed names or \"*\" for all feeds.";
                 }
 
                 private sealed class FeedGroupOption : IConsoleOption
                 {
                     public static bool Required => false;
                     public static string Name => "--group";
-                    public static string Description => "Name of the feed group to associate with the key";
+                    public static string Description => "Name of the feed groups to associate with the key. Value is a comma-separated list of feed group names.";
                 }
             }
         }

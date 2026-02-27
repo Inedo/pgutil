@@ -430,7 +430,7 @@ public sealed class ProGetClient
     {
         ArgumentNullException.ThrowIfNull(apiKeyInfo);
 
-        var versionRequired = apiKeyInfo.Type == ApiKeyType.Feed ? new Version(24, 0, 3) : null;
+        var versionRequired = apiKeyInfo.Type == ApiKeyType.Feed ? new Version(24, 0, 3) : ((apiKeyInfo.Feed?.Contains(',') ?? false) || (apiKeyInfo.FeedGroup?.Contains(',') ?? false)) ? new Version(25, 0, 23) : null;
         var editionRequired = apiKeyInfo.Type != ApiKeyType.Personal ? ProGetEdition.Basic : (ProGetEdition?)null;
 
         using var response = await this.http.PostAsJsonAsync("api/api-keys/create", apiKeyInfo, ProGetApiJsonContext.Default.ApiKeyInfo, cancellationToken).ConfigureAwait(false);
