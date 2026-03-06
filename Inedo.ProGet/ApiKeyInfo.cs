@@ -58,14 +58,16 @@ public sealed class ApiKeyInfo
     // * Required when Type is Feed; otherwise must be null
     public string[]? PackagePermissions { get; set; }
 
-    // Name of the feed the feed key applies to
+    // Name of the feeds the feed key applies to
     // * Optional when Type is Feed; otherwise must be null
     // * Must be null when FeedGroup has a value
+    // * Value is a comma-separated list of feed names
     public string? Feed { get; set; }
 
-    /// Name of the feed group the key applies to
+    /// Name of the feed groups the key applies to
     // * Optional when Type is Feed; otherwise must be null
-    // * Must be null when Feed has a value
+    // * Must be null when Feeds has a value
+    // * Value is a comma-separated list of feed group names
     public string? FeedGroup { get; set; }
 
     public DateTime? Expiration { get; set; }
