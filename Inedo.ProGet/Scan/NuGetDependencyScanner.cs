@@ -74,11 +74,34 @@ internal sealed partial class NuGetDependencyScanner(CreateDependencyScannerArgs
         {
             using var solutionStream = await this.FileSystem.OpenReadAsync(solutionPath, cancellationToken).ConfigureAwait(false);
             var xmlDoc = await XDocument.LoadAsync(solutionStream, LoadOptions.None, cancellationToken).ConfigureAwait(false);
-            var projectPaths = xmlDoc.Root?.Descendants("Project").Select(e => (string?)e.Attribute("Path"));
+            var projectPaths = xmlDoc.Root?.Descendants("Project").Select(getProjectPath);
             foreach (var project in projectPaths ?? [])
             {
                 if (!string.IsNullOrWhiteSpace(project))
                     yield return project;
+            }
+
+            string? getProjectPath(XElement projectElement)
+            {
+                var path = (string?)projectElement.Attribute("Path");
+                if (string.IsNullOrEmpty(path))
+                    return null;
+
+                XElement? parent;
+                while ((parent = projectElement.Parent) != null)
+                {
+                    if (parent.Name.LocalName == "Folder")
+                    {
+                        var folderName = (string?)parent.Attribute("Name");
+                        if (!string.IsNullOrEmpty(folderName))
+                        {
+                            path = this.FileSystem.Combine(folderName, path);
+                            break;
+                        }
+                    }
+                }
+
+                return path.TrimStart('/', '\\');
             }
         }
         else
