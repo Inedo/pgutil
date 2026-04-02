@@ -81,25 +81,11 @@ internal sealed partial class NuGetDependencyScanner(CreateDependencyScannerArgs
                     yield return project;
             }
 
-            string? getProjectPath(XElement projectElement)
+            static string? getProjectPath(XElement projectElement)
             {
                 var path = (string?)projectElement.Attribute("Path");
                 if (string.IsNullOrEmpty(path))
                     return null;
-
-                XElement? parent;
-                while ((parent = projectElement.Parent) != null)
-                {
-                    if (parent.Name.LocalName == "Folder")
-                    {
-                        var folderName = (string?)parent.Attribute("Name");
-                        if (!string.IsNullOrEmpty(folderName))
-                        {
-                            path = this.FileSystem.Combine(folderName, path);
-                            break;
-                        }
-                    }
-                }
 
                 return path.TrimStart('/', '\\');
             }
