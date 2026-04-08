@@ -132,7 +132,11 @@ internal partial class Program
                     break;
 
                 default:
-                    parsedVersion = UniversalPackageVersion.Parse(version);
+                    if (!UniversalPackageVersion.TryParse(version, out parsedVersion))
+                    {
+                        CM.WriteError<PackageVersionOption>("Value is not a valid semantic version");
+                        throw new ConsoleManException();
+                    }
                     break;
             }
 
