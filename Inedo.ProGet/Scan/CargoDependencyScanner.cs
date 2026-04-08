@@ -1,6 +1,4 @@
-using System.Text.Json;
 using Tomlyn;
-using Tomlyn.Model;
 
 namespace Inedo.DependencyScan;
 
@@ -15,52 +13,32 @@ internal sealed class CargoDependencyScanner(CreateDependencyScannerArgs args) :
             ? this.FileSystem.GetDirectoryName(this.SourcePath)
             : this.SourcePath;
 
-        var cargoManifestFile = await this.FileSystem.FindFilesAsync(searchDirectory, "Cargo.toml", true, cancellationToken).FirstOrDefaultAsync() ?? throw new DependencyScannerException($"Cannot find Cargo.toml at {searchDirectory}");
-        using var maniFestStream = await this.FileSystem.OpenReadAsync(cargoManifestFile.FullName, cancellationToken).ConfigureAwait(false);
-        using var manifestReader = new StreamReader(maniFestStream);
-        var cargoManifest = Toml.ToModel(await manifestReader.ReadToEndAsync(), cargoManifestFile.FullName);
-        var name = cargoManifest.GetTable("package")?.GetNullableProperty<string>("name") ?? throw new DependencyScannerException("Cargo.toml missing package name.");
+        var cargoManifestFile = await this.FileSystem.FindFilesAsync(searchDirectory, "Cargo.toml", true, cancellationToken).FirstOrDefaultAsync(cancellationToken) ?? throw new DependencyScannerException($"Cannot find Cargo.toml at {searchDirectory}");
+        using var manifestStream = await this.FileSystem.OpenReadAsync(cargoManifestFile.FullName, cancellationToken).ConfigureAwait(false);
+        var cargoManifest = TomlSerializer.Deserialize(manifestStream, CargoTomlContext.Default.CargoManifest)!;
+        var name = cargoManifest.Package.Name;
 
         await foreach (var cargoLockFile in this.FileSystem.FindFilesAsync(searchDirectory, "Cargo.lock", !this.SourcePath.EndsWith("Cargo.lock"), cancellationToken))
         {
             using var stream = await this.FileSystem.OpenReadAsync(cargoLockFile.FullName, cancellationToken).ConfigureAwait(false);
-            using var reader = new StreamReader(stream);
-
-            var cargoLock = Toml.ToModel(await reader.ReadToEndAsync(), cargoLockFile.FullName);
-
-            projects.Add(new ScannedProject(name, ReadCargoLockFile(name, cargoLock).Distinct()));
+            projects.Add(new ScannedProject(name, ReadCargoLockFile(name, stream).Distinct()));
         }
 
         return projects;
     }
 
-    private IEnumerable<DependencyPackage> ReadCargoLockFile(string packageName, TomlTable doc)
+    private static IEnumerable<DependencyPackage> ReadCargoLockFile(string packageName, Stream lockFileStream)
     {
-        foreach(var package in doc.GetTableArray("package") ?? [])
+        var lockFile = TomlSerializer.Deserialize(lockFileStream, CargoTomlContext.Default.CargoLockFile);
+        if (lockFile?.Package is not null)
         {
-            var name = package.GetProperty<string>("name");
+            foreach (var package in lockFile.Package)
+            {
+                if (string.IsNullOrEmpty(package.Name) || package.Name == packageName || string.IsNullOrEmpty(package.Version))
+                    continue;
 
-            if (name.Equals(packageName))
-                continue;
-
-            var version = package.GetProperty<string>("version");
-            yield return new DependencyPackage { Name = name, Version = version, Type = "cargo" };
+                yield return new DependencyPackage { Name = package.Name, Version = package.Version, Type = "cargo" };
+            }
         }
-    }
-}
-
-public static class TomlExtensions
-{
-    public static TomlTable? GetTable(this TomlTable? table, string name) => table?.GetNullableProperty<TomlTable>(name);
-
-    public static TomlTableArray? GetTableArray(this TomlTable? table, string name) => table?.GetNullableProperty<TomlTableArray>(name);
-
-    public static T GetProperty<T>(this TomlTable table, string name) => (T)table[name];
-
-    public static T? GetNullableProperty<T>(this TomlTable? table, string name) where T : class
-    {
-        if (table?.ContainsKey(name) ?? false)
-            return table?[name] as T;
-        return null;
     }
 }
