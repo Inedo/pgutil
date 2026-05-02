@@ -99,9 +99,14 @@ internal partial class Program
                                 CM.Write(" Vulnerabilities: ");
                                 if (p.Vulnerabilities?.Length > 0)
                                 {
-                                    CM.WriteLine(string.Join(", ", p.Vulnerabilities.Select(p => $"{p.Id} ({p.Score})")));
                                     foreach (var v in p.Vulnerabilities)
-                                        CM.WriteLine("  ", v.Title);
+                                    {
+                                        CM.WriteLine("  ", $"{v.Id} {v.Title}");
+                                        if (v.Category.HasValue)
+                                            CM.Write($"   Category {v.Category} ({v.Assessment})");
+                                        if (v.Score.HasValue)
+                                            CM.Write($"   Score {v.Score}");
+                                    }
                                 }
                                 else
                                 {

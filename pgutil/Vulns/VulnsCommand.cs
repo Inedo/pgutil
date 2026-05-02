@@ -41,7 +41,13 @@ internal sealed partial class VulnsCommand : IConsoleCommandContainer
         foreach (var vuln in vulns)
         {
             CM.Write(new TextSpan(vuln.Id, ConsoleColor.White), ": ");
-            if (vuln.NumericCvss.HasValue)
+            if (vuln.Pvrs.HasValue)
+            {
+                CM.Write(new TextSpan($"Category {vuln.Pvrs.GetValueOrDefault()} ({vuln.Assessment})", getAssessmentColor(vuln.Assessment) ?? getCategoryColor(vuln.Pvrs.GetValueOrDefault())), " - ");
+                Console.WriteLine();
+                CM.WriteLine($"CVSS Score: {vuln.Cvss} ({vuln.NumericCvss.GetValueOrDefault():F1})");
+            }
+            else if (vuln.NumericCvss.HasValue)
                 CM.Write(new TextSpan($"{vuln.NumericCvss.GetValueOrDefault():F1} ({vuln.Severity})", getSeverityColor(vuln.NumericCvss.GetValueOrDefault())), " - ");
 
             var affectedPackages = vuln.AffectedPackages ?? [];
@@ -65,6 +71,31 @@ internal sealed partial class VulnsCommand : IConsoleCommandContainer
                 >= 7 => ConsoleColor.Red,
                 >= 4 => ConsoleColor.DarkYellow,
                 _ => ConsoleColor.Yellow
+            };
+        }
+
+        static ConsoleColor? getAssessmentColor(string? severity)
+        {
+            return severity switch
+            {
+                "Contain" => ConsoleColor.Red,
+                "Remediate" => ConsoleColor.DarkYellow,
+                "Monitor" => ConsoleColor.Green,
+                _ => null
+            };
+        }
+
+        static ConsoleColor getCategoryColor(int category)
+        {
+            return category switch
+            {
+                5 => ConsoleColor.Red,
+                4 => ConsoleColor.Red,
+                3 => ConsoleColor.DarkYellow,
+                2 => ConsoleColor.Green,
+                //1 is actually FAFAFA,but that color blends with the background
+                1 => ConsoleColor.Green,
+                _ => ConsoleColor.Green
             };
         }
     }
