@@ -34,7 +34,7 @@ internal partial class Program
                 var (group, name) = ParseName(fullName);
 
                 using var registry = UniversalPackageRegistry.GetRegistry(true);
-                if (registry.GetInstalledPackages().Any(p => string.Equals(p.Name, name, StringComparison.OrdinalIgnoreCase) && string.Equals(p.Group ?? string.Empty, group ?? string.Empty, StringComparison.OrdinalIgnoreCase)))
+                if (!context.HasFlag<DoNotRegisterFlag>() && registry.GetInstalledPackages().Any(p => string.Equals(p.Name, name, StringComparison.OrdinalIgnoreCase) && string.Equals(p.Group ?? string.Empty, group ?? string.Empty, StringComparison.OrdinalIgnoreCase)))
                 {
                     CM.WriteError($"Package {fullName} is already installed.");
                     return -1;
