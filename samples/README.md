@@ -1,6 +1,8 @@
 ﻿# Samples
 
-## Run ProGet vith your preferred cotnainer engine
+## Run ProGet vith your preferred container engine
+
+E.g.
 
 ```bash
 podman compose up
@@ -8,7 +10,7 @@ podman compose up
 
 ## Run the sample
 
-For the sample to work, you need to have ProGet running and setup a valid license key.
+For the sample to work, you need to have ProGet running and setup a valid license key. Once that's done:
 
 ```bash
 dotnet run ProGetBootstrap.cs
