@@ -13,8 +13,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md" Link="README.md" Pack="true" PackagePath="/" />
-    <PackageReference Include="Inedo.ConsoleMan" Version="1.0.2" />
-    <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="10.0.5" />
+    <PackageReference Include="Inedo.ConsoleMan" />
+    <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" />
     <TrimmerRootAssembly Include="pgutil" />
   </ItemGroup>
 </Project>
