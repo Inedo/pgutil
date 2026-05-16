@@ -1,16 +1,21 @@
 ﻿# Samples
 
-## Run ProGet vith your preferred container engine
+## Start ProGet
 
-E.g.
+Before running the samples, start a local ProGet instance with your preferred container engine.
+
+For example:
 
 ```bash
 podman compose up
 ```
 
-## Run the sample
+## Run a sample
 
-For the sample to work, you need to have ProGet running and setup a valid license key. Once that's done:
+> [!IMPORTANT]  
+> The samples require a running ProGet instance with a valid license key configured.
+
+After ProGet is running and initial setup is complete, run the sample with:
 
 ```bash
 dotnet run ProGetBootstrap.cs

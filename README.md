@@ -21,7 +21,7 @@ To learn how to use the library, see [Getting Started with Inedo.NuGet](https://
 
 # Samples
 
-You can find some [samples](samples) in the corresponding folder.
+Sample projects and examples are available in the [`samples`](samples) directory.
 
 ## Pull Requests & Issues
 
