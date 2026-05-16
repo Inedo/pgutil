@@ -36,10 +36,10 @@ public sealed class SecurityTask
     public required string Name { get; init; }
 
     // Description of the task (e.g. "Allows basic feed access")
-    public string? Description { get; init; } 
+    public string? Description { get; init; }
 
     // Indicates if the task is feed-scoped ("true") or global ("false")
-    public bool FeedScoped { get; init; } 
+    public bool FeedScoped { get; init; }
 
     // The task attributes that the task enables (e.g. ["Feeds_ViewFeed", "Feeds_DownloadPackage"])
     public required string[] Attributes { get; init; }

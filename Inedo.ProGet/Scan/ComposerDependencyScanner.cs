@@ -2,6 +2,7 @@
 using Inedo.DependencyScan;
 
 namespace Inedo.ProGet.Scan;
+
 internal class ComposerDependencyScanner(CreateDependencyScannerArgs args) : DependencyScanner(args)
 {
     public override DependencyScannerType Type => DependencyScannerType.Composer;
@@ -24,13 +25,13 @@ internal class ComposerDependencyScanner(CreateDependencyScannerArgs args) : Dep
         using var lockFileStream = await this.FileSystem.OpenReadAsync(composerLockFile.FullName, cancellationToken).ConfigureAwait(false);
         using var doc = await JsonDocument.ParseAsync(lockFileStream, cancellationToken: cancellationToken).ConfigureAwait(false);
 
-        if(!doc.RootElement.TryGetProperty("packages", out var packages) && packages.ValueKind != JsonValueKind.Array)
+        if (!doc.RootElement.TryGetProperty("packages", out var packages) && packages.ValueKind != JsonValueKind.Array)
             throw new DependencyScannerException($"composer.lock at {searchDirectory} does not contain any packages");
 
         var dependencies = new List<DependencyPackage>();
         dependencies.AddRange(readDependencies(packages));
-        
-        if(this.CreateArgs.IncludeDevDependencies && doc.RootElement.TryGetProperty("packages-dev", out var devPackages) && devPackages.ValueKind == JsonValueKind.Array)
+
+        if (this.CreateArgs.IncludeDevDependencies && doc.RootElement.TryGetProperty("packages-dev", out var devPackages) && devPackages.ValueKind == JsonValueKind.Array)
             dependencies.AddRange(readDependencies(devPackages));
 
         projects.Add(new ScannedProject(projectName.GetString()!, dependencies.Distinct()));

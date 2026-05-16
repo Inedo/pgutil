@@ -38,7 +38,7 @@ internal partial class Program
                 Console.WriteLine("Detection:");
                 if (license.Spdx is not null)
                     Console.WriteLine($" SPDX: {string.Join(", ", license.Spdx)}");
-                
+
                 if (license.Urls is not null)
                 {
                     Console.WriteLine(" Url:");

@@ -43,7 +43,7 @@ public sealed class BuildIssue
 
     // A list of reasons for the issue (e.g. "Vulnerability (PGV-2422512); No license detected")
     public string? Detail { get; set; }
-    
+
     // The package URL of the package associated with the issue (e.g. "pkg:npm/express@4.18.2")
     [JsonPropertyName("purl")]
     public required string PUrl { get; set; }

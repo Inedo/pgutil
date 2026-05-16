@@ -38,7 +38,7 @@ internal partial class Program
                     {
                         var s = sources[i];
 
-                        CM.Write(ConsoleColor.White, $"{i+1}. {s.Name}");
+                        CM.Write(ConsoleColor.White, $"{i + 1}. {s.Name}");
                         if (!string.IsNullOrEmpty(s.DefaultFeed))
                             CM.Write(new TextSpan(" ("), new TextSpan(s.DefaultFeed, ConsoleColor.White), new TextSpan(" feed)"));
 

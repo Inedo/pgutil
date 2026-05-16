@@ -131,7 +131,7 @@ internal partial class Program
                         if (!inputFileName.Contains('*'))
                             return [inputFileName];
 
-                        var fullPath =  Path.GetFullPath(inputFileName);
+                        var fullPath = Path.GetFullPath(inputFileName);
                         int firstWildcardIndex = FirstWildcardRegex().Match(fullPath).Index;
                         var rootPath = fullPath[..firstWildcardIndex];
                         var wildcardPart = fullPath[(firstWildcardIndex)..];

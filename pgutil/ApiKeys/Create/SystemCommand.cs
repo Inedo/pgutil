@@ -39,7 +39,7 @@ internal partial class Program
 
                     var apis = apiValue.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
-                    if (apis.Length == 0 
+                    if (apis.Length == 0
                         || apis.Contains("full-control") && apis.Length > 1
                         || apis.Any(a => a != "feeds" && a != "sca" && a != "sbom-upload" && a != "full-control"))
                     {
@@ -66,7 +66,7 @@ internal partial class Program
                 {
                     public static bool Required => false;
                     public static string Name => "--apis";
-                    public static string Description => 
+                    public static string Description =>
                         $"Specifies the individual APIs to give access to when creating a system API key. " +
                         $"Value is either full-control or a comma-separated list of any combination of: feeds, sca, sbom-upload";
                 }

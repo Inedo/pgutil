@@ -1,31 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<PropertyGroup>
-		<OutputType>Exe</OutputType>
-		<TargetFrameworks>net8.0;net10.0</TargetFrameworks>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
-		<RootNamespace>PgUtil</RootNamespace>
-		<Authors>Inedo</Authors>
-		<Company>Inedo</Company>
-		<Product>ProGet</Product>
-		<Copyright>Copyright © Inedo 2026</Copyright>
-		<Description>CLI for ProGet's APIs.</Description>
-		<PackageProjectUrl>https://github.com/Inedo/pgutil</PackageProjectUrl>
-		<RepositoryUrl>https://github.com/Inedo/pgutil.git</RepositoryUrl>
-		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<PackageTags>proget</PackageTags>
-		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackAsTool>true</PackAsTool>
-		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<Version>0.0.0</Version>
-	</PropertyGroup>
-	<ItemGroup>
-		<ProjectReference Include="..\Inedo.ProGet\Inedo.ProGet.csproj" />
-	</ItemGroup>
-	<ItemGroup>
-		<None Include="..\README.md" Link="README.md" Pack="true" PackagePath="/" />
-		<PackageReference Include="Inedo.ConsoleMan" Version="1.0.2" />
-		<PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="10.0.5" />
-		<TrimmerRootAssembly Include="pgutil" />
-	</ItemGroup>
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>PgUtil</RootNamespace>
+    <Description>CLI for ProGet's APIs.</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackAsTool>true</PackAsTool>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>0.0.0</Version>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Inedo.ProGet\Inedo.ProGet.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\README.md" Link="README.md" Pack="true" PackagePath="/" />
+    <PackageReference Include="Inedo.ConsoleMan" Version="1.0.2" />
+    <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="10.0.5" />
+    <TrimmerRootAssembly Include="pgutil" />
+  </ItemGroup>
 </Project>

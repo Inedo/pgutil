@@ -37,7 +37,7 @@ public sealed class FeedStorageType
 
     // Name of the feed storage (e.g. "Local Disk", "Amazon S3")
     public string? Name { get; init; }
-    
+
     // Description of the feed storage type (e.g. "Local file system path or network share.")
     public string? Description { get; init; }
 

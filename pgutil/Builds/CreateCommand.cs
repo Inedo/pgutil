@@ -35,16 +35,16 @@ internal partial class Program
                 else if (context.HasFlag<InactiveFlag>())
                     active = false;
 
-                    _ = await client.CreateOrUpdateBuildAsync(
-                        new Inedo.ProGet.CreateOrUpdateBuildOptions
-                        {
-                            Project = context.GetOption<ProjectOption>(),
-                            Version = context.GetOption<BuildOption>(),
-                            Active = active,
-                            Stage = context.GetOptionOrDefault<StageOption>()
-                        },
-                        cancellationToken
-                    );
+                _ = await client.CreateOrUpdateBuildAsync(
+                    new Inedo.ProGet.CreateOrUpdateBuildOptions
+                    {
+                        Project = context.GetOption<ProjectOption>(),
+                        Version = context.GetOption<BuildOption>(),
+                        Active = active,
+                        Stage = context.GetOptionOrDefault<StageOption>()
+                    },
+                    cancellationToken
+                );
 
                 Console.WriteLine("Build created.");
                 return 0;

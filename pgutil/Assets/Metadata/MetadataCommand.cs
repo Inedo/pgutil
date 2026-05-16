@@ -24,6 +24,6 @@ internal partial class Program
                 public static string Name => "--path";
                 public static string Description => "Path of item to inspect";
             }
-       }
+        }
     }
 }

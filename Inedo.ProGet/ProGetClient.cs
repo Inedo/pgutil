@@ -55,7 +55,7 @@ public sealed class ProGetClient
     {
         using var response = await this.http.GetAsync("health", cancellationToken).ConfigureAwait(false);
         using var stream = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
-        
+
         try
         {
             return (await JsonSerializer.DeserializeAsync(stream, ProGetApiJsonContext.Default.ProGetHealthInfo, cancellationToken).ConfigureAwait(false))!;

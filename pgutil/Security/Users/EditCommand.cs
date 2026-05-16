@@ -20,7 +20,7 @@ internal partial class Program
 
                     For more information, see: https://docs.inedo.com/docs/proget/api/security/users/edit
                     """;
-                
+
                 public static void Configure(ICommandBuilder builder)
                 {
                     builder.WithOption<UserNameOption>()

@@ -34,7 +34,7 @@ public sealed class BuildInfo
 {
     // Build version number (e.g. "1.0.0")
     public required string Version { get; init; }
-    
+
     // Indicates whether the build is active
     // * Default is "true"
     // * Value is either "true" or "false"

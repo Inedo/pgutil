@@ -70,7 +70,7 @@ public sealed class RetentionRule
     // * When "false" and "sizeTriggerKb" is set to non-null "n", retention is run when the entire feed size is greater than `n` kilobytes
     // * This value is ignored when "sizeTriggerKb" is "null"
     public bool SizeExclusive { get; set; }
-    
+
     // When set to "n", the retention rule always keeps versions that have been downloaded more than "n" times
     public int? TriggerDownloadCount { get; set; }
 

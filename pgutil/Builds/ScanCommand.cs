@@ -36,14 +36,14 @@ internal partial class Program
 
             public static async Task<int> ExecuteAsync(CommandContext context, CancellationToken cancellationToken)
             {
-               context.TryGetOption<InputOption>(out var input);
+                context.TryGetOption<InputOption>(out var input);
 
                 CM.WriteLine("Scanning for dependencies in ", new TextSpan(input ?? Environment.CurrentDirectory, ConsoleColor.White), "...");
                 var scannerType = Enum.TryParse<DependencyScannerType>(context.GetOption<ScannerTypeOption>(), out var _type) ? _type : DependencyScannerType.Auto;
                 var scanner = await DependencyScanner.GetScannerAsync(new CreateDependencyScannerArgs(
-                    input ?? string.Empty, 
-                    SourceFileSystem.Default, 
-                    IncludeProjectReferences: context.HasFlag<IncludeProjectReferencesFlag>(), 
+                    input ?? string.Empty,
+                    SourceFileSystem.Default,
+                    IncludeProjectReferences: context.HasFlag<IncludeProjectReferencesFlag>(),
                     DoNotScanNodeModules: context.HasFlag<DoNotScanNodeModulesFlag>(),
                     IncludeDevDependencies: context.HasFlag<IncludeDevDependenciesFlag>()
                 ), scannerType);
@@ -66,7 +66,7 @@ internal partial class Program
                 await client.PublishSbomAsync(projects, consumer, context.GetOption<ProjectTypeOption>(), scanner.Type.ToString().ToLowerInvariant(), cancellationToken);
                 CM.WriteLine("SBOM published.");
 
-                if(context.HasFlag<DoNotAuditFlag>())
+                if (context.HasFlag<DoNotAuditFlag>())
                     return 0;
 
                 return await ExecuteAudit(client, consumer, cancellationToken);
@@ -75,8 +75,8 @@ internal partial class Program
             //Copy paste from AuditCommand.cs
             private static async Task<int> ExecuteAudit(ProGetClient client, PackageConsumer consumer, CancellationToken cancellationToken)
             {
-                try 
-                { 
+                try
+                {
                     var project = consumer.Name;
                     var build = consumer.Version;
 
@@ -149,7 +149,7 @@ internal partial class Program
                                         CM.WriteLine("  ", $"{v.Id} {v.Title}");
                                         if (v.Category.HasValue)
                                             CM.Write($"   Category {v.Category} ({v.Assessment})");
-                                        if(v.Score.HasValue)
+                                        if (v.Score.HasValue)
                                             CM.Write($"   Score {v.Score}");
                                     }
                                 }
@@ -176,7 +176,7 @@ internal partial class Program
                         return -1;
                     }
                 }
-                    catch (ProGetApiException ex) when(ex.StatusCode == HttpStatusCode.TooManyRequests)
+                catch (ProGetApiException ex) when (ex.StatusCode == HttpStatusCode.TooManyRequests)
                 {
                     CM.WriteError("ProGet Basic rate limit exceeded.");
                     return 429;

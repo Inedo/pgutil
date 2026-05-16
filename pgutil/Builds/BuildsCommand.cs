@@ -92,7 +92,7 @@ internal partial class Program
             public static string Description => "Type of project scanner to use; auto, npm, NuGet, PyPI, Conda, Composer, or Cargo (default=auto)";
             public static string DefaultValue => "auto";
         }
-        
+
         private sealed class DoNotAuditFlag : IConsoleFlagOption
         {
             public static string Name => "--noaudit";

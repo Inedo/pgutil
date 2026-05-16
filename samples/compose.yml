@@ -1,0 +1,16 @@
+﻿services:
+  proget:
+    image: proget.inedo.com/productimages/inedo/proget:latest
+    container_name: proget
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - proget-packages:/var/proget/packages
+      - proget-database:/var/proget/database
+      - proget-backups:/var/proget/backups
+
+volumes:
+  proget-packages:
+  proget-database:
+  proget-backups:

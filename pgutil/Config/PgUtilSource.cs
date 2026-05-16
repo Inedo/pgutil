@@ -15,7 +15,7 @@ internal sealed record class PgUtilSource(string Name, string Url, string? Defau
             return new(this.Url, this.Token);
         else if (!string.IsNullOrEmpty(this.Username))
             return new(this.Url, this.Username, this.Password ?? string.Empty);
-        else 
+        else
             return new ProGetClient(this.Url);
     }
     public PgUtilSource Obfuscate()

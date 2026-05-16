@@ -113,7 +113,7 @@ public abstract class DependencyScanner
         {
             var files = await SourceFileSystem.Default.FindFilesAsync(folder, "requirements.txt", true, cancellationToken).ToListAsync(cancellationToken);
             if (files.Count == 1)
-                return files[0].FullName; 
+                return files[0].FullName;
             if (files.Count > 1)
                 throw new DependencyScannerException("Multiple requirements.txt files found in directory.  Specify which requirements.txt file you would like to scan be using \"--input\" argument.");
 
@@ -124,22 +124,22 @@ public abstract class DependencyScanner
 
     private static async Task<(DependencyScannerType scannerType, string filePath)> GetImplicitTypeAsync(ISourceFileSystem fileSystem, string fileName, CancellationToken cancellationToken = default)
     {
-        if(fileSystem.IsDirectoryAsync(fileName))
+        if (fileSystem.IsDirectoryAsync(fileName))
         {
             var files = await fileSystem.FindFilesAsync(fileName, "*.slnx", true, cancellationToken).ToListAsync(cancellationToken);
-            if(files.Count == 1)
+            if (files.Count == 1)
                 return (scannerType: DependencyScannerType.NuGet, filePath: files[0].FullName);
             else if (files.Count > 1)
                 throw new DependencyScannerException("Multiple solution files found in directory.  Specify which solution file you would like to scan be using \"--input\" argument.");
 
             files = await fileSystem.FindFilesAsync(fileName, "*.sln", true, cancellationToken).ToListAsync(cancellationToken);
-            if(files.Count == 1)
+            if (files.Count == 1)
                 return (scannerType: DependencyScannerType.NuGet, filePath: files[0].FullName);
             else if (files.Count > 1)
                 throw new DependencyScannerException("Multiple solution files found in directory.  Specify which solution file you would like to scan be using \"--input\" argument.");
 
             files = await fileSystem.FindFilesAsync(fileName, "*.csproj", true, cancellationToken).ToListAsync(cancellationToken);
-            if(files.Count == 1)
+            if (files.Count == 1)
                 return (scannerType: DependencyScannerType.NuGet, filePath: files[0].FullName);
             else if (files.Count > 1)
                 throw new DependencyScannerException("Multiple project files found in directory.  Specify which project file you would like to scan be using \"--input\" argument.");
@@ -149,15 +149,15 @@ public abstract class DependencyScanner
                 return (scannerType: DependencyScannerType.Npm, filePath: files[0].FullName);
 
             files = await fileSystem.FindFilesAsync(fileName, "package-lock.json", true, cancellationToken).ToListAsync(cancellationToken);
-            if(files.Count > 0)
+            if (files.Count > 0)
                 return (scannerType: DependencyScannerType.Npm, filePath: fileName);
 
             files = await fileSystem.FindFilesAsync(fileName, "Cargo.lock", true, cancellationToken).ToListAsync(cancellationToken);
-            if(files.Count > 0)
+            if (files.Count > 0)
                 return (scannerType: DependencyScannerType.Cargo, filePath: fileName);
-            
+
             files = await fileSystem.FindFilesAsync(fileName, "composer.lock", true, cancellationToken).ToListAsync(cancellationToken);
-            if(files.Count > 0)
+            if (files.Count > 0)
                 return (scannerType: DependencyScannerType.Composer, filePath: fileName);
 
             files = await fileSystem.FindFilesAsync(fileName, "requirements.txt", true, cancellationToken).ToListAsync(cancellationToken);

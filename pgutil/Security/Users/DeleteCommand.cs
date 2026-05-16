@@ -16,7 +16,7 @@ internal partial class Program
                       $> pgutil security users delete --username="John Smith"
 
                     For more information, see: https://docs.inedo.com/docs/proget/api/security/users/delete
-                    """;              
+                    """;
 
                 public static void Configure(ICommandBuilder builder)
                 {

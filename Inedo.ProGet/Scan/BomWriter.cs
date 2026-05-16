@@ -74,7 +74,7 @@ public sealed class BomWriter : IDisposable
 
         var fullName = string.IsNullOrEmpty(group) ? Uri.EscapeDataString(name) : $"{Uri.EscapeDataString(group)}/{Uri.EscapeDataString(name)}";
 
-        this.writer.WriteElementString("purl", ns, $"pkg:{type}/{fullName}@{version}{(string.IsNullOrWhiteSpace(qualifier) ? string.Empty : ("?"+qualifier))}");
+        this.writer.WriteElementString("purl", ns, $"pkg:{type}/{fullName}@{version}{(string.IsNullOrWhiteSpace(qualifier) ? string.Empty : ("?" + qualifier))}");
 
         this.writer.WriteEndElement(); // component
     }

@@ -1,4 +1,5 @@
 ﻿namespace Inedo.ProGet;
+
 public sealed class ScaPermissionInfo
 {
     public bool CanView { get; init; }

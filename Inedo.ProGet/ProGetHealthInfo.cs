@@ -60,7 +60,7 @@ public sealed class ProGetHealthInfo
 
     // Information on status of replication (if configured, else will be null).
     public ReplicationStatusInfo? ReplicationStatus { get; init; }
-    
+
     // JSON Object used by ReplicationStatus property
     // * Status property values will be either "OK" or "Error" if replication servers exist, else will be null
     // * Error properties will return an error message if Status is "Error", else will be null

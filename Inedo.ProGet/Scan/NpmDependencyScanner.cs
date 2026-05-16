@@ -17,7 +17,7 @@ internal sealed class NpmDependencyScanner(CreateDependencyScannerArgs args) : D
         // Handle pnpm lock file
         if (this.SourcePath.EndsWith("pnpm-lock.yaml"))
         {
-            if(!await this.FileSystem.FileExistsAsync(this.SourcePath, cancellationToken))
+            if (!await this.FileSystem.FileExistsAsync(this.SourcePath, cancellationToken))
                 throw new FileNotFoundException("The specified pnpm lock file was not found.", this.SourcePath);
             using var stream = await this.FileSystem.OpenReadAsync(this.SourcePath, cancellationToken).ConfigureAwait(false);
             using var reader = new StreamReader(stream);
@@ -32,7 +32,7 @@ internal sealed class NpmDependencyScanner(CreateDependencyScannerArgs args) : D
 
                 if (string.IsNullOrEmpty(projectName))
                     throw new InvalidOperationException($"Unable to determine project name from package.json in directory: {this.FileSystem.GetDirectoryName(this.SourcePath)}");
-                
+
                 var dependencies = ReadPnpmLockFile(rootNode).ToList();
                 projects.Add(new ScannedProject(projectName, dependencies));
             }
@@ -46,7 +46,7 @@ internal sealed class NpmDependencyScanner(CreateDependencyScannerArgs args) : D
                             ? this.FileSystem.GetDirectoryName(this.SourcePath)
                             : this.SourcePath;
 
-            if(await this.FileSystem.FindFilesAsync(searchDirectory, "pnpm-lock.yaml", true, cancellationToken).AnyAsync(cancellationToken: cancellationToken))
+            if (await this.FileSystem.FindFilesAsync(searchDirectory, "pnpm-lock.yaml", true, cancellationToken).AnyAsync(cancellationToken: cancellationToken))
                 Console.WriteLine("Warning: pnpm-lock.yaml file detected in the scan directory. To parse pNPM lock files, specify the the pnpm-lock.yaml file in the Source Path argument.");
 
             await foreach (var packageLockFile in this.FileSystem.FindFilesAsync(searchDirectory, "package-lock.json", !this.SourcePath.EndsWith("package-lock.json"), cancellationToken))
@@ -64,7 +64,7 @@ internal sealed class NpmDependencyScanner(CreateDependencyScannerArgs args) : D
             return projects;
         }
 
-            
+
     }
 
     private IEnumerable<DependencyPackage> ReadPackageLockFile(JsonDocument doc)

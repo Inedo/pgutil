@@ -125,7 +125,7 @@ public sealed class PackageMetadataVulnerabilityAssessment
 
     // Severity of the assessment (E.g. "W", "E")
     public required string Severity { get; init; }
-    
+
     // Indicates whether the vulnerability is blocked
     // * Values are either "true" or "false"
     public bool Blocked { get; init; }

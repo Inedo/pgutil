@@ -1,8 +1,8 @@
 ﻿namespace Inedo.ProGet;
 
-public enum ProGetAuthenticationType 
-{ 
-    None, 
-    ApiKey, 
-    UsernamePassword 
+public enum ProGetAuthenticationType
+{
+    None,
+    ApiKey,
+    UsernamePassword
 }

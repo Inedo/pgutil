@@ -1,29 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
     <IsAotCompatible>true</IsAotCompatible>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>CS1591</NoWarn>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/Inedo/pgutil</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/Inedo/pgutil.git</RepositoryUrl>
-    <Authors>Inedo</Authors>
-    <Company>Inedo</Company>
-    <Product>ProGet</Product>
-    <Copyright>Copyright © Inedo 2026</Copyright>
-    <PackageTags>proget</PackageTags>
-    <RepositoryType>git</RepositoryType>
-    <Description>A HTTP Client that wraps ProGet's HTTP Endpoints. 
+    <Description>A HTTP Client that wraps ProGet's HTTP Endpoints.
 
-This is essentially the .NET-library version of pgutil, and is built from the pgutil GitHub code/repository. 
+      This is essentially the .NET-library version of pgutil, and is built from the pgutil GitHub code/repository.
 
-To learn how to use the library, see [Getting Started with Inedo.NuGet](https://docs.inedo.com/docs/proget-reference-api#net-library-nuget-package).</Description>
+      To learn how to use the library, see [Getting Started with Inedo.NuGet](https://docs.inedo.com/docs/proget-reference-api#net-library-nuget-package).</Description>
   </PropertyGroup>
-	<ItemGroup Condition="'$(TargetFramework)'=='net8.0'">
-		<PackageReference Include="System.Linq.Async" Version="7.0.0" />
-	</ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)'=='net8.0'">
+    <PackageReference Include="System.Linq.Async" Version="7.0.0" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Tomlyn" Version="2.3.0" />
     <PackageReference Include="YamlDotNet" Version="16.3.0" />

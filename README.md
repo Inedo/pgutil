@@ -19,6 +19,10 @@ It's built from the pgutil GitHub code/repository and is mostly a HTTP Client th
 
 To learn how to use the library, see [Getting Started with Inedo.NuGet](https://docs.inedo.com/docs/proget-reference-api#net-library-nuget-package).
 
+# Samples
+
+You can find some [samples](samples) in the corresponding folder.
+
 ## Pull Requests & Issues
 
 We're very open to your feedback and ideas for improving `pgutil` and `Inedo.ProGet`!

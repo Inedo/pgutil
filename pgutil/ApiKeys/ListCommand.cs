@@ -25,7 +25,7 @@ internal partial class Program
                 {
                     count++;
                     CM.WriteLine(key.DisplayName ?? "(unnamed key)");
-                    
+
                     var data = new List<(string, string)>
                     {
                         ("  Id:", key.Id.ToString()!),
