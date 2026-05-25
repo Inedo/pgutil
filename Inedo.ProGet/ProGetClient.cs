@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Reflection;
@@ -53,8 +54,24 @@ public sealed class ProGetClient
 
     public async Task<ProGetHealthInfo> GetInstanceHealthAsync(CancellationToken cancellationToken = default)
     {
-        using var response = await this.http.GetAsync("health", cancellationToken).ConfigureAwait(false);
+        using var response = await this.http.GetAsync("health?format=json", cancellationToken).ConfigureAwait(false);
         using var stream = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+
+        if ( // work-around for ProGet 2026.0, 2026.1
+            response.Headers.TryGetValues("X-ProGet-Version", out var vals)
+            && Version.TryParse(vals.FirstOrDefault(), out var ver) 
+            && ver.Major == 26 && ver.Build < 2
+            && response.StatusCode == HttpStatusCode.OK)
+        {
+            return new ProGetHealthInfo
+            {
+                DatabaseStatus = "OK",
+                LicenseStatus = "OK",
+                ReleaseNumber = ver.ToString(),
+                VersionNumber = ver.ToString(),
+                ServiceStatus = "OK"
+            };
+        }
         
         try
         {
