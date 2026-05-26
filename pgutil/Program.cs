@@ -47,6 +47,7 @@ internal sealed partial class Program : IConsoleCommandContainer
     public static void Configure(ICommandBuilder builder)
     {
         builder.WithCommand<SourcesCommand>()
+            .WithCommand<VersionCommand>()
             .WithCommand<ApiKeysCommand>()
             .WithCommand<HealthCommand>()
             .WithCommand<PackagesCommand>()
