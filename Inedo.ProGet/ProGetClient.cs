@@ -1,8 +1,6 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
@@ -327,6 +325,63 @@ public sealed class ProGetClient
         await foreach (var v in JsonSerializer.DeserializeAsyncEnumerable(stream, ProGetApiJsonContext.Default.VulnerabilityInfo, cancellationToken).ConfigureAwait(false))
             yield return v!;
     }
+
+    public Task<AuditContainerResults> AuditContainerImageAsync(string feed, string tagOrDigest, string? arch = null, CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(feed);
+        ArgumentException.ThrowIfNullOrEmpty(tagOrDigest);
+
+        var url = $"api/containers/images/audit?feed={Uri.EscapeDataString(feed)}&tagOrDigest={Uri.EscapeDataString(tagOrDigest)}";
+        if (!string.IsNullOrEmpty(arch))
+            url += $"&arch={Uri.EscapeDataString(arch)}";
+
+        return this.GetItemAsync(url, ProGetApiJsonContext.Default.AuditContainerResults, cancellationToken);
+    }
+
+    public async Task<AddTagResult> AddContainerImageTagAsync(string feed, string repository, string tag, string targetTagOrDigest, bool force = false, CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(feed);
+        ArgumentException.ThrowIfNullOrEmpty(repository);
+        ArgumentException.ThrowIfNullOrEmpty(tag);
+        ArgumentException.ThrowIfNullOrEmpty(targetTagOrDigest);
+
+        var url = $"api/containers/tags/add?feed={Uri.EscapeDataString(feed)}&repo={Uri.EscapeDataString(repository)}&tag={Uri.EscapeDataString(tag)}&target={Uri.EscapeDataString(targetTagOrDigest)}";
+        if (force)
+            url += "&force=true";
+
+        using var response = await this.http.PostAsync(url, null, cancellationToken);
+        await CheckResponseAsync(response, cancellationToken);
+        return Enum.Parse<AddTagResult>(await response.Content.ReadAsStringAsync(cancellationToken), true);
+    }
+
+    public async Task DeleteContainerImageTagAsync(string feed, string repository, string tag, CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(feed);
+        ArgumentException.ThrowIfNullOrEmpty(repository);
+        ArgumentException.ThrowIfNullOrEmpty(tag);
+
+        using var response = await this.http.PostAsync(
+            $"api/containers/tags/delete?feed={Uri.EscapeDataString(feed)}&repo={Uri.EscapeDataString(repository)}&tag={Uri.EscapeDataString(tag)}",
+            null,
+            cancellationToken
+        );
+        await CheckResponseAsync(response, cancellationToken);
+    }
+
+    public async Task DeleteContainerImageAsync(string feed, string repository, string digest, CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(feed);
+        ArgumentException.ThrowIfNullOrEmpty(repository);
+        ArgumentException.ThrowIfNullOrEmpty(digest);
+
+        using var response = await this.http.PostAsync(
+            $"api/containers/images/delete?feed={Uri.EscapeDataString(feed)}&repo={Uri.EscapeDataString(repository)}&digest={Uri.EscapeDataString(digest)}",
+            null,
+            cancellationToken
+        );
+        await CheckResponseAsync(response, cancellationToken);
+    }
+
     public async Task AssessVulnerabilityAsync(string vulnerabilityId, string assessmentType, string? comment = null, string? policy = null, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(vulnerabilityId);

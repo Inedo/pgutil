@@ -8,6 +8,7 @@
 		<Authors>Inedo</Authors>
 		<Company>Inedo</Company>
 		<Product>ProGet</Product>
+		<Langversion>latest</Langversion>
 		<Copyright>Copyright © Inedo 2026</Copyright>
 		<Description>CLI for ProGet's APIs.</Description>
 		<PackageProjectUrl>https://github.com/Inedo/pgutil</PackageProjectUrl>
@@ -25,7 +26,7 @@
 	<ItemGroup>
 		<None Include="..\README.md" Link="README.md" Pack="true" PackagePath="/" />
 		<PackageReference Include="Inedo.ConsoleMan" Version="1.0.2" />
-		<PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="10.0.5" />
+		<PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="10.0.8" />
 		<TrimmerRootAssembly Include="pgutil" />
 	</ItemGroup>
 </Project>

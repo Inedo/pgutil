@@ -1,4 +1,4 @@
-﻿/*******************************************************************************
+/*******************************************************************************
 * ABOUT THIS FILE                                                              *
 ********************************************************************************
 *                                                                              *
@@ -29,22 +29,12 @@
 
 namespace Inedo.ProGet;
 
-// JSON Object used by the Audit Package HTTP endpoint
-public sealed class AuditPackageResults
-{
-    // Code of the package analysis
-    // * Values are either "C" (Compliant), "W" (Warn), or "N" (Non-Compliant)
-    public string? ResultCode { get; init; }
+// Describes a subimage manifest in a manifest list
+public sealed record class ContainerManifest(
+    
+    // Unique digest of the subimage
+    string Digest,
 
-    // Date that the analysis was performed 
-    // * Date is output in ISO8601 format (e.g. "2019-08-01T00:00:00-07:00")
-    public DateTime? AnalysisDate { get; init; }
-
-    // Details of the analysis (e.g. ""Vulnerability (PGV-2245804)", "Unacceptable License (GPL-3.0)")
-    // * Will be "null" if ResultCode is "C" (Compliant)
-    public string? Detail { get; init; }
-
-    // The status text of the analysis
-    // * Will be either "Compliant", "Warn", or "Non-Compliant"
-    public required string StatusText { get; init; }
-}
+    // Architecture of the subimage
+    string? Architecture
+);
