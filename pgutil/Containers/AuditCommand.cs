@@ -54,6 +54,8 @@ partial class Program
                     }
                 }
 
+                bool hasContain = false;
+
                 if (results.Packages?.Length > 0)
                 {
                     CM.WriteLine($"Total Packages: {results.Packages?.Length ?? 0}");
@@ -94,6 +96,8 @@ partial class Program
                             {
                                 foreach (var vuln in vulns)
                                 {
+                                    hasContain |= string.Equals(vuln.Assessment, "Contain", StringComparison.OrdinalIgnoreCase);
+
                                     CM.Write(new TextSpan(vuln.Id, ConsoleColor.White), " ");
 
                                     if (vuln.Pvrs.HasValue)
@@ -111,6 +115,13 @@ partial class Program
                             }
                         }
                     }
+                }
+
+                if (hasContain)
+                {
+                    CM.WriteLine();
+                    CM.WriteError("Image contains vulnerabilies assessed as Contain.");
+                    return -1;
                 }
 
                 return 0;
