@@ -52,6 +52,7 @@ internal sealed partial class Program : IConsoleCommandContainer
             .WithCommand<HealthCommand>()
             .WithCommand<PackagesCommand>()
             .WithCommand<FeedsCommand>()
+            .WithCommand<ContainersCommand>()
             .WithCommand<ConnectorsCommand>()
             .WithCommand<BuildsCommand>()
             .WithCommand<VulnsCommand>()

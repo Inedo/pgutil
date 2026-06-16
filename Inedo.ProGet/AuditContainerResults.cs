@@ -1,4 +1,4 @@
-﻿/*******************************************************************************
+/*******************************************************************************
 * ABOUT THIS FILE                                                              *
 ********************************************************************************
 *                                                                              *
@@ -29,22 +29,27 @@
 
 namespace Inedo.ProGet;
 
-// JSON Object used by the Audit Package HTTP endpoint
-public sealed class AuditPackageResults
+// JSON Object used by the Audit Container HTTP endpoint
+public sealed class AuditContainerResults
 {
-    // Code of the package analysis
-    // * Values are either "C" (Compliant), "W" (Warn), or "N" (Non-Compliant)
-    public string? ResultCode { get; init; }
+    // Name of the Docker repository of the image being audited
+    public required string Repository { get; init; }
 
-    // Date that the analysis was performed 
-    // * Date is output in ISO8601 format (e.g. "2019-08-01T00:00:00-07:00")
-    public DateTime? AnalysisDate { get; init; }
+    // Tags for this image in the repository
+    public string[]? Tags { get; init; }
 
-    // Details of the analysis (e.g. ""Vulnerability (PGV-2245804)", "Unacceptable License (GPL-3.0)")
-    // * Will be "null" if ResultCode is "C" (Compliant)
-    public string? Detail { get; init; }
+    // Unique digest of the image
+    public required string Digest { get; init; }
 
-    // The status text of the analysis
-    // * Will be either "Compliant", "Warn", or "Non-Compliant"
-    public required string StatusText { get; init; }
+    // Timestamp when the image was added to ProGet
+    public required DateTime Created { get; init; }
+
+    // PUrls of packages used by the image
+    public string[]? Packages { get; init; }
+
+    // Known vulnerabilities in packages in the image
+    public VulnerabilityInfo[]? Vulnerabilities { get; init; }
+
+    // If image is a manifest list (fat manifest), then this is a list of the subimages. Otherwise, it is null
+    public ContainerManifest[]? ManifestList { get; init; }
 }

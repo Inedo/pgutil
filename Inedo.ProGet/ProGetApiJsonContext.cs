@@ -13,6 +13,7 @@ namespace Inedo.ProGet;
 [JsonSerializable(typeof(PromotePackageInput))]
 [JsonSerializable(typeof(BuildAnalysisResults))]
 [JsonSerializable(typeof(AuditPackageResults))]
+[JsonSerializable(typeof(AuditContainerResults))]
 [JsonSerializable(typeof(LicenseInfo))]
 [JsonSerializable(typeof(ApiKeyInfo))]
 [JsonSerializable(typeof(AssetDirectoryItem))]
