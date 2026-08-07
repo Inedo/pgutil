@@ -19,7 +19,8 @@ internal sealed partial class Program
             public static void Configure(ICommandBuilder builder)
             {
                 builder.WithOption<NameOption>()
-                    .WithOption<TypeOption>();
+                    .WithOption<TypeOption>()
+                    .WithOption<GroupOption>();
             }
 
             public static async Task<int> ExecuteAsync(CommandContext context, CancellationToken cancellationToken)
@@ -29,7 +30,7 @@ internal sealed partial class Program
                 var feedType = context.GetOption<TypeOption>();
 
                 CM.WriteLine("Creating ", new TextSpan(feedType, ConsoleColor.Blue), " feed: ", new TextSpan(feedName, ConsoleColor.White), "...");
-                _ = await client.CreateFeedAsync(feedName, feedType, cancellationToken);
+                _ = await client.CreateFeedAsync(feedName, feedType, context.GetOptionOrDefault<GroupOption>(), cancellationToken);
                 Console.WriteLine("Feed created.");
                 return 0;
             }
@@ -48,6 +49,13 @@ internal sealed partial class Program
                 public static string Description => "Type of the feed to create";
                 public static string[] ValidValues => ["NuGet", "Chocolatey", "npm", "Bower", "Maven", "Universal", "PowerShell", "Docker", "RubyGems", "VSIX", "Debian", "PyPI", "Helm", "RPM", "Conda", "APK", "CRAN", "Asset" ];
                 public static bool WarnWhenInvalidValue => true;
+            }
+
+            private sealed class GroupOption : IConsoleOption
+            {
+                public static bool Required => false;
+                public static string Name => "--group";
+                public static string Description => "Name of the new feed's Feed Group. Will be created if it does not exist";
             }
         }
     }

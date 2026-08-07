@@ -115,14 +115,17 @@ public sealed class ProGetClient
         return (await JsonSerializer.DeserializeAsync(stream, ProGetApiJsonContext.Default.ProGetFeed, cancellationToken).ConfigureAwait(false))!;
     }
 
-    public Task<ProGetFeed> CreateFeedAsync(string feedName, string feedType, CancellationToken cancellationToken = default)
+    [Obsolete("This will be removed in a future version.")]
+    public Task<ProGetFeed> CreateFeedAsync(string feedName, string feedType, CancellationToken cancellationToken = default) => this.CreateFeedAsync(feedName, feedType, null, cancellationToken);
+    public Task<ProGetFeed> CreateFeedAsync(string feedName, string feedType, string? feedGroup, CancellationToken cancellationToken = default)
     {
         return this.UpdateAsync(
             "api/management/feeds/create",
             new ProGetFeed
             {
                 Name = feedName,
-                FeedType = feedType
+                FeedType = feedType,
+                FeedGroup = feedGroup
             },
             ProGetApiJsonContext.Default.ProGetFeed,
             cancellationToken
