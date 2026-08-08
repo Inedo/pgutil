@@ -26,7 +26,10 @@ internal partial class Program
                 {
                     builder.WithOption<ProjectOption>()
                         .WithOption<ProjectTypeOption>()
-                        .WithOption<ProjectUrlOption>();
+                        .WithOption<ProjectUrlOption>()
+                        .WithOption<DescriptionOption>()
+                        .WithOption<GroupOption>()
+                        .WithOption<ProjectFeedsOption>();
                 }
 
                 public static async Task<int> ExecuteAsync(CommandContext context, CancellationToken cancellationToken)
@@ -37,7 +40,10 @@ internal partial class Program
                     {
                         Name = context.GetOption<ProjectOption>(),
                         Type = context.GetOptionOrDefault<ProjectTypeOption>(),
-                        Url = context.GetOptionOrDefault<ProjectUrlOption>()
+                        Url = context.GetOptionOrDefault<ProjectUrlOption>(),
+                        Description = context.GetOptionOrDefault<DescriptionOption>(),
+                        Group = context.GetOptionOrDefault<GroupOption>(),
+                        Feeds = context.GetOptionOrDefault<ProjectFeedsOption>()?.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
                     };
 
                     var p = await client.CreateOrUpdateProjectAsync(info, cancellationToken).ConfigureAwait(false);
@@ -65,6 +71,27 @@ internal partial class Program
                     public static bool Required => false;
                     public static string Name => "--url";
                     public static string Description => "URL of the project";
+                }
+
+                private sealed class DescriptionOption : IConsoleOption
+                {
+                    public static bool Required => false;
+                    public static string Name => "--description";
+                    public static string Description => "Description of the project";
+                }
+
+                private sealed class GroupOption : IConsoleOption
+                {
+                    public static bool Required => false;
+                    public static string Name => "--group";
+                    public static string Description => "Project group membership";
+                }
+
+                private sealed class ProjectFeedsOption : IConsoleOption
+                {
+                    public static bool Required => false;
+                    public static string Name => "--project-feeds";
+                    public static string Description => "Comma-separated list of feeds associated with the project";
                 }
             }
         }

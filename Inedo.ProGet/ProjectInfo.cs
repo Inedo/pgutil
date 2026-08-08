@@ -44,4 +44,13 @@ public sealed class ProjectInfo
 
     // SBOM Metadata field
     public string? Url { get; set; }
+
+    // Project description field
+    public string? Description { get; set; }
+
+    // Project group field
+    public string? Group { get; set; }
+
+    // Project feeds field
+    public string[]? Feeds { get; set; }
 }
