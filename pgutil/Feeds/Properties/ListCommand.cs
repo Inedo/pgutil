@@ -35,7 +35,13 @@ internal sealed partial class Program
                     WriteProperty("endpointUrl", feed.EndpointUrl);
                     WriteProperty("connectors", feed.Connectors);
                     WriteProperty("canPublish", feed.CanPublish);
+                    WriteProperty("packageStatisticsEnabled", feed.PackageStatisticsEnabled);
+                    WriteProperty("restrictPackageStatistics", feed.RestrictPackageStatistics);
+                    WriteProperty("deploymentRecordsEnabled", feed.DeploymentRecordsEnabled);
+                    WriteProperty("usageRecordsEnabled", feed.UsageRecordsEnabled);
                     WriteProperty("vulnerabilitiesEnabled", feed.VulnerabilitiesEnabled);
+                    WriteProperty("licensesEnabled", feed.LicensesEnabled);
+                    WriteProperty("useWithProjects", feed.UseWithProjects);
 
                     return 0;
                 }
