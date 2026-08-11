@@ -59,8 +59,32 @@ internal sealed partial class Program
                             feed.FeedGroup = value.Trim();
                             break;
 
+                        case "packageStatisticsEnabled":
+                            feed.PackageStatisticsEnabled = getBool(value);
+                            break;
+
+                        case "restrictPackageStatistics":
+                            feed.RestrictPackageStatistics = getBool(value);
+                            break;
+
+                        case "deploymentRecordsEnabled":
+                            feed.DeploymentRecordsEnabled = getBool(value);
+                            break;
+
+                        case "usageRecordsEnabled":
+                            feed.UsageRecordsEnabled = getBool(value);
+                            break;
+
                         case "vulnerabilitiesEnabled":
                             feed.VulnerabilitiesEnabled = getBool(value);
+                            break;
+
+                        case "licensesEnabled":
+                            feed.LicensesEnabled = getBool(value);
+                            break;
+
+                        case "useWithProjects":
+                            feed.UseWithProjects = getBool(value);
                             break;
 
                         default:
@@ -89,7 +113,7 @@ internal sealed partial class Program
                     public static bool Required => true;
                     public static string Name => "--property";
                     public static string Description => "Name of feed property to set";
-                    public static string[] ValidValues => ["alternateNames", "active", "dropPath", "feedGroup", "connectors", "vulnerabilitiesEnabled"];
+                    public static string[] ValidValues => ["alternateNames", "active", "dropPath", "feedGroup", "connectors", "packageStatisticsEnabled", "restrictPackageStatistics", "deploymentRecordsEnabled", "usageRecordsEnabled", "vulnerabilitiesEnabled", "licensesEnabled", "useWithProjects"];
                 }
 
                 private sealed class ValueOption : IConsoleOption
