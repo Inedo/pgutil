@@ -356,6 +356,35 @@ public sealed class ProGetClient
         await CheckResponseAsync(response, cancellationToken);
         return Enum.Parse<AddTagResult>(await response.Content.ReadAsStringAsync(cancellationToken), true);
     }
+    public async Task<AddTagFullResult> AddContainerImageTag2Async(string feed, string repository, string tag, string targetTagOrDigest, bool force = false, CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(feed);
+        ArgumentException.ThrowIfNullOrEmpty(repository);
+        ArgumentException.ThrowIfNullOrEmpty(tag);
+        ArgumentException.ThrowIfNullOrEmpty(targetTagOrDigest);
+
+        var url = $"api/containers/tags/add?feed={Uri.EscapeDataString(feed)}&repo={Uri.EscapeDataString(repository)}&tag={Uri.EscapeDataString(tag)}&target={Uri.EscapeDataString(targetTagOrDigest)}";
+        if (force)
+            url += "&force=true";
+
+        using var request = new HttpRequestMessage(HttpMethod.Post, url);
+        request.Headers.Accept.ParseAdd("application/json");
+
+        using var response = await this.http.SendAsync(request, cancellationToken);
+        await CheckResponseAsync(response, cancellationToken);
+
+        if(response.Content.Headers.ContentType?.MediaType == "application/json")
+        {
+            return (await response.Content.ReadFromJsonAsync(ProGetApiJsonContext.Default.AddTagFullResult, cancellationToken))!;
+        }
+        else
+        {
+            return new AddTagFullResult
+            {
+                Status = Enum.Parse<AddTagResult>(await response.Content.ReadAsStringAsync(cancellationToken), true)
+            };
+        }
+    }
 
     public async Task DeleteContainerImageTagAsync(string feed, string repository, string tag, CancellationToken cancellationToken = default)
     {
