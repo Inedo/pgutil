@@ -25,7 +25,12 @@ internal sealed class NpmDependencyScanner(CreateDependencyScannerArgs args) : D
             var yaml = new YamlStream();
             yaml.Load(reader);
 
-            if (yaml.Documents.Count > 0 && yaml.Documents[0].RootNode is YamlMappingNode rootNode)
+            var lockFileDocuments = yaml.Documents
+                .Select(document => document.RootNode)
+                .OfType<YamlMappingNode>()
+                .ToList();
+
+            if (lockFileDocuments.Count > 0)
             {
                 // Try to get project name from package.json in the same directory
                 var projectName = await GetProjectNameFromPackageJsonAsync(this.SourcePath, cancellationToken).ConfigureAwait(false);
@@ -33,7 +38,11 @@ internal sealed class NpmDependencyScanner(CreateDependencyScannerArgs args) : D
                 if (string.IsNullOrEmpty(projectName))
                     throw new InvalidOperationException($"Unable to determine project name from package.json in directory: {this.FileSystem.GetDirectoryName(this.SourcePath)}");
                 
-                var dependencies = ReadPnpmLockFile(rootNode).ToList();
+                var dependencies = lockFileDocuments
+                    .Where(HasPackages)
+                    .SelectMany(ReadPnpmLockFile)
+                    .Distinct()
+                    .ToList();
                 projects.Add(new ScannedProject(projectName, dependencies));
             }
 
@@ -65,6 +74,13 @@ internal sealed class NpmDependencyScanner(CreateDependencyScannerArgs args) : D
         }
 
             
+    }
+
+    private static bool HasPackages(YamlMappingNode rootNode)
+    {
+        var packagesKey = new YamlScalarNode("packages");
+        return rootNode.Children.TryGetValue(packagesKey, out var packagesNode)
+            && packagesNode is YamlMappingNode;
     }
 
     private IEnumerable<DependencyPackage> ReadPackageLockFile(JsonDocument doc)
