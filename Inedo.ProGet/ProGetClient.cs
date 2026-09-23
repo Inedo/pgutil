@@ -385,7 +385,21 @@ public sealed class ProGetClient
             };
         }
     }
+    public async IAsyncEnumerable<DockerTagInfo> ListContainerImageTagsAsync(string feed, string repository, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(feed);
+        ArgumentException.ThrowIfNullOrEmpty(repository);
+        
+        var url = $"api/containers/tags/list?feed={Uri.EscapeDataString(feed)}&repo={Uri.EscapeDataString(repository)}";
+        using var request = new HttpRequestMessage(HttpMethod.Get, url);
+        request.Headers.Accept.ParseAdd("application/json");
+        using var response = await this.http.SendAsync(request, cancellationToken);
+        await CheckResponseAsync(response, cancellationToken);
+        using var content = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
 
+        await foreach (var value in JsonSerializer.DeserializeAsyncEnumerable(content, ProGetApiJsonContext.Default.DockerTagInfo, cancellationToken: cancellationToken).ConfigureAwait(false))
+            yield return value!;
+    }
     public async Task DeleteContainerImageTagAsync(string feed, string repository, string tag, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(feed);

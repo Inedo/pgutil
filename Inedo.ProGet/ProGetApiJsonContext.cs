@@ -38,6 +38,7 @@ namespace Inedo.ProGet;
 [JsonSerializable(typeof(SecurityGroup))]
 [JsonSerializable(typeof(PackageMetadata))]
 [JsonSerializable(typeof(AddTagFullResult))]
+[JsonSerializable(typeof(DockerTagInfo))]
 [JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase, Converters = [typeof(AssetUserMetadataTypeConverter)], UseStringEnumConverter = true, DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull)]
 internal sealed partial class ProGetApiJsonContext : JsonSerializerContext
 {

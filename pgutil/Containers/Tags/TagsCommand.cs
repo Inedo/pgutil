@@ -13,7 +13,8 @@ partial class Program
 
             public static void Configure(ICommandBuilder builder)
             {
-                builder.WithCommand<AddCommand>()
+                builder.WithCommand<ListTagsCommand>()
+                    .WithCommand<AddCommand>()
                     .WithCommand<DeleteCommand>();
             }
         }
