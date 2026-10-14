@@ -9,6 +9,8 @@ internal sealed partial class NuGetDependencyScanner(CreateDependencyScannerArgs
 {
     private readonly HashSet<string> includeFolders = [.. args.IncludeFolders ?? []];
     private readonly bool considerProjectReferences = args.IncludeProjectReferences;
+    private readonly bool doNotScanForNpm = args.DoNotScanNpm;
+
 
     public override DependencyScannerType Type => DependencyScannerType.NuGet;
 
@@ -205,6 +207,8 @@ internal sealed partial class NuGetDependencyScanner(CreateDependencyScannerArgs
 
     private async IAsyncEnumerable<DependencyPackage> FindNpmPackagesAsync(string projectPath, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
+        if (doNotScanForNpm)
+            yield break;
         var npmScanner = new NpmDependencyScanner(this.CreateArgs with { SourcePath = projectPath });
         foreach (var npmProject in await npmScanner.ResolveDependenciesAsync(cancellationToken).ConfigureAwait(false))
         {

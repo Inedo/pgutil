@@ -29,6 +29,7 @@ internal partial class Program
                     .WithOption<ProjectTypeOption>()
                     .WithOption<IncludeProjectReferencesFlag>()
                     .WithOption<IncludeDevDependenciesFlag>()
+                    .WithOption<DoNotScanNpmFlag>()
                     .WithOption<DoNotScanNodeModulesFlag>()
                     .WithOption<ScannerTypeOption>()
                     .WithOption<DoNotAuditFlag>();
@@ -45,7 +46,8 @@ internal partial class Program
                     SourceFileSystem.Default, 
                     IncludeProjectReferences: context.HasFlag<IncludeProjectReferencesFlag>(), 
                     DoNotScanNodeModules: context.HasFlag<DoNotScanNodeModulesFlag>(),
-                    IncludeDevDependencies: context.HasFlag<IncludeDevDependenciesFlag>()
+                    IncludeDevDependencies: context.HasFlag<IncludeDevDependenciesFlag>(),
+                    DoNotScanNpm: context.HasFlag<DoNotScanNpmFlag>()
                 ), scannerType);
                 var projects = await scanner.ResolveDependenciesAsync(cancellationToken);
                 if (projects.Count == 0)

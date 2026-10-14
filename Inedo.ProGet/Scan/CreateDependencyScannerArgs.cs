@@ -6,5 +6,6 @@ public sealed record class CreateDependencyScannerArgs(
     bool DoNotScanNodeModules = false,
     bool IncludeDevDependencies = false,
     IReadOnlyList<string>? IncludeFolders = null,
-    bool IncludeProjectReferences = false
+    bool IncludeProjectReferences = false,
+    bool DoNotScanNpm = false
 );

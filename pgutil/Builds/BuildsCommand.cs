@@ -85,6 +85,12 @@ internal partial class Program
             public static string Description => "Do not scan the node_modules directory when scanning for package-lock.json files";
         }
 
+        private sealed class DoNotScanNpmFlag : IConsoleFlagOption
+        {
+            public static string Name => "--do-not-scan-npm";
+            public static string Description => "Do not scan for npm packages when scanning for NuGet pacakges";
+        }
+
         private sealed class ScannerTypeOption : IConsoleOption
         {
             public static bool Required => false;
