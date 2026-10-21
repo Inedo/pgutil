@@ -539,6 +539,12 @@ public sealed class ProGetClient
     {
         return this.ListItemsAsync("api/api-keys/list", ProGetApiJsonContext.Default.ApiKeyInfo, cancellationToken)!;
     }
+    public async Task<string> RotateApiKeyAsync(int id, CancellationToken cancellationToken = default)
+    {
+        using var response = await this.http.PostAsync($"api/api-keys/rotate?id={id}", null, cancellationToken).ConfigureAwait(false);
+        await CheckResponseAsync(response, new (26, 0, 14), null, cancellationToken).ConfigureAwait(false);
+        return await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+    }
     public async Task DeleteApiKeyAsync(int id, CancellationToken cancellationToken = default)
     {
         using var response = await this.http.PostAsync($"api/api-keys/delete?id={id}", null, cancellationToken).ConfigureAwait(false);

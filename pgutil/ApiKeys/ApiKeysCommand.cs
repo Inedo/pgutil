@@ -13,7 +13,8 @@ internal partial class Program
             builder.WithProGetClientOptions()
                 .WithCommand<CreateCommand>()
                 .WithCommand<ListCommand>()
-                .WithCommand<DeleteCommand>();
+                .WithCommand<DeleteCommand>()
+                .WithCommand<RotateCommand>();
         }
     }
 }
