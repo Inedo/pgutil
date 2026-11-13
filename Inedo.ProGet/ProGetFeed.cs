@@ -160,6 +160,32 @@ public sealed class ProGetFeed
     // Indicates whether retention rules are enabled on the feed
     // * Requires ProGet 2023.25 or later
     public bool? RetentionRulesEnabled { get; set; }
+
+    // Indicates whether common blob storage is used for this feed
+    // * Docker Feeds only
+    // * Requires ProGet 2026.15 or later
+    // * Can only be changed if the feed is empty
+    public bool? UseCommonBlobStorage { get; set; }
+
+    // Indicates whether strict versionsing mode is enabled for the feed
+    // * Docker Feeds only
+    // * Requires ProGet 2026.15 or later
+    public bool? EnableStrictVersioning { get; set; }
+
+    // Indicates whether external layers should be disallowed
+    // * Docker Feeds only
+    // * Requires ProGet 2026.15 or later
+    public bool? BlockExternalLayers { get; set; }
+
+    // Indicates whether layer scanning is enabled
+    // * Docker Feeds only
+    // * Requires ProGet 2026.15 or later
+    public bool? EnableLayerScanning { get; set; }
+
+    // Indicates whether automatic "latest" tag updates are disabled
+    // * Docker Feeds only
+    // * Requires ProGet 2026.15 or later
+    public bool? DisableLatestTagGeneration { get; set; }
 }
 
 // ProGetFeed may return additional properties from an HTTP request:

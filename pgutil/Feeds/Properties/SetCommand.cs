@@ -87,8 +87,28 @@ internal sealed partial class Program
                             feed.UseWithProjects = getBool(value);
                             break;
 
+                        case "useCommonBlobStorage":
+                            feed.UseCommonBlobStorage = getBool(value);
+                            break;
+
+                        case "enableStrictVersioning":
+                            feed.EnableStrictVersioning = getBool(value);
+                            break;
+
+                        case "blockExternalLayers":
+                            feed.BlockExternalLayers = getBool(value);
+                            break;
+
+                        case "enableLayerScanning":
+                            feed.EnableLayerScanning = getBool(value);
+                            break;
+
+                        case "disableLatestTagGeneration":
+                            feed.DisableLatestTagGeneration = getBool(value);
+                            break;
+
                         default:
-                            CM.WriteError<PropertyOption>($"{name} is read only");
+                            CM.WriteError<PropertyOption>($"{name} is not a settable option");
                             return -1;
                     }
 
@@ -113,7 +133,6 @@ internal sealed partial class Program
                     public static bool Required => true;
                     public static string Name => "--property";
                     public static string Description => "Name of feed property to set";
-                    public static string[] ValidValues => ["alternateNames", "active", "dropPath", "feedGroup", "connectors", "packageStatisticsEnabled", "restrictPackageStatistics", "deploymentRecordsEnabled", "usageRecordsEnabled", "vulnerabilitiesEnabled", "licensesEnabled", "useWithProjects"];
                 }
 
                 private sealed class ValueOption : IConsoleOption

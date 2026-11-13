@@ -43,6 +43,15 @@ internal sealed partial class Program
                     WriteProperty("licensesEnabled", feed.LicensesEnabled);
                     WriteProperty("useWithProjects", feed.UseWithProjects);
 
+                    if (string.Equals(feed.FeedType, "docker", StringComparison.OrdinalIgnoreCase))
+                    {
+                        WriteProperty("useCommonBlobStorage", feed.UseCommonBlobStorage);
+                        WriteProperty("enableStrictVersioning", feed.EnableStrictVersioning);
+                        WriteProperty("blockExternalLayers", feed.BlockExternalLayers);
+                        WriteProperty("enableLayerScanning", feed.EnableLayerScanning);
+                        WriteProperty("disableLatestTagGeneration", feed.DisableLatestTagGeneration);
+                    }
+
                     return 0;
                 }
 
